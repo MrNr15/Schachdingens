@@ -11,7 +11,6 @@ export default class Game extends Phaser.Scene {
 
     //globale variablen
     layer;
-    cursorTile;
 
     TILE_WIDTH = 32
     TILE_HEIGHT = 16;
@@ -35,21 +34,6 @@ export default class Game extends Phaser.Scene {
 }
 
     update (time, delta) {
-        if (this.cursorTile != null && this.cursorTile !== undefined) {
-            this.cursorTile.setVisible(true);
-        }
-
-        this.game.input.mousePointer.updateWorldPoint(this.cameras.main);
-        const foundTile = this.layer.getTileAtWorldXY(
-            this.game.input.mousePointer.worldX, 
-            this.game.input.mousePointer.worldY+this.TILE_HEIGHT,
-            false, this.cameras.main);
-        
-        this.cursorTile = foundTile;
-
-        if (this.cursorTile != null && this.cursorTile !== undefined) {
-            this.cursorTile.setVisible(false);
-        }
     }
 
     //Nimmt eine Position auf dem Grid und gibt aus wo sich das Tile in der Welt befindet
