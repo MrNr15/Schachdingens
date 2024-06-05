@@ -7,6 +7,7 @@ export default class Game extends Phaser.Scene {
     preload (){
         this.load.image('tile', 'Assets/tile.png')
         this.load.image('piece', 'Assets/Piece.png')
+        this.load.image('card', 'Assets/card.png')
         this.load.image('canGoImage', 'Assets/CanGo.png')
         this.load.tilemapTiledJSON('map', 'TileMapExports/map.json')
     }
@@ -14,7 +15,8 @@ export default class Game extends Phaser.Scene {
     //globale variablen
     layer;
     canGoLayer;
-    card;
+    cards = [];
+    currentCard = null;
     player;
     TILE_WIDTH = 32
     TILE_HEIGHT = 16;
@@ -38,15 +40,26 @@ export default class Game extends Phaser.Scene {
 
         
         //Map wird auf dem Bildschirm gecentered (Diesmal funktionierts auch)
-        this.cameras.main.pan(this.TILE_WIDTH/2, this.MAP_HEIGTH*this.TILE_HEIGHT/2, 1);
+        this.layer.x = -this.TILE_WIDTH/2 + this.WIDTH/2;
+        this.layer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2;
+        this.canGoLayer.x = -this.TILE_WIDTH/2 + this.WIDTH/2;
+        this.canGoLayer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2;
         
         //Player wird erstellt
         this.player = new piece(this, 5, 4)
         
-        this.card = new card(this)
+        this.cards.push(new card(this, this.cards))
+        this.cards.push(new card(this, this.cards))
+        this.cards.push(new card(this, this.cards))
 
         //damit die Movement Möglichkeiten gezeigt werden
         this.playerMoved()
+    }
+
+    update(time, delta){
+        for(var i = 0; i < this.cards.length; i++){
+            this.cards[i].update(time, delta);
+        }
     }
 
     //Macht alle unsichtbar
@@ -81,7 +94,18 @@ export default class Game extends Phaser.Scene {
     }
 
     playerMoved(){
+        this.currentCard = null;
+        this.updateMovement();
+    }
+
+    updateMovement(){
         this.resetMovePossiblilitys()
-        this.card.showMoves(this.layer, this.canGoLayer, this.player)
+        if(this.currentCard == null) return;
+        this.currentCard.showMoves(this.layer, this.canGoLayer, this.player)
+    }
+
+    setCurrentCard(newCard){
+        this.currentCard = newCard;
+        this.updateMovement();
     }
 }

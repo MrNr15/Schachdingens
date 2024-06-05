@@ -23,7 +23,7 @@
 1,0,0,0,0,0,0,0,0,1
 </data>
  </layer>
- <layer id="2" name="CanGo" width="10" height="10">
+ <layer id="2" name="CanGo" width="10" height="10" visible="0">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,

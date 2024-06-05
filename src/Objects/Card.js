@@ -3,6 +3,9 @@
 export default class Card extends Phaser.GameObjects.Sprite {
 
     scene;
+    cards;
+
+    spriteOffset = [50, 75];
 
     //Zeigt bewegmuster
     //Man kann sich zu jeder 1 hinbewegen
@@ -15,10 +18,25 @@ export default class Card extends Phaser.GameObjects.Sprite {
         [1,0,0,0,1],
     ]
 
-    constructor(_scene){
+    constructor(_scene, cards){
         super(_scene)
         this.scene = _scene
+        this.cards = cards;
+        this.setTexture('card')
+        this.y = this.scene.HEIGHT - this.spriteOffset[1]
+        this.scene = _scene
         this.scene.add.existing(this)
+
+        this.setInteractive()
+        this.on('pointerdown', function (pointer) {
+            this.scene.setCurrentCard(this)
+        });
+    }
+
+    update(time, delta){
+        if (this.cards.indexOf(this) != -1){
+            this.x = this.scene.WIDTH * ((this.cards.indexOf(this)+1) / (this.cards.length+1))
+        }
     }
 
     //Macht auf dem Layer alle Tiles sichtbar, welche die karte erlaubt
