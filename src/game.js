@@ -39,10 +39,10 @@ export default class Game extends Phaser.Scene {
         this.resetMovePossiblilitys()
 
         
-        //Map wird auf dem Bildschirm gecentered (Diesmal funktionierts auch)
+        //Map wird auf dem Bildschirm gecentered
         this.layer.x = -this.TILE_WIDTH/2 + this.WIDTH/2;
-        this.layer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2;
         this.canGoLayer.x = -this.TILE_WIDTH/2 + this.WIDTH/2;
+        this.layer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2;
         this.canGoLayer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2;
         
         //Player wird erstellt
@@ -51,9 +51,6 @@ export default class Game extends Phaser.Scene {
         this.cards.push(new card(this, this.cards))
         this.cards.push(new card(this, this.cards))
         this.cards.push(new card(this, this.cards))
-
-        //damit die Movement Möglichkeiten gezeigt werden
-        this.playerMoved()
     }
 
     update(time, delta){
@@ -74,18 +71,16 @@ export default class Game extends Phaser.Scene {
 
     //Nimmt eine Position auf dem Grid und gibt aus wo sich das Tile in der Welt befindet
     worldPosToScreenPos(x, y){
-        const pos = this.layer.tileToWorldXY(x, y)
-        return pos
+        return this.layer.tileToWorldXY(x, y)
     }
+
     //Nimmt eine Position in der Welt und gibt die Koordinaten des Tiles darunter
     screenToWorldPos(x, y){
         const pos = this.layer.worldToTileXY(x, y);
-
         //Muss abgerundet werden
         pos.x = Math.floor(pos.x)
         pos.y = Math.floor(pos.y)
         return pos
-
     }
 
     canIMoveThere(pos){
@@ -93,17 +88,20 @@ export default class Game extends Phaser.Scene {
         return tile != undefined && tile.visible
     }
 
+    //wird vom player aufgerufen
     playerMoved(){
         this.currentCard = null;
         this.updateMovement();
     }
 
+    //Immer wenn sich die ausgewählte Karte ändert
     updateMovement(){
         this.resetMovePossiblilitys()
         if(this.currentCard == null) return;
         this.currentCard.showMoves(this.layer, this.canGoLayer, this.player)
     }
 
+    //wird von den karten selbst aufgerufen
     setCurrentCard(newCard){
         this.currentCard = newCard;
         this.updateMovement();

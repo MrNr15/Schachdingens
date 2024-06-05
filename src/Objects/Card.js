@@ -23,7 +23,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
         this.scene = _scene
         this.cards = cards;
         this.setTexture('card')
-        this.y = this.scene.HEIGHT - this.spriteOffset[1]
+        this.y = this.scene.HEIGHT - this.spriteOffset[1]//Unterer Bildschirmrand
         this.scene = _scene
         this.scene.add.existing(this)
 
@@ -34,6 +34,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
     }
 
     update(time, delta){
+        //karten werden gleichmäßig abhängig von der Position in der Liste vertelit
         if (this.cards.indexOf(this) != -1){
             this.x = this.scene.WIDTH * ((this.cards.indexOf(this)+1) / (this.cards.length+1))
         }

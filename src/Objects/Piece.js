@@ -36,7 +36,6 @@ export default class player extends Phaser.GameObjects.Sprite {
         //existiert also verhindern wir das mit dem if statement
         if(this.spriteOffset == undefined) return
 
-
         var screenPos = this.scene.worldPosToScreenPos(x, y)
         this.x = screenPos.x + this.spriteOffset[0];
         this.y = screenPos.y + this.spriteOffset[1];
