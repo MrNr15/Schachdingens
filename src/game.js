@@ -16,7 +16,6 @@ export default class Game extends Phaser.Scene {
     canGoLayer;
     card;
     player;
-
     TILE_WIDTH = 32
     TILE_HEIGHT = 16;
     MAP_WIDTH = 10
@@ -30,8 +29,12 @@ export default class Game extends Phaser.Scene {
         const map = this.make.tilemap({key: 'map'})
         const tileSet = map.addTilesetImage('MainTileSet', 'tile')
         this.layer = map.createLayer('Layer1', tileSet, 0, 0)
+
+        //ein eigener Layer für die MovementPrewiev
         const tileSet2 = map.addTilesetImage('canGo', 'canGoImage')
         this.canGoLayer = map.createLayer('CanGo', tileSet2, 0, 0)
+        //die sind standartmäßig alle sichtbar also erstmal alle unsichtbar machen
+        this.resetMovePossiblilitys()
 
         
         //Map wird auf dem Bildschirm gecentered (Diesmal funktionierts auch)
@@ -41,7 +44,8 @@ export default class Game extends Phaser.Scene {
         this.player = new piece(this, 5, 4)
         
         this.card = new card(this)
-        
+
+        //damit die Movement Möglichkeiten gezeigt werden
         this.playerMoved()
     }
 
@@ -63,15 +67,17 @@ export default class Game extends Phaser.Scene {
     //Nimmt eine Position in der Welt und gibt die Koordinaten des Tiles darunter
     screenToWorldPos(x, y){
         const pos = this.layer.worldToTileXY(x, y);
+
+        //Muss abgerundet werden
         pos.x = Math.floor(pos.x)
         pos.y = Math.floor(pos.y)
-        console.log(pos)
         return pos
 
     }
 
     canIMoveThere(pos){
-        return this.canGoLayer.getTileAt(pos.x, pos.y).visible
+        const tile = this.canGoLayer.getTileAt(pos.x, pos.y)
+        return tile != undefined && tile.visible
     }
 
     playerMoved(){

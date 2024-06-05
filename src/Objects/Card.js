@@ -22,7 +22,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
     }
 
     //Macht auf dem Layer alle Tiles sichtbar, welche die karte erlaubt
-    //layer := canGoLayer
+    //Man kann sich nur dahin bewegen wenn die preview auch sichtbar ist
     showMoves(layer, canGolayer, player){
         var playerPos = player.getWorldPos()
         for(var x = 0; x < 5; x++){
