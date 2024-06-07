@@ -1,5 +1,6 @@
-import piece from './Objects/Piece.js'
+import player from './Objects/Player.js'
 import card from './Objects/Card.js'
+import enemy from './Objects/Enemy.js'
 
 export default class Game extends Phaser.Scene {
     
@@ -12,18 +13,27 @@ export default class Game extends Phaser.Scene {
         this.load.tilemapTiledJSON('map', 'TileMapExports/map.json')
     }
 
+    
     //globale variablen
     layer;
     canGoLayer;
     cards = [];
     currentCard = null;
+    moves = 4
+    MAX_MOVES = 4
+    movesLeft;
     player;
+    enemys = [];
     TILE_WIDTH = 32
     TILE_HEIGHT = 16;
     MAP_WIDTH = 10
     MAP_HEIGTH = 10
     WIDTH = 600
     HEIGHT = 400
+
+    //zeigt welche figur sich dort befindet
+    //null für keine figur
+    gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
 
     //Konstruktor
     create (){
@@ -46,14 +56,44 @@ export default class Game extends Phaser.Scene {
         this.canGoLayer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2;
         
         //Player wird erstellt
-        this.player = new piece(this, 5, 4)
+        this.player = new player(this, 5, 4)
+
+        //enemy wird erstellt
+        this.enemys.push(new enemy(this, 3,3))
+        this.enemys.push(new enemy(this, 5,5))
         
+        //karten werden erstllt
         this.cards.push(new card(this, this.cards))
         this.cards.push(new card(this, this.cards))
         this.cards.push(new card(this, this.cards))
+
+        //moves left text
+        this.movesLeft = this.add.text(100,50, "4/4", {fill: '#0f0'})
+
+        //buttons
+        const drawCard = this.add.text(100, 100, 'Drawcard', { fill: '#0f0' });
+        drawCard.setInteractive();
+        drawCard.on('pointerdown', () => {
+            this.cards.push(new card(this, this.cards))
+        });
+
+        const endTurn = this.add.text(100, 150, 'End Turn', { fill: '#0f0' });
+        endTurn.setInteractive();
+        endTurn.on('pointerdown', () => {
+            this.endTurnPressed()
+        });
+    }
+
+    endTurnPressed(){
+        for(var i = 0; i < this.enemys.length; i++){
+            this.enemys[i].move()
+        }
+        this.moves = this.MAX_MOVES
     }
 
     update(time, delta){
+        this.movesLeft.setText(this.moves+"/"+this.MAX_MOVES);
+
         for(var i = 0; i < this.cards.length; i++){
             this.cards[i].update(time, delta);
         }
@@ -90,6 +130,15 @@ export default class Game extends Phaser.Scene {
 
     //wird vom player aufgerufen
     playerMoved(){
+        //reduce remaining moves
+        this.moves -= this.currentCard.cost
+
+        //remove card from game
+        const index = this.cards.indexOf(this.currentCard);
+        if (index > -1) { // only splice array when item is found
+            this.cards.splice(index, 1); // 2nd parameter means remove one item only
+        }
+        this.currentCard.destroy()
         this.currentCard = null;
         this.updateMovement();
     }
@@ -103,7 +152,9 @@ export default class Game extends Phaser.Scene {
 
     //wird von den karten selbst aufgerufen
     setCurrentCard(newCard){
-        this.currentCard = newCard;
-        this.updateMovement();
+        if(newCard.cost <= this.moves){
+            this.currentCard = newCard;
+            this.updateMovement();
+        }
     }
 }

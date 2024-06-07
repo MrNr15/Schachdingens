@@ -7,6 +7,8 @@ export default class Card extends Phaser.GameObjects.Sprite {
 
     spriteOffset = [50, 75];
 
+    cost = 1;
+
     //Zeigt bewegmuster
     //Man kann sich zu jeder 1 hinbewegen
     //Spieler steht un der Mitte (movement[2][2])
@@ -51,6 +53,9 @@ export default class Card extends Phaser.GameObjects.Sprite {
 
                 //If there is no Tile we cant move there
                 if(layer.getTileAt(checkingPos[0], checkingPos[1]) == null) continue;
+
+                //if there is already someone we cant go there
+                if(this.scene.gameField[checkingPos[1]][[checkingPos[0]]] != null) continue;
 
                 canGolayer.getTileAt(checkingPos[0], checkingPos[1]).visible = true
             }

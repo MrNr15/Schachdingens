@@ -1,4 +1,4 @@
-export default class player extends Phaser.GameObjects.Sprite {
+export default class Player extends Phaser.GameObjects.Sprite {
 
     scene;
 
@@ -10,6 +10,7 @@ export default class player extends Phaser.GameObjects.Sprite {
         this.setTexture('piece')
         this.scene.add.existing(this)
         this.setPosition(pos_x, pos_y)
+        this.scene.gameField[pos_y][pos_x] = this;
         this.scene.input.on('pointerdown', () => this.click());
     }
 
@@ -25,7 +26,10 @@ export default class player extends Phaser.GameObjects.Sprite {
 
         //Bewegung
         if(this.scene.canIMoveThere(pos)){
+            var worldPos = this.getWorldPos()
+            this.scene.gameField[worldPos.y][worldPos.x] = null //alte position auf karte wird gelöscht
             this.setPosition(pos.x, pos.y)
+            this.scene.gameField[pos.y][pos.x] = this; // neue position wird auf karte eingetragen
             this.scene.playerMoved()
         }
     }
