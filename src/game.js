@@ -10,6 +10,7 @@ export default class Game extends Phaser.Scene {
         this.load.image('piece', 'Assets/Piece.png')
         this.load.image('card', 'Assets/card.png')
         this.load.image('canGoImage', 'Assets/CanGo.png')
+        this.load.image('square', 'Assets/Card_Movement.png')
         this.load.tilemapTiledJSON('map', 'TileMapExports/map.json')
     }
 
@@ -63,20 +64,21 @@ export default class Game extends Phaser.Scene {
         this.enemys.push(new enemy(this, 5,5))
         
         //karten werden erstllt
-        this.cards.push(new card(this, this.cards))
-        this.cards.push(new card(this, this.cards))
-        this.cards.push(new card(this, this.cards))
+        this.cards.push(new card(this, this.cards, 0))
+        this.cards.push(new card(this, this.cards, 0))
+        this.cards.push(new card(this, this.cards, 0))
 
         //moves left text
         this.movesLeft = this.add.text(100,50, "4/4", {fill: '#0f0'})
 
-        //buttons
+        //drawCard button
         const drawCard = this.add.text(100, 100, 'Drawcard', { fill: '#0f0' });
         drawCard.setInteractive();
         drawCard.on('pointerdown', () => {
-            this.cards.push(new card(this, this.cards))
+            this.cards.push(new card(this, this.cards, 0))
         });
 
+        //endTurn button
         const endTurn = this.add.text(100, 150, 'End Turn', { fill: '#0f0' });
         endTurn.setInteractive();
         endTurn.on('pointerdown', () => {
@@ -84,6 +86,7 @@ export default class Game extends Phaser.Scene {
         });
     }
 
+    //lässt alle gegner bewegen und füllt die moves wieder auf
     endTurnPressed(){
         for(var i = 0; i < this.enemys.length; i++){
             this.enemys[i].move()
@@ -92,8 +95,10 @@ export default class Game extends Phaser.Scene {
     }
 
     update(time, delta){
+        //text wird geupdated
         this.movesLeft.setText(this.moves+"/"+this.MAX_MOVES);
 
+        //karten werden geupdated
         for(var i = 0; i < this.cards.length; i++){
             this.cards[i].update(time, delta);
         }
@@ -123,7 +128,13 @@ export default class Game extends Phaser.Scene {
         return pos
     }
 
+
+    //wird vom spieler aufgerufen
+    //guckt nur nach ob eine movepreview an dem Feld ist
+    //wenn da keine ist kann er da auch nicht hin
     canIMoveThere(pos){
+        if(this.currentCard == null) return false;
+        if(this.currentCard.type != 0) return false;//TODO attacks
         const tile = this.canGoLayer.getTileAt(pos.x, pos.y)
         return tile != undefined && tile.visible
     }
@@ -138,7 +149,7 @@ export default class Game extends Phaser.Scene {
         if (index > -1) { // only splice array when item is found
             this.cards.splice(index, 1); // 2nd parameter means remove one item only
         }
-        this.currentCard.destroy()
+        this.currentCard.delete()
         this.currentCard = null;
         this.updateMovement();
     }

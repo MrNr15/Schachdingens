@@ -24,6 +24,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
         var y = this.scene.game.input.mousePointer.worldY+this.scene.TILE_HEIGHT//Gott weiß warum man hier was draufrechnen muss
         var pos = this.scene.screenToWorldPos(x, y);
 
+        console.log(pos)
+
         //Bewegung
         if(this.scene.canIMoveThere(pos)){
             var worldPos = this.getWorldPos()

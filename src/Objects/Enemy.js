@@ -1,9 +1,7 @@
 export default class Enemy extends Phaser.GameObjects.Sprite {
 
     scene;
-
     spriteOffset = [16, 8];
-
     movement = [
         [0,0,0,0,0],
         [0,1,1,1,0],
@@ -21,6 +19,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.scene.gameField[pos_y][pos_x] = this;
     }
 
+    //wird nach einem spielerzug gerufen
+    //berechnet den abstand zum spieler für jeden möglichen zug und geht dann dahin wo er am nächsten kommt
     move(){
         var playerPos = this.scene.player.getWorldPos()
         var worldPos = this.getWorldPos()
