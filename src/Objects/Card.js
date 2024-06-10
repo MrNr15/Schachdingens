@@ -31,6 +31,8 @@ export default class Card extends Phaser.GameObjects.Sprite {
     constructor(_scene, cards, type){
         super(_scene)
 
+        this.generateMoves()
+
         
         this.type = type
         this.scene = _scene
