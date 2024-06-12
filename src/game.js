@@ -13,6 +13,9 @@ export default class Game extends Phaser.Scene {
         this.load.image('canGoImage', 'Assets/CanGo.png')
         this.load.image('square', 'Assets/Card_Movement.png')
         this.load.tilemapTiledJSON('map', 'TileMapExports/map.json')
+        this.load.audio('backgroundmusic', 'Assets/background.mp3')
+        this.load.audio('drawCard', 'Assets/drawCard.mp3')
+        this.load.audio('move', 'Assets/Bewegung.mp3')
     }
 
     
@@ -79,15 +82,43 @@ export default class Game extends Phaser.Scene {
         const drawCard = this.add.text(100, 100, 'Drawcard', { fill: '#0f0' });
         drawCard.setInteractive();
         drawCard.on('pointerdown', () => {
-            this.cards.push(new card(this, this.cards, 0))
+            this.cardSound()
+            setTimeout(() => {
+                this.cards.push(new card(this, this.cards, 0));
+            }, 500); //ruft die Methode die eine neue Karte erzeugt später auf damit der Sound besser passt
         });
 
         //endTurn button
         const endTurn = this.add.text(100, 150, 'End Turn', { fill: '#0f0' });
         endTurn.setInteractive();
         endTurn.on('pointerdown', () => {
+            this.movingSound()
             this.endTurnPressed()
         });
+
+        //Backgroundmusik wird aufgerufen
+        this.backgroundmusic()
+    }
+
+    //lässt in Dauerschleife Backgroundmusik laufen
+    backgroundmusic(){
+        var music = this.sound.add('backgroundmusic')
+        music.setVolume(0.15)
+        music.play({loop: true})
+    }    
+
+    //Sound vom Kartenziehen
+    cardSound(){
+        var drawCards = this.sound.add('drawCard')
+        drawCards.setVolume(0.25)
+        drawCards.play()
+    }
+
+    //Sound beim Bewegen einer Figur
+    movingSound(){
+        var moving = this.sound.add('move')
+        moving.setVolume(0.4)
+        moving.play()
     }
 
     //lässt alle gegner bewegen und füllt die moves wieder auf
@@ -146,6 +177,7 @@ export default class Game extends Phaser.Scene {
     playerMoved(){
         //reduce remaining moves
         this.moves -= this.currentCard.cost
+        this.movingSound()
 
         //remove card from game
         const index = this.cards.indexOf(this.currentCard);
