@@ -2,7 +2,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     scene;
 
-    spriteOffset = [16, 8];
+    spriteOffset = [32, 16];
 
     constructor(_scene, pos_x, pos_y){
         super(_scene)

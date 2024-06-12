@@ -6,12 +6,14 @@ export default class Game extends Phaser.Scene {
     
     //Hier werden Dateien geladen
     preload (){
+        this.load.image('map', 'Assets/Level1.png')
         this.load.image('tile', 'Assets/tile.png')
         this.load.image('piece', 'Assets/Piece.png')
         this.load.image('card', 'Assets/card.png')
         this.load.image('attackCard', 'Assets/attackCard.png')
         this.load.image('canGoImage', 'Assets/CanGo.png')
         this.load.image('square', 'Assets/Card_Movement.png')
+        this.load.image('enemy1', 'Assets/Figur1.1.png')
         this.load.tilemapTiledJSON('map', 'TileMapExports/map.json')
         this.load.audio('backgroundmusic', 'Assets/background.mp3')
         this.load.audio('drawCard', 'Assets/drawCard.mp3')
@@ -29,12 +31,12 @@ export default class Game extends Phaser.Scene {
     movesLeft;
     player;
     enemys = [];
-    TILE_WIDTH = 32
-    TILE_HEIGHT = 16;
+    TILE_WIDTH = 64;
+    TILE_HEIGHT = 32;
     MAP_WIDTH = 10
     MAP_HEIGTH = 10
-    WIDTH = 600
-    HEIGHT = 400
+    WIDTH = 1056
+    HEIGHT = 596
 
     //zeigt welche figur sich dort befindet
     //null für keine figur
@@ -42,16 +44,28 @@ export default class Game extends Phaser.Scene {
 
     //Konstruktor
     create (){
+
+        //WORK IN PROGRESS
+        var level = this.add.image(0, 0, 'map')
+        level.scaleX = 1 / 530 * 64
+        level.x = this.WIDTH/2 - 0.5;
+        level.scaleY = 1 / 305 * 32
+        level.y = this.HEIGHT/2 + 13;
+
         //TileMap wird aus Datei erstellt
         const map = this.make.tilemap({key: 'map'})
         const tileSet = map.addTilesetImage('MainTileSet', 'tile')
         this.layer = map.createLayer('Layer1', tileSet, 0, 0)
+        this.layer.scaleX = 2
+        this.layer.scaleY = 2
+        this.layer.visible = false
 
         //ein eigener Layer für die MovementPrewiev
         const tileSet2 = map.addTilesetImage('canGo', 'canGoImage')
         this.canGoLayer = map.createLayer('CanGo', tileSet2, 0, 0)
-        console.log(this.canGoLayer)
         this.canGoLayer.setDepth(1)//über den spielern
+        this.canGoLayer.scaleX = 2
+        this.canGoLayer.scaleY = 2
 
         //die sind standartmäßig alle sichtbar also erstmal alle unsichtbar machen
         this.resetMovePossiblilitys()

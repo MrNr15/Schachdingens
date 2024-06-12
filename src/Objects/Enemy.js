@@ -1,7 +1,7 @@
 export default class Enemy extends Phaser.GameObjects.Sprite {
 
     scene;
-    spriteOffset = [16, 8];
+    spriteOffset = [32, 16];
     movement = [
         [0,0,0,0,0],
         [0,1,1,1,0],
@@ -15,10 +15,12 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     constructor(_scene, pos_x, pos_y){
         super(_scene)
         this.scene = _scene
-        this.setTexture('piece')
+        this.setTexture('enemy1')
         this.scene.add.existing(this)
         this.setPosition(pos_x, pos_y)
         this.scene.gameField[pos_y][pos_x] = this;
+        this.scaleX = 1/3000 * 64
+        this.scaleY = 1/3000 * 64
     }
 
     //wird nach einem spielerzug gerufen
@@ -34,7 +36,6 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
                 if(this.movement[y][x] == 0) continue;
                 var checkingPos = [worldPos.x + x-2, worldPos.y + y-2]
 
-                console.log(checkingPos)
                 //If there is no Tile we cant move there
                 if(this.scene.layer.getTileAt(checkingPos[0], checkingPos[1]) == null) continue;
                 //If there is already a piece there we cant move there
@@ -76,6 +77,10 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         if(this.lives <= 0){
             var pos = this.getWorldPos()
             this.scene.gameField[pos.y][pos.x] = null
+            const index = this.scene.enemys.indexOf(this);
+            if (index > -1) { // only splice array when item is found
+                this.scene.enemys.splice(index, 1); // 2nd parameter means remove one item only
+            }
             this.destroy()
         }
     }

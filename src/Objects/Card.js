@@ -101,8 +101,6 @@ export default class Card extends Phaser.GameObjects.Sprite {
                 //if there is no enemy we cant atack there
                 if(isOccupied == false && this.type == 1) continue;
 
-                console.log("ye")
-
                 canGolayer.getTileAt(checkingPos[0], checkingPos[1]).visible = true
             }
         }
