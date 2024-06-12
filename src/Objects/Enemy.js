@@ -10,6 +10,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         [0,0,0,0,0],
     ]
 
+    lives = 1;
+
     constructor(_scene, pos_x, pos_y){
         super(_scene)
         this.scene = _scene
@@ -67,5 +69,14 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.x = screenPos.x + this.spriteOffset[0];
         this.y = screenPos.y + this.spriteOffset[1];
 
+    }
+
+    damage(amount){
+        this.lives -= amount
+        if(this.lives <= 0){
+            var pos = this.getWorldPos()
+            this.scene.gameField[pos.y][pos.x] = null
+            this.destroy()
+        }
     }
 }

@@ -9,6 +9,7 @@ export default class Game extends Phaser.Scene {
         this.load.image('tile', 'Assets/tile.png')
         this.load.image('piece', 'Assets/Piece.png')
         this.load.image('card', 'Assets/card.png')
+        this.load.image('attackCard', 'Assets/attackCard.png')
         this.load.image('canGoImage', 'Assets/CanGo.png')
         this.load.image('square', 'Assets/Card_Movement.png')
         this.load.tilemapTiledJSON('map', 'TileMapExports/map.json')
@@ -46,6 +47,9 @@ export default class Game extends Phaser.Scene {
         //ein eigener Layer für die MovementPrewiev
         const tileSet2 = map.addTilesetImage('canGo', 'canGoImage')
         this.canGoLayer = map.createLayer('CanGo', tileSet2, 0, 0)
+        console.log(this.canGoLayer)
+        this.canGoLayer.setDepth(1)//über den spielern
+
         //die sind standartmäßig alle sichtbar also erstmal alle unsichtbar machen
         this.resetMovePossiblilitys()
 
@@ -64,8 +68,8 @@ export default class Game extends Phaser.Scene {
         this.enemys.push(new enemy(this, 5,5))
         
         //karten werden erstllt
-        this.cards.push(new card(this, this.cards, 0))
-        this.cards.push(new card(this, this.cards, 0))
+        this.cards.push(new card(this, this.cards, 1))
+        this.cards.push(new card(this, this.cards, 1))
         this.cards.push(new card(this, this.cards, 0))
 
         //moves left text
@@ -134,7 +138,6 @@ export default class Game extends Phaser.Scene {
     //wenn da keine ist kann er da auch nicht hin
     canIMoveThere(pos){
         if(this.currentCard == null) return false;
-        if(this.currentCard.type != 0) return false;//TODO attacks
         const tile = this.canGoLayer.getTileAt(pos.x, pos.y)
         return tile != undefined && tile.visible
     }

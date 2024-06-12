@@ -24,7 +24,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
         [0,1,0,1,0],
         [1,0,0,0,1],
     ]*/
-   movement = []//wird aktuell zufällig automatisch generiert
+    movement = []//wird aktuell zufällig automatisch generiert
 
     movementSprite;
 
@@ -37,7 +37,10 @@ export default class Card extends Phaser.GameObjects.Sprite {
         this.type = type
         this.scene = _scene
         this.cards = cards;
-        this.setTexture('card')
+        if (type==0)
+            this.setTexture('card')
+        if(type==1)
+            this.setTexture('attackCard')
         this.y = this.scene.HEIGHT - this.spriteOffset[1]//Unterer Bildschirmrand
         this.scene = _scene
         this.scene.add.existing(this)
@@ -55,10 +58,16 @@ export default class Card extends Phaser.GameObjects.Sprite {
         for(var y = 0; y < 5; y++){
             this.movement.push([])
             for(var x = 0; x < 5; x++){
+                
+                if(x == 2 && y == 2){ //Hier kann man nicht hin weil der spieler da steht
+                    this.movement[y].push(0)
+                    continue;
+                } 
+                
                 if(Math.random() < 0.5)
-                this.movement[y].push(1)
+                    this.movement[y].push(1)
                 else
-                this.movement[y].push(0)
+                    this.movement[y].push(0)
             }
         }
     }
@@ -83,12 +92,16 @@ export default class Card extends Phaser.GameObjects.Sprite {
                 //If there is no Tile we cant move there
                 if(layer.getTileAt(checkingPos[0], checkingPos[1]) == null) continue;
 
-                //if there is already someone we cant go there
                 var isOccupied = this.scene.gameField[checkingPos[1]][[checkingPos[0]]] != null
+                
+                //if there is already someone we cant go there
                 if(isOccupied && this.type == 0) continue;
 
+                
                 //if there is no enemy we cant atack there
                 if(isOccupied == false && this.type == 1) continue;
+
+                console.log("ye")
 
                 canGolayer.getTileAt(checkingPos[0], checkingPos[1]).visible = true
             }

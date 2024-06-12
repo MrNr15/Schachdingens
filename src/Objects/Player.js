@@ -24,16 +24,22 @@ export default class Player extends Phaser.GameObjects.Sprite {
         var y = this.scene.game.input.mousePointer.worldY+this.scene.TILE_HEIGHT//Gott weiß warum man hier was draufrechnen muss
         var pos = this.scene.screenToWorldPos(x, y);
 
-        console.log(pos)
-
-        //Bewegung
+        //Bewegung/Angriff
         if(this.scene.canIMoveThere(pos)){
-            var worldPos = this.getWorldPos()
-            this.scene.gameField[worldPos.y][worldPos.x] = null //alte position auf karte wird gelöscht
-            this.setPosition(pos.x, pos.y)
-            this.scene.gameField[pos.y][pos.x] = this; // neue position wird auf karte eingetragen
+            if(this.scene.currentCard.type == 0) //bewegungskarte ausgewählt
+                this.move(pos)
+            if(this.scene.currentCard.type == 1) //angriffskarte ausgewählt
+                this.scene.gameField[pos.y][pos.x].damage(1)
+            
             this.scene.playerMoved()
         }
+    }
+
+    move(pos){
+        var worldPos = this.getWorldPos()
+        this.scene.gameField[worldPos.y][worldPos.x] = null //alte position auf karte wird gelöscht
+        this.setPosition(pos.x, pos.y)
+        this.scene.gameField[pos.y][pos.x] = this; // neue position wird auf karte eingetragen
     }
 
 
