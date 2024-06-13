@@ -9,7 +9,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.scene = _scene
         this.setTexture('piece')
         this.scene.add.existing(this)
-        this.setPosition(pos_x, pos_y)
+        this.setPosition(pos_x, pos_y, false)
         this.scene.gameField[pos_y][pos_x] = this;
         this.scene.input.on('pointerdown', () => this.click());
     }
@@ -36,21 +36,42 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     move(pos){
+        this.movingSound()
         var worldPos = this.getWorldPos()
         this.scene.gameField[worldPos.y][worldPos.x] = null //alte position auf karte wird gelöscht
-        this.setPosition(pos.x, pos.y)
+        this.setPosition(pos.x, pos.y, true)
         this.scene.gameField[pos.y][pos.x] = this; // neue position wird auf karte eingetragen
     }
 
+    //Sound beim Bewegen einer Figur
+    movingSound(){
+        var moving = this.scene.sound.add('move')
+        moving.setVolume(0.4)
+        moving.play()
+    }
 
-    setPosition(x, y){
+    setPosition(x, y, interpolate){
         //Javascript hält sich für witzig und ruft diese funktion automatisch auf bevor "spriteOffset"
         //existiert also verhindern wir das mit dem if statement
         if(this.spriteOffset == undefined) return
 
         var screenPos = this.scene.worldPosToScreenPos(x, y)
-        this.x = screenPos.x + this.spriteOffset[0];
-        this.y = screenPos.y + this.spriteOffset[1];
+        var newX = screenPos.x + this.spriteOffset[0];
+        var newY = screenPos.y + this.spriteOffset[1];
+
+        if(interpolate == false){
+            this.x = newX
+            this.y = newY
+            return
+        }
+
+        this.scene.tweens.add({
+            targets: this,
+            x: newX,
+            y: newY,
+            duration: 500,
+            ease: 'Power3' // Easing function
+        });
 
     }
 }

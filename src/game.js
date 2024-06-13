@@ -96,22 +96,32 @@ export default class Game extends Phaser.Scene {
         const drawCard = this.add.text(100, 100, 'Drawcard', { fill: '#0f0' });
         drawCard.setInteractive();
         drawCard.on('pointerdown', () => {
-            this.cardSound()
-            setTimeout(() => {
-                this.cards.push(new card(this, this.cards, 0));
-            }, 500); //ruft die Methode die eine neue Karte erzeugt später auf damit der Sound besser passt
+            this.drawCards(2)
         });
 
         //endTurn button
+        //TODO disable turn button while turn is being processed
         const endTurn = this.add.text(100, 150, 'End Turn', { fill: '#0f0' });
         endTurn.setInteractive();
         endTurn.on('pointerdown', () => {
-            this.movingSound()
             this.endTurnPressed()
         });
 
         //Backgroundmusik wird aufgerufen
         this.backgroundmusic()
+    }
+
+    drawCards(amount){
+        if(amount <= 0) return
+
+        this.cardSound()
+        setTimeout(() => {
+            this.cards.push(new card(this, this.cards, 0));
+        }, 500); //ruft die Methode die eine neue Karte erzeugt später auf damit der Sound besser passt
+
+        setTimeout(() => {
+            this.drawCards(amount-1)
+        }, 100);
     }
 
     //lässt in Dauerschleife Backgroundmusik laufen
@@ -128,18 +138,14 @@ export default class Game extends Phaser.Scene {
         drawCards.play()
     }
 
-    //Sound beim Bewegen einer Figur
-    movingSound(){
-        var moving = this.sound.add('move')
-        moving.setVolume(0.4)
-        moving.play()
-    }
-
     //lässt alle gegner bewegen und füllt die moves wieder auf
     endTurnPressed(){
-        for(var i = 0; i < this.enemys.length; i++){
-            this.enemys[i].move()
-        }
+
+        //die gegner rufen sich gegenseitig auf, darum muss man nur den ersten aufrufen
+        //das machen wir so, damit die gegner aufeinander warten, bevor sie sic bewegen
+        if(this.enemys.length > 0)
+            this.enemys[0].move(0);
+
         this.moves = this.MAX_MOVES
     }
 
@@ -191,7 +197,6 @@ export default class Game extends Phaser.Scene {
     playerMoved(){
         //reduce remaining moves
         this.moves -= this.currentCard.cost
-        this.movingSound()
 
         //remove card from game
         const index = this.cards.indexOf(this.currentCard);

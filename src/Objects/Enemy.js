@@ -10,6 +10,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         [0,0,0,0,0],
     ]
 
+    moveTime=250; //milliseconds to finish move animation
+
     lives = 1;
 
     constructor(_scene, pos_x, pos_y){
@@ -17,7 +19,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.scene = _scene
         this.setTexture('enemy1')
         this.scene.add.existing(this)
-        this.setPosition(pos_x, pos_y)
+        this.setPosition(pos_x, pos_y, false)
         this.scene.gameField[pos_y][pos_x] = this;
         this.scaleX = 1/3000 * 64
         this.scaleY = 1/3000 * 64
@@ -25,7 +27,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
     //wird nach einem spielerzug gerufen
     //berechnet den abstand zum spieler für jeden möglichen zug und geht dann dahin wo er am nächsten kommt
-    move(){
+    //index ist der index vom enemy in scene.enemys
+    move(index){
         var playerPos = this.scene.player.getWorldPos()
         var worldPos = this.getWorldPos()
         var bestMove = [worldPos.x, worldPos.y]
@@ -50,26 +53,57 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
             }
         }
 
+        this.movingSound()
 
         //Bewegung
         this.scene.gameField[worldPos.y][worldPos.x] = null //alte position auf karte wird gelöscht
-        this.setPosition(bestMove[0], bestMove[1])
+        this.setPosition(bestMove[0], bestMove[1], true)
         this.scene.gameField[bestMove[1]][bestMove[0]] = this; // neue position wird auf karte eingetragen
+
+        //animation abwarten
+        var enemys = this.scene.enemys
+        setTimeout(function(){
+
+            //nächster enemy wird zum bewegen aufgerufen
+            if(enemys.length > index+1)
+                enemys[index+1].move(index+1);
+
+        }, this.moveTime);
+    }
+
+    //Sound beim Bewegen einer Figur
+    movingSound(){
+        var moving = this.scene.sound.add('move')
+        moving.setVolume(0.4)
+        moving.play()
     }
 
     getWorldPos(){
         return this.scene.screenToWorldPos(this.x, this.y+this.scene.TILE_HEIGHT)//Gott weiß warum man hier was draufrechnen muss
     }
 
-    setPosition(x, y){
+    setPosition(x, y, interpolate){
         //Javascript hält sich für witzig und ruft diese funktion automatisch auf bevor "spriteOffset"
         //existiert also verhindern wir das mit dem if statement
         if(this.spriteOffset == undefined) return
 
         var screenPos = this.scene.worldPosToScreenPos(x, y)
-        this.x = screenPos.x + this.spriteOffset[0];
-        this.y = screenPos.y + this.spriteOffset[1];
+        var newX = screenPos.x + this.spriteOffset[0];
+        var newY = screenPos.y + this.spriteOffset[1];
+        
+        if(interpolate == false){
+            this.x = newX
+            this.y = newY
+            return
+        }
 
+        this.scene.tweens.add({
+            targets: this,
+            x: newX,
+            y: newY,
+            duration: this.moveTime,
+            ease: "Power3" // Easing function
+        });
     }
 
     damage(amount){

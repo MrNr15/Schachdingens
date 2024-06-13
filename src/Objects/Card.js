@@ -1,5 +1,5 @@
 import cardMovement from './CardMovement.js'
-
+import movementGenerator from './MovementGenerator.js';
 //Erstmal nur abstrakt ohne Bild oder Position, um die logik zu machen
 export default class Card extends Phaser.GameObjects.Sprite {
 
@@ -31,7 +31,8 @@ export default class Card extends Phaser.GameObjects.Sprite {
     constructor(_scene, cards, type){
         super(_scene)
 
-        this.generateMoves()
+        var moveGenerator = new movementGenerator()
+        this.movement = moveGenerator.getMovement()
 
         
         this.type = type
