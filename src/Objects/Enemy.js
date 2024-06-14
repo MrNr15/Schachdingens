@@ -1,7 +1,7 @@
 export default class Enemy extends Phaser.GameObjects.Sprite {
 
     scene;
-    spriteOffset = [32, 16];
+    spriteOffset = [32, 37/2 - 8];
     movement = [
         [0,0,0,0,0],
         [0,1,1,1,0],
@@ -19,6 +19,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     constructor(_scene, pos_x, pos_y){
         super(_scene)
         this.scene = _scene
+        console.log(this.scene)
         this.setTexture('enemy1')
         this.scene.add.existing(this)
         this.setPosition(pos_x, pos_y, false)
@@ -83,7 +84,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
                 var checkingPos = [worldPos.x + x-2, worldPos.y + y-2]
 
                 //If there is no Tile we cant move there
-                if(this.scene.layer.getTileAt(checkingPos[0], checkingPos[1]) == null) continue;
+                if(this.scene.canGoLayer.getTileAt(checkingPos[0], checkingPos[1]) == null) continue;
                 //If there is already a piece there we cant move there
                 if(this.scene.gameField[checkingPos[1]][checkingPos[0]] != null) continue;
 
@@ -97,6 +98,12 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         }
 
         this.movingSound()
+
+        //flip sprite to point towards movment
+        if(this.scene.worldPosToScreenPos(bestMove[0], bestMove[1]).x < this.x-this.spriteOffset[0])
+            this.flipX = true
+        if(this.scene.worldPosToScreenPos(bestMove[0], bestMove[1]).x > this.x-this.spriteOffset[1])
+            this.flipX = false
 
         //Bewegung
         this.scene.gameField[worldPos.y][worldPos.x] = null //alte position auf karte wird gelöscht

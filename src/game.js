@@ -11,7 +11,7 @@ export default class Game extends Phaser.Scene {
         this.load.image('piece', 'Assets/Piece.png')
         this.load.image('card', 'Assets/card.png')
         this.load.image('attackCard', 'Assets/attackCard.png')
-        this.load.image('canGoImage', 'Assets/CanGo.png')
+        this.load.image('canGoImage', 'Assets/CanGo2.png')
         this.load.image('square', 'Assets/Card_Movement.png')
         this.load.image('enemy1', 'Assets/Figur1.1.png')
         this.load.tilemapTiledJSON('map', 'TileMapExports/map.json')
@@ -26,10 +26,14 @@ export default class Game extends Phaser.Scene {
         enemys: [[3,3], [5,5]]
     }
 
+    level2 = {
+        player: [5, 4],
+        enemys: [[1,1], [8,8], [1,9]]
+    }
+
     level = 1//aktuelles level
     
     //globale variablen
-    layer;
     canGoLayer;
     cards = [];
     currentCard = null;
@@ -39,7 +43,7 @@ export default class Game extends Phaser.Scene {
     player;
     enemys = [];
     TILE_WIDTH = 64;
-    TILE_HEIGHT = 32;
+    TILE_HEIGHT = 37;
     MAP_WIDTH = 10
     MAP_HEIGTH = 10
     WIDTH = 1056
@@ -52,39 +56,40 @@ export default class Game extends Phaser.Scene {
     //Konstruktor
     create (){
 
-        var levelConfig = this.level1//temp TODO
+        var levelConfig;
+        if(this.level == 1){
+            levelConfig = this.level1
+
+            //Backgroundmusik wird aufgerufen
+            //bleibt beim neu laden bestehen also muss die nur beim ersten level gestartet werden
+            this.backgroundmusic()
+        }
+        if(this.level == 2)
+            levelConfig = this.level2
+
 
         //WORK IN PROGRESS
         var level = this.add.image(0, 0, 'map')
         level.scaleX = 1 / 530 * 64
-        level.x = this.WIDTH/2 - 0.5;
-        level.scaleY = 1 / 305 * 32
-        level.y = this.HEIGHT/2 + 13;
+        level.x = this.WIDTH/2 - 1;
+        level.scaleY = 1 / 530 * 64
+        level.y = this.HEIGHT/2;
 
         //TileMap wird aus Datei erstellt
         const map = this.make.tilemap({key: 'map'})
-        const tileSet = map.addTilesetImage('MainTileSet', 'tile')
-        this.layer = map.createLayer('Layer1', tileSet, 0, 0)
-        this.layer.scaleX = 2
-        this.layer.scaleY = 2
-        this.layer.visible = false
 
         //ein eigener Layer für die MovementPrewiev
-        const tileSet2 = map.addTilesetImage('canGo', 'canGoImage')
+        const tileSet2 = map.addTilesetImage('CanGo', 'canGoImage')
         this.canGoLayer = map.createLayer('CanGo', tileSet2, 0, 0)
         this.canGoLayer.setDepth(1)//über den spielern
-        this.canGoLayer.scaleX = 2
-        this.canGoLayer.scaleY = 2
 
         //die sind standartmäßig alle sichtbar also erstmal alle unsichtbar machen
         this.resetMovePossiblilitys()
 
         
         //Map wird auf dem Bildschirm gecentered
-        this.layer.x = -this.TILE_WIDTH/2 + this.WIDTH/2;
         this.canGoLayer.x = -this.TILE_WIDTH/2 + this.WIDTH/2;
-        this.layer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2;
-        this.canGoLayer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2;
+        this.canGoLayer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2 - 16;
         
         //Player wird erstellt
         this.player = new player(this, levelConfig.player[0], levelConfig.player[1])
@@ -113,8 +118,18 @@ export default class Game extends Phaser.Scene {
             this.endTurnPressed()
         });
 
-        //Backgroundmusik wird aufgerufen
-        this.backgroundmusic()
+        const nextLevel = this.add.text(100, 200, 'Next Level', { fill: '#0f0' });
+        nextLevel.setInteractive();
+        nextLevel.on('pointerdown', () => {
+            this.level += 1;
+            this.enemys = []
+            this.cards = []
+            this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
+            this.currentCard = null;
+            this.moves = 4
+            this.scene.restart()
+        });
+
     }
 
     drawCards(amount){
@@ -180,12 +195,12 @@ export default class Game extends Phaser.Scene {
 
     //Nimmt eine Position auf dem Grid und gibt aus wo sich das Tile in der Welt befindet
     worldPosToScreenPos(x, y){
-        return this.layer.tileToWorldXY(x, y)
+        return this.canGoLayer.tileToWorldXY(x, y)
     }
 
     //Nimmt eine Position in der Welt und gibt die Koordinaten des Tiles darunter
     screenToWorldPos(x, y){
-        const pos = this.layer.worldToTileXY(x, y);
+        const pos = this.canGoLayer.worldToTileXY(x, y);
         //Muss abgerundet werden
         pos.x = Math.floor(pos.x)
         pos.y = Math.floor(pos.y)
@@ -221,7 +236,7 @@ export default class Game extends Phaser.Scene {
     updateMovement(){
         this.resetMovePossiblilitys()
         if(this.currentCard == null) return;
-        this.currentCard.showMoves(this.layer, this.canGoLayer, this.player)
+        this.currentCard.showMoves(this.canGoLayer, this.player)
     }
 
     //wird von den karten selbst aufgerufen
