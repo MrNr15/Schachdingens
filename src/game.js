@@ -20,6 +20,13 @@ export default class Game extends Phaser.Scene {
         this.load.audio('move', 'Assets/Bewegung.mp3')
     }
 
+    //speichert alle positionen für ein bestimmtes level
+    level1 = {
+        player: [5, 4],
+        enemys: [[3,3], [5,5]]
+    }
+
+    level = 1//aktuelles level
     
     //globale variablen
     layer;
@@ -44,6 +51,8 @@ export default class Game extends Phaser.Scene {
 
     //Konstruktor
     create (){
+
+        var levelConfig = this.level1//temp TODO
 
         //WORK IN PROGRESS
         var level = this.add.image(0, 0, 'map')
@@ -78,26 +87,23 @@ export default class Game extends Phaser.Scene {
         this.canGoLayer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2;
         
         //Player wird erstellt
-        this.player = new player(this, 5, 4)
+        this.player = new player(this, levelConfig.player[0], levelConfig.player[1])
 
         //enemy wird erstellt
-        this.enemys.push(new enemy(this, 3,3))
-        this.enemys.push(new enemy(this, 5,5))
+        for(var i = 0; i < levelConfig.enemys.length; i++){
+            this.enemys.push(new enemy(this, levelConfig.enemys[i][0],levelConfig.enemys[i][1]))
+        }
         
         //karten werden erstllt
         this.cards.push(new card(this, this.cards, 1))
-        this.cards.push(new card(this, this.cards, 1))
-        this.cards.push(new card(this, this.cards, 0))
+        this.cards.push(new card(this, this.cards, 3))
+        this.cards.push(new card(this, this.cards, 2))
+        this.cards.push(new card(this, this.cards, 2))
 
         //moves left text
         this.movesLeft = this.add.text(100,50, "4/4", {fill: '#0f0'})
-
-        //drawCard button
-        const drawCard = this.add.text(100, 100, 'Drawcard', { fill: '#0f0' });
-        drawCard.setInteractive();
-        drawCard.on('pointerdown', () => {
-            this.drawCards(2)
-        });
+        //lives text
+        this.lives = this.add.text(100,25, "Lives: 3", {fill: '#0f0'})
 
         //endTurn button
         //TODO disable turn button while turn is being processed
@@ -116,7 +122,7 @@ export default class Game extends Phaser.Scene {
 
         this.cardSound()
         setTimeout(() => {
-            this.cards.push(new card(this, this.cards, 0));
+            this.cards.push(new card(this, this.cards, parseInt(Math.random()*4)+1));
         }, 500); //ruft die Methode die eine neue Karte erzeugt später auf damit der Sound besser passt
 
         setTimeout(() => {
@@ -144,14 +150,17 @@ export default class Game extends Phaser.Scene {
         //die gegner rufen sich gegenseitig auf, darum muss man nur den ersten aufrufen
         //das machen wir so, damit die gegner aufeinander warten, bevor sie sic bewegen
         if(this.enemys.length > 0)
-            this.enemys[0].move(0);
+            this.enemys[0].move(0, this.enemys[0].attacks);
 
         this.moves = this.MAX_MOVES
+        this.drawCards(2)
     }
 
     update(time, delta){
         //text wird geupdated
         this.movesLeft.setText(this.moves+"/"+this.MAX_MOVES);
+        if(this.player != undefined)
+            this.lives.setText("Lives: "+this.player.lives)
 
         //karten werden geupdated
         for(var i = 0; i < this.cards.length; i++){

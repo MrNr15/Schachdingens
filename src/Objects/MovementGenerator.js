@@ -1,34 +1,96 @@
 //hier werden alle KartenBewegungen gespeichert
 //kann aufgerufen werden, um eine zufällige zurückzugeben
 export default class MovementGenerator {
-    movements = [[
-        [0,0,1,0,0],
-        [0,0,1,0,0],
-        [1,1,0,1,1],
-        [0,0,1,0,0],
-        [0,0,1,0,0]
-    ],[
-        [0,1,1,1,0],
-        [1,0,0,0,1],
-        [1,0,0,0,1],
-        [1,0,0,0,1],
-        [0,1,1,1,0]
-    ],[
-        [1,1,0,1,1],
-        [1,1,0,1,1],
-        [0,0,0,0,0],
-        [0,0,0,0,0],
-        [0,0,0,0,0]
-    ],[
-        [0,0,0,0,0],
-        [0,0,0,0,0],
-        [0,0,0,0,0],
-        [1,1,0,1,1],
-        [1,1,0,1,1]
-    ]]
+        cost1 = [[
+            [0,0,0,0,0],
+            [0,0,1,0,0],
+            [0,1,0,1,0],
+            [0,0,1,0,0],
+            [0,0,0,0,0]
+        ],[
+            [0,0,1,0,0],
+            [0,0,0,0,0],
+            [1,0,0,0,1],
+            [0,0,0,0,0],
+            [0,0,1,0,0]
+        ],[
+            [0,0,0,0,0],
+            [1,1,0,1,1],
+            [0,0,0,0,0],
+            [0,0,0,0,0],
+            [0,0,0,0,0]
+        ],[
+            [0,0,0,0,0],
+            [0,0,0,0,0],
+            [1,1,0,0,0],
+            [0,0,1,0,0],
+            [0,0,1,0,0]
+        ]]
+        cost2 = [[
+            [0,0,1,0,0],
+            [0,0,1,0,0],
+            [1,1,0,1,1],
+            [0,0,1,0,0],
+            [0,0,1,0,0]
+        ],[
+            [0,1,0,1,0],
+            [1,0,0,0,1],
+            [0,0,0,0,0],
+            [1,0,0,0,1],
+            [0,1,0,1,0]
+        ],[
+            [1,1,0,1,1],
+            [1,0,0,0,1],
+            [0,0,0,0,0],
+            [0,0,0,0,0],
+            [0,0,1,0,0]
+        ],[
+            [0,0,1,0,0],
+            [0,0,0,0,0],
+            [0,0,0,0,0],
+            [1,0,0,0,1],
+            [1,1,0,1,1]
+        ]]
+        cost3 = [[
+            [1,0,1,0,1],
+            [0,1,0,1,0],
+            [1,0,0,0,1],
+            [0,1,0,1,0],
+            [1,0,1,0,1]
+        ],[
+            [0,1,1,1,0],
+            [1,0,1,0,1],
+            [1,1,0,1,1],
+            [1,0,1,0,1],
+            [0,1,1,1,0]
+        ]]
+        cost4 = [[
+            [1,1,1,1,1],
+            [1,1,1,1,1],
+            [1,1,0,1,1],
+            [1,1,1,1,1],
+            [1,1,1,1,1]
+        ]]
 
-    getMovement(){
-        var index = parseInt(Math.random() * this.movements.length)
-        return this.movements[index]
+    getMovement(cost){
+        if(cost == 1){
+            var index = parseInt(Math.random() * this.cost1.length)
+            return this.cost1[index]
+        }
+        if(cost == 2){
+            var index = parseInt(Math.random() * this.cost2.length)
+            return this.cost2[index]
+        }
+        if(cost == 3){
+            var index = parseInt(Math.random() * this.cost3.length)
+            return this.cost3[index]
+        }
+        if(cost == 4){
+            var index = parseInt(Math.random() * this.cost4.length)
+            return this.cost4[index]
+        }
+        //Fallback
+        var index = parseInt(Math.random() * this.cost1.length)
+            return this.cost1[index]
     }
 }

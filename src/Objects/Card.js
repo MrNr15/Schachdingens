@@ -17,60 +17,35 @@ export default class Card extends Phaser.GameObjects.Sprite {
     //Zeigt bewegmuster
     //Man kann sich zu jeder 1 hinbewegen
     //Spieler steht un der Mitte (movement[2][2])
-    /*movement = [
-        [1,0,0,0,1],
-        [0,1,0,1,0],
-        [0,0,0,0,0],
-        [0,1,0,1,0],
-        [1,0,0,0,1],
-    ]*/
-    movement = []//wird aktuell zufällig automatisch generiert
+    movement = []//wird vom MovementGenerator erstellt
 
     movementSprite;
 
-    constructor(_scene, cards, type){
+    constructor(_scene, cards, cost){
         super(_scene)
 
         var moveGenerator = new movementGenerator()
-        this.movement = moveGenerator.getMovement()
+        this.cost = cost
+        this.movement = moveGenerator.getMovement(cost)
 
         
-        this.type = type
+        this.type = parseInt(Math.random()*2)
         this.scene = _scene
         this.cards = cards;
-        if (type==0)
+        if (this.type==0)
             this.setTexture('card')
-        if(type==1)
+        if(this.type==1)
             this.setTexture('attackCard')
         this.y = this.scene.HEIGHT - this.spriteOffset[1]//Unterer Bildschirmrand
-        this.scene = _scene
         this.scene.add.existing(this)
         
         this.setInteractive()
         this.on('pointerdown', function (pointer) {
             this.scene.setCurrentCard(this)
-            });
+        });
             
         this.movementSprite = new cardMovement(this.scene, this.movement)
-    }
-
-    //zufälliges movement pattern
-    generateMoves(){
-        for(var y = 0; y < 5; y++){
-            this.movement.push([])
-            for(var x = 0; x < 5; x++){
-                
-                if(x == 2 && y == 2){ //Hier kann man nicht hin weil der spieler da steht
-                    this.movement[y].push(0)
-                    continue;
-                } 
-                
-                if(Math.random() < 0.5)
-                    this.movement[y].push(1)
-                else
-                    this.movement[y].push(0)
-            }
-        }
+        this.text = this.scene.add.text(this.x,this.y,""+cost)
     }
 
     update(time, delta){
@@ -78,6 +53,8 @@ export default class Card extends Phaser.GameObjects.Sprite {
         if (this.cards.indexOf(this) != -1){
             this.x = this.scene.WIDTH * ((this.cards.indexOf(this)+1) / (this.cards.length+1))
             this.movementSprite.setPos(this.x - 4*5, this.y)
+            this.text.x = this.x
+            this.text.y = this.y - 50
             }
     }
 
@@ -108,6 +85,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
     }
     delete(){
         this.movementSprite.delete()
+        this.text.destroy()
         this.destroy()
     }
 }

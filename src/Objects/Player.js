@@ -4,6 +4,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     spriteOffset = [32, 16];
 
+    lives = 3;
+
     constructor(_scene, pos_x, pos_y){
         super(_scene)
         this.scene = _scene
@@ -73,5 +75,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
             ease: 'Power3' // Easing function
         });
 
+    }
+
+    damage(amount){
+        this.lives -= amount;
+        if (this.lives <= 0){
+            this.destroy();
+        }
     }
 }
