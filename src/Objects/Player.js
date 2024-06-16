@@ -51,6 +51,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
                 this.scene.gameField[pos.y][pos.x].damage(1)
             
             this.scene.playerMoved()
+            return
+        }
+
+        //wenn man auf das spielfeld klickt wird die karte abgewählt
+        if(this.scene.canGoLayer.getTileAt(pos.x, pos.y) != null){
+            this.scene.unselectCard()
         }
     }
 

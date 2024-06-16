@@ -1,6 +1,7 @@
 import player from './Objects/Player.js'
 import card from './Objects/Card.js'
 import enemy from './Objects/Enemy.js'
+import cloud from './Objects/Could.js'
 
 export default class Game extends Phaser.Scene {
     
@@ -15,6 +16,7 @@ export default class Game extends Phaser.Scene {
         this.load.image('square', 'Assets/Card_Movement.png')
         this.load.image('enemy1', 'Assets/Figur1.1.png')
         this.load.image('player', 'Assets/Spieler.png')
+        this.load.image('cloud', 'Assets/Cloud.png')
         this.load.tilemapTiledJSON('map', 'TileMapExports/map.json')
         this.load.audio('backgroundmusic', 'Assets/background.mp3')
         this.load.audio('drawCard', 'Assets/drawCard.mp3')
@@ -51,6 +53,8 @@ export default class Game extends Phaser.Scene {
     WIDTH = 1056
     HEIGHT = 596
 
+    clouds = []
+
     //zeigt welche figur sich dort befindet
     //null für keine figur
     gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
@@ -69,6 +73,11 @@ export default class Game extends Phaser.Scene {
         if(this.level == 2)
             levelConfig = this.level2
 
+
+        //background
+        for(var i = 0; i < 10; i++){
+            this.clouds.push(new cloud(this))
+        }
 
         //WORK IN PROGRESS
         var level = this.add.image(0, 0, 'map')
@@ -106,30 +115,35 @@ export default class Game extends Phaser.Scene {
         this.drawCards(4)
 
         //moves left text
-        this.movesLeft = this.add.text(100,50, "4/4", {fill: '#0f0'})
+        this.movesLeft = this.add.text(100,50, "4/4", {fill: '#000'})
         //lives text
-        this.lives = this.add.text(100,25, "Lives: 3", {fill: '#0f0'})
+        this.lives = this.add.text(100,25, "Lives: 3", {fill: '#000'})
 
         //endTurn button
         //TODO disable turn button while turn is being processed
-        const endTurn = this.add.text(100, 150, 'End Turn', { fill: '#0f0' });
+        const endTurn = this.add.text(100, 150, 'End Turn', { fill: '#000' });
         endTurn.setInteractive();
         endTurn.on('pointerdown', () => {
             this.endTurnPressed()
         });
 
-        const nextLevel = this.add.text(100, 200, 'Next Level', { fill: '#0f0' });
+        const nextLevel = this.add.text(100, 200, 'Next Level', { fill: '#000' });
         nextLevel.setInteractive();
         nextLevel.on('pointerdown', () => {
             this.level += 1;
             this.enemys = []
             this.cards = []
+            this.clouds = []
             this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
             this.currentCard = null;
             this.moves = 4
             this.scene.restart()
         });
+    }
 
+    unselectCard(){
+        this.resetMovePossiblilitys()
+        this.currentCard = null
     }
 
     drawCards(amount){
@@ -167,6 +181,7 @@ export default class Game extends Phaser.Scene {
         if(this.enemys.length > 0)
             this.enemys[0].move(0, this.enemys[0].attacks);
 
+        this.unselectCard()
         this.moves = this.MAX_MOVES
         this.drawCards(2)
     }
@@ -188,6 +203,10 @@ export default class Game extends Phaser.Scene {
         }
         
         this.player.update(time, delta)
+
+        for(var i = 0; i < this.clouds.length; i++){
+            this.clouds[i].update(time, delta)
+        }
     }
 
     //Macht alle unsichtbar
