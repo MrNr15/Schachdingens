@@ -2,18 +2,35 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     scene;
 
-    spriteOffset = [32, 37/2];
+    spriteOffset = [32, 18 - 10];
 
     lives = 3;
+
+
+    //hierdran wird festgestellt ob der player nach einem treffer unsichtbar oder sichtbar sein soll
+    blinkingTime;
+    blinkingEnabled = false;
 
     constructor(_scene, pos_x, pos_y){
         super(_scene)
         this.scene = _scene
-        this.setTexture('piece')
+        this.setTexture('player')
         this.scene.add.existing(this)
         this.setPosition(pos_x, pos_y, false)
         this.scene.gameField[pos_y][pos_x] = this;
         this.scene.input.on('pointerdown', () => this.click());
+        this.scaleX = 1/2500*64
+        this.scaleY = 1/2500*64
+    }
+
+    update(time, delta){
+        this.setDepth(this.y)
+        if(this.blinkingEnabled){
+            var time = Date.now() - this.blinkingTime;
+            this.visible = parseInt(time / 75) % 2 // change every 75 milliseconds
+        }else{
+            this.visible = true
+        }
     }
 
     getWorldPos(){
@@ -82,5 +99,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
         if (this.lives <= 0){
             this.destroy();
         }
+
+        this.blinkingEnabled = true
+        this.blinkingTime = Date.now()
+        setTimeout(() => {
+            this.blinkingEnabled = false
+        }, 400)
     }
 }

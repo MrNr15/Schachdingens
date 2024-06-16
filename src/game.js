@@ -6,7 +6,7 @@ export default class Game extends Phaser.Scene {
     
     //Hier werden Dateien geladen
     preload (){
-        this.load.image('map', 'Assets/Level1.png')
+        this.load.image('map', 'Assets/Level_1_map.png')
         this.load.image('tile', 'Assets/tile.png')
         this.load.image('piece', 'Assets/Piece.png')
         this.load.image('card', 'Assets/card.png')
@@ -14,10 +14,12 @@ export default class Game extends Phaser.Scene {
         this.load.image('canGoImage', 'Assets/CanGo2.png')
         this.load.image('square', 'Assets/Card_Movement.png')
         this.load.image('enemy1', 'Assets/Figur1.1.png')
+        this.load.image('player', 'Assets/Spieler.png')
         this.load.tilemapTiledJSON('map', 'TileMapExports/map.json')
         this.load.audio('backgroundmusic', 'Assets/background.mp3')
         this.load.audio('drawCard', 'Assets/drawCard.mp3')
         this.load.audio('move', 'Assets/Bewegung.mp3')
+        this.load.spritesheet('enemy1Attack', 'Assets/Gegner_1.2._Attacke.png', { frameWidth: 750, frameHeight: 1081 });
     }
 
     //speichert alle positionen für ein bestimmtes level
@@ -70,9 +72,9 @@ export default class Game extends Phaser.Scene {
 
         //WORK IN PROGRESS
         var level = this.add.image(0, 0, 'map')
-        level.scaleX = 1 / 530 * 64
-        level.x = this.WIDTH/2 - 1;
-        level.scaleY = 1 / 530 * 64
+        level.scaleX = 0.5
+        level.x = this.WIDTH/2;
+        level.scaleY = 0.5
         level.y = this.HEIGHT/2;
 
         //TileMap wird aus Datei erstellt
@@ -81,7 +83,7 @@ export default class Game extends Phaser.Scene {
         //ein eigener Layer für die MovementPrewiev
         const tileSet2 = map.addTilesetImage('CanGo', 'canGoImage')
         this.canGoLayer = map.createLayer('CanGo', tileSet2, 0, 0)
-        this.canGoLayer.setDepth(1)//über den spielern
+        this.canGoLayer.setDepth(1000000)//über den spielern
 
         //die sind standartmäßig alle sichtbar also erstmal alle unsichtbar machen
         this.resetMovePossiblilitys()
@@ -89,21 +91,19 @@ export default class Game extends Phaser.Scene {
         
         //Map wird auf dem Bildschirm gecentered
         this.canGoLayer.x = -this.TILE_WIDTH/2 + this.WIDTH/2;
-        this.canGoLayer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2 - 16;
-        
+        this.canGoLayer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2 - 40;
+
         //Player wird erstellt
         this.player = new player(this, levelConfig.player[0], levelConfig.player[1])
 
         //enemy wird erstellt
         for(var i = 0; i < levelConfig.enemys.length; i++){
-            this.enemys.push(new enemy(this, levelConfig.enemys[i][0],levelConfig.enemys[i][1]))
+            let e = new enemy(this, levelConfig.enemys[i][0],levelConfig.enemys[i][1])
+            this.enemys.push(e)
         }
         
         //karten werden erstllt
-        this.cards.push(new card(this, this.cards, 1))
-        this.cards.push(new card(this, this.cards, 3))
-        this.cards.push(new card(this, this.cards, 2))
-        this.cards.push(new card(this, this.cards, 2))
+        this.drawCards(4)
 
         //moves left text
         this.movesLeft = this.add.text(100,50, "4/4", {fill: '#0f0'})
@@ -172,6 +172,7 @@ export default class Game extends Phaser.Scene {
     }
 
     update(time, delta){
+
         //text wird geupdated
         this.movesLeft.setText(this.moves+"/"+this.MAX_MOVES);
         if(this.player != undefined)
@@ -181,6 +182,12 @@ export default class Game extends Phaser.Scene {
         for(var i = 0; i < this.cards.length; i++){
             this.cards[i].update(time, delta);
         }
+
+        for(var i = 0; i < this.enemys.length; i++){
+            this.enemys[i].update(time, delta)
+        }
+        
+        this.player.update(time, delta)
     }
 
     //Macht alle unsichtbar

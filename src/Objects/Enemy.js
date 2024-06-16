@@ -1,7 +1,7 @@
 export default class Enemy extends Phaser.GameObjects.Sprite {
 
     scene;
-    spriteOffset = [32, 37/2 - 8];
+    spriteOffset = [32, 18 - 13];
     movement = [
         [0,0,0,0,0],
         [0,1,1,1,0],
@@ -19,13 +19,30 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     constructor(_scene, pos_x, pos_y){
         super(_scene)
         this.scene = _scene
-        console.log(this.scene)
-        this.setTexture('enemy1')
+
+        //Animation
+        const anim = this.scene.anims.create({
+            key: 'attack',
+            frames: this.scene.anims.generateFrameNumbers('enemy1Attack', {start: 0, end: 4}),
+            frameRate: 20,
+            repeat: 1
+        });
+        const anim2 = this.scene.anims.create({
+            key: 'idle',
+            frames: [{ key: 'enemy1Attack', frame: 0 }],
+            frameRate: 10,
+        })
+        this.setTexture('enemy1Attack')
+
         this.scene.add.existing(this)
         this.setPosition(pos_x, pos_y, false)
         this.scene.gameField[pos_y][pos_x] = this;
-        this.scaleX = 1/3000 * 64
-        this.scaleY = 1/3000 * 64
+        this.scaleX = 1/750 * 64
+        this.scaleY = 1/750 * 64
+    }
+
+    update(time, delta){
+        this.setDepth(this.y)
     }
 
     //wird nach einem spielerzug gerufen
@@ -99,11 +116,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
         this.movingSound()
 
-        //flip sprite to point towards movment
-        if(this.scene.worldPosToScreenPos(bestMove[0], bestMove[1]).x < this.x-this.spriteOffset[0])
-            this.flipX = true
-        if(this.scene.worldPosToScreenPos(bestMove[0], bestMove[1]).x > this.x-this.spriteOffset[1])
-            this.flipX = false
+        this.alignSprite(bestMove[0], bestMove[1])
 
         //Bewegung
         this.scene.gameField[worldPos.y][worldPos.x] = null //alte position auf karte wird gelöscht
@@ -111,8 +124,20 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.scene.gameField[bestMove[1]][bestMove[0]] = this; // neue position wird auf karte eingetragen
     }
 
+    //flipped den sprite damit der gegner in die richtung der position guckt
+    alignSprite(x, y){
+        //flip sprite to point towards movment
+        if(this.scene.worldPosToScreenPos(x, y).x < this.x-this.spriteOffset[0])
+            this.flipX = false
+        if(this.scene.worldPosToScreenPos(x, y).x > this.x-this.spriteOffset[1])
+            this.flipX = true
+    }
+
     angriff(){
+        var playerPos = this.scene.player.getWorldPos()
+        this.alignSprite(playerPos.x, playerPos.y)
         this.scene.player.damage(1);
+        this.play('attack')
     }
 
     //Sound beim Bewegen einer Figur
