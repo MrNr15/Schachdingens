@@ -8,6 +8,8 @@ export default class Game extends Phaser.Scene {
     //Hier werden Dateien geladen
     preload (){
         this.load.image('map', 'Assets/Level_1_map.png')
+        this.load.image('map2', 'Assets/Level2.png')
+        this.load.image('map3', 'Assets/Level3.png')
         this.load.image('tile', 'Assets/tile.png')
         this.load.image('piece', 'Assets/Piece.png')
         this.load.image('card', 'Assets/card.png')
@@ -21,7 +23,21 @@ export default class Game extends Phaser.Scene {
         this.load.audio('backgroundmusic', 'Assets/background.mp3')
         this.load.audio('drawCard', 'Assets/drawCard.mp3')
         this.load.audio('move', 'Assets/Bewegung.mp3')
-        this.load.spritesheet('enemy1Attack', 'Assets/Gegner_1.2._Attacke.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('enemy1.2Attack', 'Assets/Gegner_1.2._Attacke.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('enemy1Attack', 'Assets/attacke1.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('enemy3Attack', 'Assets/attacke3.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('enemy1.2Schaden', 'Assets/schaden1.2.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('enemy1Schaden', 'Assets/schaden1.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('enemy3Schaden', 'Assets/schaden3.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('enemy1.2Tod', 'Assets/tod1.2.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('enemy1Tod', 'Assets/tod1.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('enemy3Tod', 'Assets/tod3.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('playerAttack1', 'Assets/spielerAttacke1.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('playerAttack2', 'Assets/spielerAttacke2.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('playerAttack3', 'Assets/spielerAttacke3.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('playerAttack4', 'Assets/spielerAttacke4.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('playerSchaden', 'Assets/spielerSchaden.png', { frameWidth: 750, frameHeight: 1081 });
+        this.load.spritesheet('playerTod', 'Assets/spielerTod.png', { frameWidth: 750, frameHeight: 1081 });
     }
 
     //speichert alle positionen für ein bestimmtes level
