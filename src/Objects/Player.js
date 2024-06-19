@@ -19,8 +19,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.setPosition(pos_x, pos_y, false)
         this.scene.gameField[pos_y][pos_x] = this;
         this.scene.input.on('pointerdown', () => this.click());
-        this.scaleX = 1/2500*64
-        this.scaleY = 1/2500*64
+        this.scaleX = 1/680*64
+        this.scaleY = 1/680*64
     }
 
     update(time, delta){
