@@ -9,23 +9,34 @@ export default class Game extends Phaser.Scene {
     
     //Hier werden Dateien geladen
     preload (){
-        this.load.image('map', 'Assets/World/Level_1_map.png')
+        this.load.image('map1', 'Assets/World/Level1.png')
         this.load.image('map2', 'Assets/World/Level2.png')
         this.load.image('map3', 'Assets/World/Level3.png')
-        this.load.image('card', 'Assets/Karten/card.png')
-        this.load.image('attackCard', 'Assets/Karten/attackCard.png')
         this.load.image('canGoImage', 'Assets/World/CanGo2.png')
-        this.load.image('square', 'Assets/Karten/Card_Movement.png')
-        this.load.image('enemy1', 'Assets/Gegner/Figur1.1.png')
-        this.load.image('player', 'Assets/Player/Spieler.png') // ist immoment noch zu klein 
         this.load.image('cloud', 'Assets/World/cloud1.png')
         this.load.image('cloud2', 'Assets/World/cloud2.png')
         this.load.image('cloud3', 'Assets/World/cloud3.png')
+
+        this.load.image('card', 'Assets/Karten/card.png')
+        this.load.image('attackCard', 'Assets/Karten/attackCard.png')
+        this.load.image('square', 'Assets/Karten/Card_Movement.png')
+
+        
+        this.load.image('player', 'Assets/Player/Spieler.png')
+        this.load.spritesheet('playerAttack1', 'Assets/Player/spielerAttacke1.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack2', 'Assets/Player/spielerAttacke2.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack3', 'Assets/Player/spielerAttacke3.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack4', 'Assets/Player/spielerAttacke4.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerSchaden', 'Assets/Player/spielerSchaden.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerTod', 'Assets/Player/spielerTod.png', { frameWidth: 346, frameHeight: 293 });
+        
         this.load.tilemapTiledJSON('map', 'TileMapExports/map.json')
+        
         this.load.audio('backgroundmusic', 'Assets/Sounds/background.mp3')
         this.load.audio('drawCard', 'Assets/Sounds/drawCard.mp3')
         this.load.audio('move', 'Assets/Sounds/Bewegung.mp3')
-
+        
+        this.load.image('enemy1', 'Assets/Gegner/Figur1.1.png')
         this.load.spritesheet('enemy1.2Attack', 'Assets/Gegner/attacke1.2.png', { frameWidth: 346 , frameHeight: 293});
         this.load.spritesheet('enemy1Attack', 'Assets/Gegner/attacke1.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('enemy3Attack', 'Assets/Gegner/attacke3.png', { frameWidth: 346, frameHeight: 293 });
@@ -35,23 +46,31 @@ export default class Game extends Phaser.Scene {
         this.load.spritesheet('enemy1.2Tod', 'Assets/Gegner/tod1.2.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('enemy1Tod', 'Assets/Gegner/tod1.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('enemy3Tod', 'Assets/Gegner/tod3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack1', 'Assets/Player/spielerAttacke1.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack2', 'Assets/Player/spielerAttacke2.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack3', 'Assets/Player/spielerAttacke3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack4', 'Assets/Player/spielerAttacke4.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerSchaden', 'Assets/Player/spielerSchaden.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerTod', 'Assets/Player/spielerTod.png', { frameWidth: 346, frameHeight: 293 });
     }
 
     //speichert alle positionen für ein bestimmtes level
     level1 = {
         player: [0, 0],
-        enemys: [[3,3], [5,5]]
+        enemys: [[3,3], [5,5]],
+        map: 'map1',
+        mapTileSize: [530, 305],
+        mapPositionOffset: [-2, 15]
     }
 
     level2 = {
         player: [5, 4],
-        enemys: [[1,1], [8,8], [1,9]]
+        enemys: [[1,1], [8,8], [1,9]],
+        map: 'map2',
+        mapTileSize: [63, 36],
+        mapPositionOffset: [0, 0]
+    }
+
+    level3 = {
+        player: [5, 4],
+        enemys: [[1,1], [8,8], [1,9]],
+        map: 'map3',
+        mapTileSize: [63, 36],
+        mapPositionOffset: [0, -16]
     }
 
     level = 1//aktuelles level
@@ -91,6 +110,8 @@ export default class Game extends Phaser.Scene {
         }
         if(this.level == 2)
             levelConfig = this.level2
+        if(this.level == 3)
+            levelConfig = this.level3
 
 
         //background
@@ -108,12 +129,11 @@ export default class Game extends Phaser.Scene {
        
         
 
-        //WORK IN PROGRESS
-        var level = this.add.image(0, 0, 'map')
-        level.scaleX = 0.5
-        level.x = this.WIDTH/2;
-        level.scaleY = 0.5
-        level.y = this.HEIGHT/2;
+        var level = this.add.image(0, 0, levelConfig.map)
+        level.scaleX = 1 / levelConfig.mapTileSize[0] * 64
+        level.x = this.WIDTH/2 + levelConfig.mapPositionOffset[0];
+        level.scaleY = 1 / levelConfig.mapTileSize[0] * 64
+        level.y = this.HEIGHT/2 + levelConfig.mapPositionOffset[1];
 
         //TileMap wird aus Datei erstellt
         const map = this.make.tilemap({key: 'map'})
@@ -129,7 +149,7 @@ export default class Game extends Phaser.Scene {
         
         //Map wird auf dem Bildschirm gecentered
         this.canGoLayer.x = -this.TILE_WIDTH/2 + this.WIDTH/2;
-        this.canGoLayer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2 - 40;
+        this.canGoLayer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2;
 
         //Player wird erstellt
         this.player = new player(this, levelConfig.player[0], levelConfig.player[1])

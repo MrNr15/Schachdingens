@@ -131,10 +131,13 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     //flipped den sprite damit der gegner in die richtung der position guckt
     alignSprite(x, y){
         //flip sprite to point towards movment
+
+        //!TODO aktuell deaktiviert weil die spirtes nicht zentriert sind
+        return
         if(this.scene.worldPosToScreenPos(x, y).x < this.x-this.spriteOffset[0])
-            this.flipX = false
-        if(this.scene.worldPosToScreenPos(x, y).x > this.x-this.spriteOffset[1])
             this.flipX = true
+        if(this.scene.worldPosToScreenPos(x, y).x > this.x-this.spriteOffset[0])
+            this.flipX = false
     }
 
     angriff(){
