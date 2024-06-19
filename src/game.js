@@ -3,50 +3,49 @@ import card from './Objects/Card.js'
 import enemy from './Objects/Enemy.js'
 import cloud from './Objects/Could.js'
 import cloud2 from './Objects/Cloud2.js'
-import cloud3 from './Cloud3.js'
+import cloud3 from './Objects/Cloud3.js'
 
 export default class Game extends Phaser.Scene {
     
     //Hier werden Dateien geladen
     preload (){
-        this.load.image('map', 'Assets/Level_1_map.png')
-        this.load.image('map2', 'Assets/Level2.png')
-        this.load.image('map3', 'Assets/Level3')
-        this.load.image('tile', 'Assets/tile.png')
-        this.load.image('piece', 'Assets/Piece.png')
-        this.load.image('card', 'Assets/card.png')
-        this.load.image('attackCard', 'Assets/attackCard.png')
-        this.load.image('canGoImage', 'Assets/CanGo2.png')
-        this.load.image('square', 'Assets/Card_Movement.png')
-        this.load.image('enemy1', 'Assets/Figur1.1.png')
-        this.load.image('player', 'Assets/Spieler.png') // ist immoment noch zu klein 
-        this.load.image('cloud', 'Assets/cloud1.png')
-        this.load.image('cloud2', 'Assets/cloud2.png')
-        this.load.image('cloud3', 'Assets/cloud3.png')
+        this.load.image('map', 'Assets/World/Level_1_map.png')
+        this.load.image('map2', 'Assets/World/Level2.png')
+        this.load.image('map3', 'Assets/World/Level3.png')
+        this.load.image('card', 'Assets/Karten/card.png')
+        this.load.image('attackCard', 'Assets/Karten/attackCard.png')
+        this.load.image('canGoImage', 'Assets/World/CanGo2.png')
+        this.load.image('square', 'Assets/Karten/Card_Movement.png')
+        this.load.image('enemy1', 'Assets/Gegner/Figur1.1.png')
+        this.load.image('player', 'Assets/Player/Spieler.png') // ist immoment noch zu klein 
+        this.load.image('cloud', 'Assets/World/cloud1.png')
+        this.load.image('cloud2', 'Assets/World/cloud2.png')
+        this.load.image('cloud3', 'Assets/World/cloud3.png')
         this.load.tilemapTiledJSON('map', 'TileMapExports/map.json')
-        this.load.audio('backgroundmusic', 'Assets/background.mp3')
-        this.load.audio('drawCard', 'Assets/drawCard.mp3')
-        this.load.audio('move', 'Assets/Bewegung.mp3')
-        this.load.spritesheet('enemy1.2Attack', 'Assets/attacke1.2.png', { frameWidth: 346 , frameHeight: 293});
-        this.load.spritesheet('enemy1Attack', 'Assets/attacke1.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy3Attack', 'Assets/attacke3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy1.2Schaden', 'Assets/schaden1.2.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy1Schaden', 'Assets/schaden1.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy3Schaden', 'Assets/schaden3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy1.2Tod', 'Assets/tod1.2.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy1Tod', 'Assets/tod1.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy3Tod', 'Assets/tod3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack1', 'Assets/spielerAttacke1.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack2', 'Assets/spielerAttacke2.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack3', 'Assets/spielerAttacke3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack4', 'Assets/spielerAttacke4.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerSchaden', 'Assets/spielerSchaden.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerTod', 'Assets/spielerTod.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.audio('backgroundmusic', 'Assets/Sounds/background.mp3')
+        this.load.audio('drawCard', 'Assets/Sounds/drawCard.mp3')
+        this.load.audio('move', 'Assets/Sounds/Bewegung.mp3')
+
+        this.load.spritesheet('enemy1.2Attack', 'Assets/Gegner/attacke1.2.png', { frameWidth: 346 , frameHeight: 293});
+        this.load.spritesheet('enemy1Attack', 'Assets/Gegner/attacke1.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('enemy3Attack', 'Assets/Gegner/attacke3.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('enemy1.2Schaden', 'Assets/Gegner/schaden1.2.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('enemy1Schaden', 'Assets/Gegner/schaden1.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('enemy3Schaden', 'Assets/Gegner/schaden3.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('enemy1.2Tod', 'Assets/Gegner/tod1.2.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('enemy1Tod', 'Assets/Gegner/tod1.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('enemy3Tod', 'Assets/Gegner/tod3.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack1', 'Assets/Player/spielerAttacke1.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack2', 'Assets/Player/spielerAttacke2.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack3', 'Assets/Player/spielerAttacke3.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack4', 'Assets/Player/spielerAttacke4.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerSchaden', 'Assets/Player/spielerSchaden.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerTod', 'Assets/Player/spielerTod.png', { frameWidth: 346, frameHeight: 293 });
     }
 
     //speichert alle positionen für ein bestimmtes level
     level1 = {
-        player: [5, 4],
+        player: [0, 0],
         enemys: [[3,3], [5,5]]
     }
 

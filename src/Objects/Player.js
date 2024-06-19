@@ -2,7 +2,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     scene;
 
-    spriteOffset = [32, 18 - 10];
+    spriteOffset = [29, 10];
 
     lives = 3;
 
@@ -34,7 +34,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     getWorldPos(){
-        return this.scene.screenToWorldPos(this.x, this.y+this.scene.TILE_HEIGHT)//Gott weiß warum man hier was draufrechnen muss
+        return this.scene.screenToWorldPos(this.x, this.y + this.scene.TILE_HEIGHT)
     }
 
     click(){

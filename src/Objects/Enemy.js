@@ -16,6 +16,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
     lives = 1;
 
+    gridPos;
+
     constructor(_scene, pos_x, pos_y){
         super(_scene)
         this.scene = _scene
@@ -34,12 +36,14 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         })
         this.setTexture('enemy1.2Attack')
 
+        this.gridPos = [pos_x, pos_y]
         this.scene.add.existing(this)
         this.setPosition(pos_x, pos_y, false)
         this.scene.gameField[pos_y][pos_x] = this;
         
         this.scaleX = 1/170 * 64
         this.scaleY = 1/170 * 64
+
     }
 
     update(time, delta){
@@ -77,12 +81,11 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
     canAttack(){
         var playerPos = this.scene.player.getWorldPos()
-        var worldPos = this.getWorldPos()
 
         for(var x = 0; x < 5; x++){
             for(var y = 0; y < 5; y++){
                 if(this.movement[y][x] == 0) continue;
-                var checkingPos = [worldPos.x + x-2, worldPos.y + y-2]
+                var checkingPos = [this.gridPos[0] + x-2, this.gridPos[1] + y-2]
 
                 if(checkingPos[0] == playerPos.x && checkingPos[1] == playerPos.y) return true;
             }
@@ -92,14 +95,13 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
     bewegung(){
         var playerPos = this.scene.player.getWorldPos()
-        var worldPos = this.getWorldPos()
-        var bestMove = [worldPos.x, worldPos.y]
+        var bestMove = [this.gridPos[0], this.gridPos[1]]
         var bestDistance = 9999999
 
         for(var x = 0; x < 5; x++){
             for(var y = 0; y < 5; y++){
                 if(this.movement[y][x] == 0) continue;
-                var checkingPos = [worldPos.x + x-2, worldPos.y + y-2]
+                var checkingPos = [this.gridPos[0] + x-2, this.gridPos[1] + y-2]
 
                 //If there is no Tile we cant move there
                 if(this.scene.canGoLayer.getTileAt(checkingPos[0], checkingPos[1]) == null) continue;
@@ -120,9 +122,10 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.alignSprite(bestMove[0], bestMove[1])
 
         //Bewegung
-        this.scene.gameField[worldPos.y][worldPos.x] = null //alte position auf karte wird gelöscht
+        this.scene.gameField[this.gridPos[1]][this.gridPos[0]] = null //alte position auf karte wird gelöscht
         this.setPosition(bestMove[0], bestMove[1], true)
         this.scene.gameField[bestMove[1]][bestMove[0]] = this; // neue position wird auf karte eingetragen
+        this.gridPos = bestMove
     }
 
     //flipped den sprite damit der gegner in die richtung der position guckt
@@ -146,10 +149,6 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         var moving = this.scene.sound.add('move')
         moving.setVolume(0.4)
         moving.play()
-    }
-
-    getWorldPos(){
-        return this.scene.screenToWorldPos(this.x, this.y+this.scene.TILE_HEIGHT)//Gott weiß warum man hier was draufrechnen muss
     }
 
     setPosition(x, y, interpolate){
@@ -179,8 +178,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     damage(amount){
         this.lives -= amount
         if(this.lives <= 0){
-            var pos = this.getWorldPos()
-            this.scene.gameField[pos.y][pos.x] = null
+            this.scene.gameField[this.gridPos[1]][this.gridPos[0]] = null
             const index = this.scene.enemys.indexOf(this);
             if (index > -1) { // only splice array when item is found
                 this.scene.enemys.splice(index, 1); // 2nd parameter means remove one item only
