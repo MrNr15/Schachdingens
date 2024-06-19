@@ -1,4 +1,4 @@
-export default class Cloud extends Phaser.GameObjects.Sprite {
+export default class Cloud3 extends Phaser.GameObjects.Sprite {
 
     scene;
 
@@ -9,7 +9,7 @@ export default class Cloud extends Phaser.GameObjects.Sprite {
         super(_scene)
         this.scene = _scene
         
-        this.setTexture('cloud')
+        this.setTexture('cloud3')
         this.scene.add.existing(this)
         this.x = Math.random()*this.scene.WIDTH
         this.y = Math.random()*this.scene.HEIGHT

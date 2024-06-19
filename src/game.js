@@ -2,6 +2,8 @@ import player from './Objects/Player.js'
 import card from './Objects/Card.js'
 import enemy from './Objects/Enemy.js'
 import cloud from './Objects/Could.js'
+import cloud2 from './Objects/Cloud2.js'
+import cloud3 from './Cloud3.js'
 
 export default class Game extends Phaser.Scene {
     
@@ -18,7 +20,9 @@ export default class Game extends Phaser.Scene {
         this.load.image('square', 'Assets/Card_Movement.png')
         this.load.image('enemy1', 'Assets/Figur1.1.png')
         this.load.image('player', 'Assets/Spieler.png') // ist immoment noch zu klein 
-        this.load.image('cloud', 'Assets/Cloud.png')
+        this.load.image('cloud', 'Assets/cloud1.png')
+        this.load.image('cloud2', 'Assets/cloud2.png')
+        this.load.image('cloud3', 'Assets/cloud3.png')
         this.load.tilemapTiledJSON('map', 'TileMapExports/map.json')
         this.load.audio('backgroundmusic', 'Assets/background.mp3')
         this.load.audio('drawCard', 'Assets/drawCard.mp3')
@@ -91,9 +95,19 @@ export default class Game extends Phaser.Scene {
 
 
         //background
-        for(var i = 0; i < 10; i++){
-            this.clouds.push(new cloud(this))
-        }
+        //for(var i = 0; i < 10; i++){
+        //    this.clouds.push(new cloud(this))
+       //}
+       const NUMBER_OF_CLOUDS = 6; // Anzahl der Wolken
+       for (let i = 0; i < NUMBER_OF_CLOUDS; i++) {
+           const cloudSize = 0.5 + Math.random(); // Zufällige Größe zwischen 0.5 und 1.5
+           this.clouds.push(new cloud(this, cloudSize));
+           this.clouds.push(new cloud2(this, cloudSize));
+           this.clouds.push(new cloud3(this, cloudSize));
+           
+       }
+       
+        
 
         //WORK IN PROGRESS
         var level = this.add.image(0, 0, 'map')
