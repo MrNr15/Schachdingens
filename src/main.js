@@ -5,7 +5,7 @@ const config = {
     width: 1056,
     height: 594,
     scene: Game,
-    backgroundColor: '#7ad6f5',
+    backgroundColor: '#8FD3FF',
     physics: {
         default: 'arcade',
         arcade: {
