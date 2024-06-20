@@ -30,7 +30,9 @@ export default class Game extends Phaser.Scene {
         this.load.spritesheet('playerSchaden', 'Assets/Player/spielerSchaden.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('playerTod', 'Assets/Player/spielerTod.png', { frameWidth: 346, frameHeight: 293 });
         
-        this.load.tilemapTiledJSON('map', 'TileMapExports/map.json')
+        this.load.tilemapTiledJSON('tileMap1', 'TileMapExports/map.json')
+        this.load.tilemapTiledJSON('tileMap2', 'TileMapExports/map2.json')
+        this.load.tilemapTiledJSON('tileMap3', 'TileMapExports/map3.json')
         
         this.load.audio('backgroundmusic', 'Assets/Sounds/background.mp3')
         this.load.audio('drawCard', 'Assets/Sounds/drawCard.mp3')
@@ -50,11 +52,12 @@ export default class Game extends Phaser.Scene {
 
     //speichert alle positionen für ein bestimmtes level
     level1 = {
-        player: [0, 0],
+        player: [5, 4],
         enemys: [[3,3], [5,5]],
         map: 'map1',
         mapTileSize: [530, 305],
-        mapPositionOffset: [-2, 15]
+        mapPositionOffset: [-2, -4],
+        tileMap: 'tileMap1'
     }
 
     level2 = {
@@ -62,15 +65,17 @@ export default class Game extends Phaser.Scene {
         enemys: [[1,1], [8,8], [1,9]],
         map: 'map2',
         mapTileSize: [63, 36],
-        mapPositionOffset: [0, 0]
+        mapPositionOffset: [-65, -18],
+        tileMap: 'tileMap2'
     }
 
     level3 = {
         player: [5, 4],
-        enemys: [[1,1], [8,8], [1,9]],
+        enemys: [[1,1], [8,8], [2,9]],
         map: 'map3',
         mapTileSize: [63, 36],
-        mapPositionOffset: [0, -16]
+        mapPositionOffset: [-33, -19],
+        tileMap: 'tileMap3'
     }
 
     level = 1//aktuelles level
@@ -86,8 +91,8 @@ export default class Game extends Phaser.Scene {
     enemys = [];
     TILE_WIDTH = 64;
     TILE_HEIGHT = 37;
-    MAP_WIDTH = 10
-    MAP_HEIGTH = 10
+    MAP_WIDTH = 13
+    MAP_HEIGTH = 13
     WIDTH = 1056
     HEIGHT = 596
 
@@ -136,7 +141,7 @@ export default class Game extends Phaser.Scene {
         level.y = this.HEIGHT/2 + levelConfig.mapPositionOffset[1];
 
         //TileMap wird aus Datei erstellt
-        const map = this.make.tilemap({key: 'map'})
+        const map = this.make.tilemap({key: levelConfig.tileMap})
 
         //ein eigener Layer für die MovementPrewiev
         const tileSet2 = map.addTilesetImage('CanGo', 'canGoImage')
@@ -149,7 +154,7 @@ export default class Game extends Phaser.Scene {
         
         //Map wird auf dem Bildschirm gecentered
         this.canGoLayer.x = -this.TILE_WIDTH/2 + this.WIDTH/2;
-        this.canGoLayer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2;
+        this.canGoLayer.y = this.HEIGHT/2 - this.MAP_HEIGTH*this.TILE_HEIGHT/2 - this.TILE_HEIGHT;
 
         //Player wird erstellt
         this.player = new player(this, levelConfig.player[0], levelConfig.player[1])
