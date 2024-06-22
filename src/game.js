@@ -23,12 +23,12 @@ export default class Game extends Phaser.Scene {
 
         
         this.load.image('player', 'Assets/Player/Spieler.png')
-        this.load.spritesheet('playerAttack1', 'Assets/Player/spielerAttacke1.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack2', 'Assets/Player/spielerAttacke2.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack3', 'Assets/Player/spielerAttacke3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack4', 'Assets/Player/spielerAttacke4.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerSchaden', 'Assets/Player/spielerSchaden.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerTod', 'Assets/Player/spielerTod.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack1', 'Assets/Player/playerAttacke1.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack2', 'Assets/Player/playerAttacke2.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack3', 'Assets/Player/playerAttacke3.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack4', 'Assets/Player/playerAttacke4.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerSchaden', 'Assets/Player/playerDamage.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerTod', 'Assets/Player/PlayerTod.png', { frameWidth: 346, frameHeight: 293 });
         
         this.load.tilemapTiledJSON('tileMap1', 'TileMapExports/map.json')
         this.load.tilemapTiledJSON('tileMap2', 'TileMapExports/map2.json')
