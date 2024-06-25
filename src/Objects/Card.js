@@ -6,7 +6,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
     scene;
     cards;
 
-    spriteOffset = [50, 75];
+    spriteOffset = [390/390 * 150 / 2,  90];
 
     cost = 1;
 
@@ -32,10 +32,32 @@ export default class Card extends Phaser.GameObjects.Sprite {
         this.type = parseInt(Math.random()*2)
         this.scene = _scene
         this.cards = cards;
-        if (this.type==0)
-            this.setTexture('card')
-        if(this.type==1)
-            this.setTexture('attackCard')
+        if (this.type==0){
+            if(cost == 0)
+                this.setTexture('moveCard0')
+            if(cost == 1)
+                this.setTexture('moveCard1')
+            if(cost == 2)
+                this.setTexture('moveCard2')
+            if(cost == 3)
+                this.setTexture('moveCard3')
+            if(cost == 4)
+                this.setTexture('card')
+        }
+        if(this.type==1){
+            if(cost == 0)
+                this.setTexture('attackCard0')
+            if(cost == 1)
+                this.setTexture('attackCard1')
+            if(cost == 2)
+                this.setTexture('attackCard2')
+            if(cost == 3)
+                this.setTexture('attackCard3')
+            if(cost == 4)
+                this.setTexture('attackCard')
+        }
+        this.scaleX = 1 / 390 * 150
+        this.scaleY = 1 / 390 * 150
         this.y = this.scene.HEIGHT - this.spriteOffset[1]//Unterer Bildschirmrand
         this.scene.add.existing(this)
         
@@ -45,17 +67,14 @@ export default class Card extends Phaser.GameObjects.Sprite {
         });
             
         this.movementSprite = new cardMovement(this.scene, this.movement)
-        this.text = this.scene.add.text(this.x,this.y,""+cost)
     }
 
     update(time, delta){
         //karten werden gleichmäßig abhängig von der Position in der Liste vertelit
         if (this.cards.indexOf(this) != -1){
             this.x = this.scene.WIDTH * ((this.cards.indexOf(this)+1) / (this.cards.length+1))
-            this.movementSprite.setPos(this.x - 4*5, this.y)
-            this.text.x = this.x
-            this.text.y = this.y - 50
-            }
+            this.movementSprite.setPos(this.x - 23, this.y + 40)
+        }
     }
 
     //Macht auf dem Layer alle Tiles sichtbar, welche die karte erlaubt
@@ -85,7 +104,6 @@ export default class Card extends Phaser.GameObjects.Sprite {
     }
     delete(){
         this.movementSprite.delete()
-        this.text.destroy()
         this.destroy()
     }
 }

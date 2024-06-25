@@ -21,6 +21,16 @@ export default class Game extends Phaser.Scene {
         this.load.image('attackCard', 'Assets/Karten/attackCard.png')
         this.load.image('square', 'Assets/Karten/Card_Movement.png')
 
+        this.load.image('attackCard0', 'Assets/Karten/DamageCard0.png')
+        this.load.image('attackCard1', 'Assets/Karten/DamageCard1.png')
+        this.load.image('attackCard2', 'Assets/Karten/DamageCard2.png')
+        this.load.image('attackCard3', 'Assets/Karten/DamageCard3.png')
+
+        this.load.image('moveCard0', 'Assets/Karten/moveCard0.png')
+        this.load.image('moveCard1', 'Assets/Karten/moveCard1.png')
+        this.load.image('moveCard2', 'Assets/Karten/moveCard2.png')
+        this.load.image('moveCard3', 'Assets/Karten/moveCard3.png')
+
         
         this.load.image('player', 'Assets/Player/Spieler.png')
         this.load.spritesheet('playerAttack1', 'Assets/Player/playerAttacke1.png', { frameWidth: 346, frameHeight: 293 });
