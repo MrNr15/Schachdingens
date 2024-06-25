@@ -17,6 +17,17 @@ export default class Game extends Phaser.Scene {
         this.load.image('cloud2', 'Assets/World/cloud2.png')
         this.load.image('cloud3', 'Assets/World/cloud3.png')
 
+        this.load.image('levelBanner', 'Assets/Buttons/Level2.png')
+        this.load.image('Leben0', 'Assets/Buttons/Leben0.png')
+        this.load.image('Leben1', 'Assets/Buttons/Leben1.png')
+        this.load.image('Leben2', 'Assets/Buttons/Leben2.png')
+        this.load.image('Leben3', 'Assets/Buttons/Leben3.png')
+        this.load.image('EndTurn0', 'Assets/Buttons/EndTurn0.png')
+        this.load.image('EndTurn1', 'Assets/Buttons/EndTurn1.png')
+        this.load.image('EndTurn2', 'Assets/Buttons/EndTurn2.png')
+        this.load.image('EndTurn3', 'Assets/Buttons/EndTurn3.png')
+        this.load.image('EndTurn4', 'Assets/Buttons/EndTurn0.png')
+
         this.load.image('card', 'Assets/Karten/card.png')
         this.load.image('attackCard', 'Assets/Karten/attackCard.png')
         this.load.image('square', 'Assets/Karten/Card_Movement.png')
@@ -33,10 +44,10 @@ export default class Game extends Phaser.Scene {
 
         
         this.load.image('player', 'Assets/Player/Spieler.png')
-        this.load.spritesheet('playerAttack1', 'Assets/Player/playerAttacke1.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack2', 'Assets/Player/playerAttacke2.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack3', 'Assets/Player/playerAttacke3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack4', 'Assets/Player/playerAttacke4.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack1', 'Assets/Player/playerAttack1.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack2', 'Assets/Player/playerAttack2.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack3', 'Assets/Player/playerAttack3.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack4', 'Assets/Player/playerAttack4.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('playerSchaden', 'Assets/Player/playerDamage.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('playerTod', 'Assets/Player/PlayerTod.png', { frameWidth: 346, frameHeight: 293 });
         
@@ -96,7 +107,6 @@ export default class Game extends Phaser.Scene {
     currentCard = null;
     moves = 4
     MAX_MOVES = 4
-    movesLeft;
     player;
     enemys = [];
     TILE_WIDTH = 64;
@@ -150,6 +160,8 @@ export default class Game extends Phaser.Scene {
         level.scaleY = 1 / levelConfig.mapTileSize[0] * 64
         level.y = this.HEIGHT/2 + levelConfig.mapPositionOffset[1];
 
+        this.banner = this.add.image(this.WIDTH/2,42,'levelBanner')
+
         //TileMap wird aus Datei erstellt
         const map = this.make.tilemap({key: levelConfig.tileMap})
 
@@ -178,20 +190,21 @@ export default class Game extends Phaser.Scene {
         //karten werden erstllt
         this.drawCards(4)
 
-        //moves left text
-        this.movesLeft = this.add.text(100,50, "4/4", {fill: '#000'})
-        //lives text
-        this.lives = this.add.text(100,25, "Lives: 3", {fill: '#000'})
-
-        //endTurn button
+        //moves left and endTurn button
         //TODO disable turn button while turn is being processed
-        const endTurn = this.add.text(100, 150, 'End Turn', { fill: '#000' });
-        endTurn.setInteractive();
-        endTurn.on('pointerdown', () => {
+        this.endTurn = this.add.image(100,150, 'EndTurn4')
+        this.endTurn.setInteractive()
+        this.endTurn.on('pointerdown', () => {
             this.endTurnPressed()
-        });
+        })
+        
+        //lives
+        this.lives = this.add.image(100,25, 'Leben3')
+    }
 
-        const nextLevel = this.add.text(100, 200, 'Next Level', { fill: '#000' });
+    levelFinished(){
+        //create next levelButton
+        const nextLevel = this.add.text(100, 400, 'Next Level', { fill: '#000' });
         nextLevel.setInteractive();
         nextLevel.on('pointerdown', () => {
             this.level += 1;
@@ -252,10 +265,14 @@ export default class Game extends Phaser.Scene {
 
     update(time, delta){
 
+        if(this.enemys.length == 0)
+            this.levelFinished()
+
         //text wird geupdated
-        this.movesLeft.setText(this.moves+"/"+this.MAX_MOVES);
-        if(this.player != undefined)
-            this.lives.setText("Lives: "+this.player.lives)
+        this.endTurn.setTexture('EndTurn'+this.moves);
+        if(this.player != undefined){
+            this.lives.setTexture("Leben"+this.player.lives)
+        }
 
         //karten werden geupdated
         for(var i = 0; i < this.cards.length; i++){
