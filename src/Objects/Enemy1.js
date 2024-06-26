@@ -2,54 +2,20 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
     scene;
     spriteOffset = [41, 18 - 15];
-    movementPatterns = {
+    movement = [
+        [0,0,0,0,0],
+        [0,1,1,1,0],
+        [0,1,1,1,0],
+        [0,1,1,1,0],
+        [0,0,0,0,0],
+    ]
 
-        enemy1: [
-            [0,0,0,0,0],
-            [0,1,1,1,0],
-            [0,1,1,1,0],
-            [0,1,1,1,0],
-            [0,0,0,0,0],
-        ],
-    
-        enemy2: [
-            [0,0,0,0,0],
-            [0,1,1,1,0],
-            [0,1,0,0,0],
-            [0,1,0,0,0],
-            [0,0,0,0,0],
-        ],
-    
-        enemy3: [
-            [0,0,0,0,0],
-            [0,1,0,0,0],
-            [0,0,1,0,0],
-            [0,0,0,1,0],
-            [0,0,0,0,0],
-        ],
-    
-        
-        }
-    
-        attackCount = {
-            enemy1: 1,
-            enemy2: 2,
-            enemy3: 3
-        };
-    
-    
-        moveTime ={
-            enemy1: 250, //milliseconds to finish move animation
-            enemy2: 250, //milliseconds to finish move animation
-            enemy3: 250 //milliseconds to finish move animation
-        };
-    
-        liveCount = {
-            enemy1: 1,
-            enemy2: 3,
-            enemy3: 2
-    
-        };
+    attacks = 2;
+
+    moveTime=250; //milliseconds to finish move animation
+
+    lives = 1;
+
 
     gridPos;
 
