@@ -61,6 +61,8 @@ export default class Game extends Phaser.Scene {
         this.load.audio('backgroundmusic', 'Assets/Sounds/background.mp3')
         this.load.audio('drawCard', 'Assets/Sounds/drawCard.mp3')
         this.load.audio('move', 'Assets/Sounds/Bewegung.mp3')
+        this.load.audio('buttonSound', 'Assets/Sounds/Button.mp3')
+        this.load.audio('attackSound', 'Assets/Sounds/Attacke.mp3')
 
         //Gegner
 
@@ -244,6 +246,7 @@ export default class Game extends Phaser.Scene {
         this.endTurn = this.add.image(100,150, 'EndTurn4')
         this.endTurn.setInteractive()
         this.endTurn.on('pointerdown', () => {
+            this.buttonSound()
             this.endTurnPressed()
         })
         
@@ -256,6 +259,7 @@ export default class Game extends Phaser.Scene {
         const nextLevel = this.add.text(100, 400, 'Next Level', { fill: '#000' });
         nextLevel.setInteractive();
         nextLevel.on('pointerdown', () => {
+            this.buttonSound()
             this.level += 1;
             this.enemys = []
             this.cards = []
@@ -297,6 +301,13 @@ export default class Game extends Phaser.Scene {
         var drawCards = this.sound.add('drawCard')
         drawCards.setVolume(0.25)
         drawCards.play()
+    }
+
+    //Sound bei Klicken des Buttons
+    buttonSound(){
+        var button = this.sound.add('buttonSound')
+        button.setVolume(0.4)
+        button.play()
     }
 
     //lässt alle gegner bewegen und füllt die moves wieder auf

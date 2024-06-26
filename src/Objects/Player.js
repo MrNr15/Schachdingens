@@ -47,8 +47,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
         if(this.scene.canIMoveThere(pos)){
             if(this.scene.currentCard.type == 0) //bewegungskarte ausgewählt
                 this.move(pos)
-            if(this.scene.currentCard.type == 1) //angriffskarte ausgewählt
+            if(this.scene.currentCard.type == 1){ //angriffskarte ausgewählt
                 this.scene.gameField[pos.y][pos.x].damage(1)
+                this.attackSound()
+            }
             
             this.scene.playerMoved()
             return
@@ -111,5 +113,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
         setTimeout(() => {
             this.blinkingEnabled = false
         }, 400)
+    }
+
+    attackSound(){
+        var attack = this.sound.add('attackSound')
+        attack.setVolume(0.3)
+        attack.play()
     }
 }
