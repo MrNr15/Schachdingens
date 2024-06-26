@@ -25,13 +25,13 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
         //Animation
         const anim = this.scene.anims.create({
-            key: 'attack',
+            key: 'attack1',
             frames: this.scene.anims.generateFrameNumbers('enemy1Attack', {start: 0, end: 4}),
             frameRate: 20,
             repeat: 1
         });
         const anim2 = this.scene.anims.create({
-            key: 'idle',
+            key: 'idle1',
             frames: [{ key: 'enemy1Attack', frame: 0 }],
             frameRate: 10,
         })

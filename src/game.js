@@ -12,6 +12,7 @@ export default class Game extends Phaser.Scene {
 
     //Hier werden Dateien geladen
     preload() {
+        // Map zeug
         this.load.image('map1', 'Assets/World/Level1.png')
         this.load.image('map2', 'Assets/World/Level2.png')
         this.load.image('map3', 'Assets/World/Level3.png')
@@ -20,6 +21,7 @@ export default class Game extends Phaser.Scene {
         this.load.image('cloud2', 'Assets/World/cloud2.png')
         this.load.image('cloud3', 'Assets/World/cloud3.png')
 
+        //Buttons
         this.load.image('levelBanner', 'Assets/Buttons/Level2.png')
         this.load.image('Leben0', 'Assets/Buttons/Leben0.png')
         this.load.image('Leben1', 'Assets/Buttons/Leben1.png')
@@ -30,7 +32,9 @@ export default class Game extends Phaser.Scene {
         this.load.image('EndTurn2', 'Assets/Buttons/EndTurn2.png')
         this.load.image('EndTurn3', 'Assets/Buttons/EndTurn3.png')
         this.load.image('EndTurn4', 'Assets/Buttons/EndTurn0.png')
+        this.load.image('NextLevel', 'Assets/Buttons/NextLevel.png')
 
+        //Spielkarten
         this.load.image('card', 'Assets/Karten/card.png')
         this.load.image('attackCard', 'Assets/Karten/attackCard.png')
         this.load.image('square', 'Assets/Karten/Card_Movement.png')
@@ -45,7 +49,7 @@ export default class Game extends Phaser.Scene {
         this.load.image('moveCard2', 'Assets/Karten/moveCard2.png')
         this.load.image('moveCard3', 'Assets/Karten/moveCard3.png')
 
-
+        //Animationen PLAYER
         this.load.image('player', 'Assets/Player/Spieler.png')
         this.load.spritesheet('playerAttack1', 'Assets/Player/playerAttack1.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('playerAttack2', 'Assets/Player/playerAttack2.png', { frameWidth: 346, frameHeight: 293 });
@@ -53,11 +57,13 @@ export default class Game extends Phaser.Scene {
         this.load.spritesheet('playerAttack4', 'Assets/Player/playerAttack4.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('playerSchaden', 'Assets/Player/playerDamage.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('playerTod', 'Assets/Player/PlayerTod.png', { frameWidth: 346, frameHeight: 293 });
-
+        
+        //Map tiles
         this.load.tilemapTiledJSON('tileMap1', 'TileMapExports/map.json')
         this.load.tilemapTiledJSON('tileMap2', 'TileMapExports/map2.json')
         this.load.tilemapTiledJSON('tileMap3', 'TileMapExports/map3.json')
 
+        //Audio
         this.load.audio('backgroundmusic', 'Assets/Sounds/background.mp3')
         this.load.audio('drawCard', 'Assets/Sounds/drawCard.mp3')
         this.load.audio('move', 'Assets/Sounds/Bewegung.mp3')
@@ -139,7 +145,9 @@ export default class Game extends Phaser.Scene {
 
     //Konstruktor
     create() {
-
+        // Grundlegende Spielgröße und Zentrierung
+        this.scale.resize(window.innerWidth, window.innerHeight);
+        // ------------------- Level Konfigurieren------------------------ // 
         var levelConfig;
         if (this.level == 1) {
             levelConfig = this.level1
@@ -157,30 +165,25 @@ export default class Game extends Phaser.Scene {
         this.backgroundmusic()
 
 
-        //background
-        //for(var i = 0; i < 10; i++){
-        //    this.clouds.push(new cloud(this))
-        //}
+        // ------------------- background clouds ------------------------ // 
         const NUMBER_OF_CLOUDS = 6; // Anzahl der Wolken
         for (let i = 0; i < NUMBER_OF_CLOUDS; i++) {
             const cloudSize = 0.5 + Math.random(); // Zufällige Größe zwischen 0.5 und 1.5
             this.clouds.push(new cloud(this, cloudSize));
             this.clouds.push(new cloud2(this, cloudSize));
             this.clouds.push(new cloud3(this, cloudSize));
-
-
-
         }
 
+        // ------------------- Map zeug ------------------------ // 
+        //var level = this.add.image(0, 0, levelConfig.map)
+        var level = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, levelConfig.map);
+        level.setDisplaySize(this.cameras.main.width, this.cameras.main.height);
 
-
-        var level = this.add.image(0, 0, levelConfig.map)
         level.scaleX = 1 / levelConfig.mapTileSize[0] * 64
         level.x = this.WIDTH / 2 + levelConfig.mapPositionOffset[0];
         level.scaleY = 1 / levelConfig.mapTileSize[0] * 64
         level.y = this.HEIGHT / 2 + levelConfig.mapPositionOffset[1];
 
-        this.banner = this.add.image(this.WIDTH/2,42,'levelBanner')
 
         //TileMap wird aus Datei erstellt
         const map = this.make.tilemap({ key: levelConfig.tileMap })
@@ -193,14 +196,29 @@ export default class Game extends Phaser.Scene {
         //die sind standartmäßig alle sichtbar also erstmal alle unsichtbar machen
         this.resetMovePossiblilitys()
 
-
-        //Map wird auf dem Bildschirm gecentered
+        //ToDO funktioniert noch nicht 
+        //Map wird auf dem Bildschirm gecentered 
         this.canGoLayer.x = -this.TILE_WIDTH / 2 + this.WIDTH / 2;
         this.canGoLayer.y = this.HEIGHT / 2 - this.MAP_HEIGTH * this.TILE_HEIGHT / 2 - this.TILE_HEIGHT;
 
+        // ------------------- Buttons ------------------------ // 
+        this.banner = this.add.image(this.cameras.main.width / 2, 42, 'levelBanner');
+        this.banner.setScale(0.5); // Optional: Skalierung anpassen
+
+         //TODO disable turn button while turn is being processed
+        this.endTurn = this.add.image(this.cameras.main.width - 100, this.cameras.main.height - 50, 'EndTurn4');
+        this.endTurn.setInteractive();
+        this.endTurn.setScale(0.5); // Optional: Skalierung anpassen
+        this.endTurn.on('pointerdown', () => this.endTurnPressed());
+
+        this.lives = this.add.image(150, 50, 'Leben3');
+        this.lives.setScale(0.5); // Optional: Skalierung anpassen
+        
+         // ------------------- Figuren ------------------------ // 
         //Player wird erstellt
         this.player = new player(this, levelConfig.player[0], levelConfig.player[1]);
 
+        // Gegner werden random im Level erstellt
         for (var i = 0; i < levelConfig.enemys.length; i++) {
             let e;
             let type = levelConfig.enemyTypes[i]
@@ -219,41 +237,60 @@ export default class Game extends Phaser.Scene {
         }
 
         console.log(this.enemys);
-        // macht gegner
-        /*for (var i = 0; i < levelConfig.enemys.length; i++) {
-            let e;
-            let v = Math.floor(Math.random() * 3);
-            switch (v) {
-                case 0:
-                    e = new Enemy1(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
-                    break;
-                case 1:
-                    e = new Enemy3(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
-                    break;
-            }
-            this.enemys.push(e);
-        }
-        */
+    
 
 
         //karten werden erstllt
         this.drawCards(4)
 
-        //endTurn button
-        //TODO disable turn button while turn is being processed
-        this.endTurn = this.add.image(100,150, 'EndTurn4')
-        this.endTurn.setInteractive()
-        this.endTurn.on('pointerdown', () => {
-            this.endTurnPressed()
-        })
-        
-        //lives
-        this.lives = this.add.image(100,25, 'Leben3')
+         // Reagiere auf Fenstergrößenänderungen
+         this.scale.on('resize', this.handleResize, this);
+    }
+
+    handleResize(gameSize) {
+        // Update die Kamera und den Viewport
+        this.cameras.main.setViewport(0, 0, gameSize.width, gameSize.height);
+
+        // Re-positioniere den Banner und skalieren
+        this.banner.setPosition(gameSize.width / 2, 42);
+        this.banner.setScale(0.5); // Skalierung anpassen
+
+        // Re-positioniere die Lebensanzeige und skalieren
+        this.lives.setPosition(150, 50);
+        this.lives.setScale(0.5); // Skalierung anpassen
+
+        // Re-positioniere den End Turn Button unten rechts und skalieren
+        this.endTurn.setPosition(gameSize.width - 100, gameSize.height - 50);
+        this.endTurn.setScale(0.5); // Skalierung anpassen
+
+        // Re-positioniere den Next Level Button oben rechts (falls vorhanden) und skalieren
+        if (this.nextLevel) {
+            this.nextLevel.setPosition(gameSize.width - 100, 50);
+            this.nextLevel.setScale(0.5); // Skalierung anpassen
+        }
+        // Optional: Re-positioniere andere Elemente wie Karten
+        this.repositionCards();
+    }
+
+    repositionCards() {
+        if (!this.cards || this.cards.length === 0) return;
+
+        // Abstand zwischen den Karten
+        const cardSpacing = 150;
+
+        // Berechnung des Startpunkts
+        const startX = this.cameras.main.width / 2 - (this.cards.length - 1) * cardSpacing / 2;
+        const yPosition = this.cameras.main.height - 100;
+
+        // Platzierung der Karten
+        for (let i = 0; i < this.cards.length; i++) {
+            this.cards[i].setPosition(startX + i * cardSpacing, yPosition);
+        }
     }
 
     levelFinished(){
-        //create next levelButton
-        const nextLevel = this.add.text(100, 400, 'Next Level', { fill: '#000' });
+        // Next Level Button oben rechts positionieren
+        const nextLevel = this.add.image(this.cameras.main.width - 150, 50, 'NextLevel');
         nextLevel.setInteractive();
         nextLevel.on('pointerdown', () => {
             this.level += 1;
@@ -265,6 +302,7 @@ export default class Game extends Phaser.Scene {
             this.moves = 4
             this.scene.restart()
         });
+       
     }
 
     unselectCard() {
@@ -283,6 +321,7 @@ export default class Game extends Phaser.Scene {
         setTimeout(() => {
             this.drawCards(amount - 1)
         }, 100);
+        
     }
 
     //lässt in Dauerschleife Backgroundmusik laufen
@@ -301,12 +340,10 @@ export default class Game extends Phaser.Scene {
 
     //lässt alle gegner bewegen und füllt die moves wieder auf
     endTurnPressed() {
-
         //die gegner rufen sich gegenseitig auf, darum muss man nur den ersten aufrufen
-        //das machen wir so, damit die gegner aufeinander warten, bevor sie sic bewegen
+        //das machen wir so, damit die gegner aufeinander warten, bevor sie sich bewegen
         if (this.enemys.length > 0)
             this.enemys[0].move(0, this.enemys[0].attacks);
-
         this.unselectCard()
         this.moves = this.MAX_MOVES
         this.drawCards(2)
@@ -402,4 +439,5 @@ export default class Game extends Phaser.Scene {
             this.updateMovement();
         }
     }
+    
 }
