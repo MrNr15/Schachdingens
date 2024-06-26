@@ -1,7 +1,7 @@
 export default class Enemy extends Phaser.GameObjects.Sprite {
 
     scene;
-    spriteOffset = [41, 18 - 15];
+    spriteOffset = [32, 3];
     movement = [
         [0,0,0,0,0],
         [0,1,1,1,0],
@@ -26,24 +26,24 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         //Animation
         const anim = this.scene.anims.create({
             key: 'attack',
-            frames: this.scene.anims.generateFrameNumbers('enemy1.2Attack', {start: 0, end: 4}),
+            frames: this.scene.anims.generateFrameNumbers('enemy1Attack', {start: 0, end: 4}),
             frameRate: 20,
             repeat: 1
         });
         const anim2 = this.scene.anims.create({
             key: 'idle',
-            frames: [{ key: 'enemy1.2Attack', frame: 0 }],
+            frames: [{ key: 'enemy1Attack', frame: 0 }],
             frameRate: 10,
         })
-        this.setTexture('enemy1.2Attack')
+        this.setTexture('enemy1Attack')
 
         this.gridPos = [pos_x, pos_y]
         this.scene.add.existing(this)
         this.setPosition(pos_x, pos_y, false)
         this.scene.gameField[pos_y][pos_x] = this;
         
-        this.scaleX = 1/170 * 64
-        this.scaleY = 1/170 * 64
+        this.scaleX = 1/720 * 64
+        this.scaleY = 1/720 * 64
 
     }
 

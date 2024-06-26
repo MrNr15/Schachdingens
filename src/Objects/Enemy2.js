@@ -1,7 +1,7 @@
 export default class Enemy extends Phaser.GameObjects.Sprite {
 
     scene;
-    spriteOffset = [41, 18 - 15];
+    spriteOffset = [31, 1];
     movement = [
         [0,0,0,0,0],
         [0,1,1,1,0],
@@ -41,8 +41,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.setPosition(pos_x, pos_y, false)
         this.scene.gameField[pos_y][pos_x] = this;
         
-        this.scaleX = 1/170 * 64
-        this.scaleY = 1/170 * 64
+        this.scaleX = 1/82 * 64
+        this.scaleY = 1/82 * 64
 
     }
 
@@ -144,7 +144,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         var playerPos = this.scene.player.getWorldPos()
         this.alignSprite(playerPos.x, playerPos.y)
         this.scene.player.damage(1);
-        this.play('attack')
+        this.play('attack2')
     }
 
     //Sound beim Bewegen einer Figur

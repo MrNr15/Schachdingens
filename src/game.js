@@ -62,17 +62,24 @@ export default class Game extends Phaser.Scene {
         this.load.audio('drawCard', 'Assets/Sounds/drawCard.mp3')
         this.load.audio('move', 'Assets/Sounds/Bewegung.mp3')
 
-        this.load.image('enemy1', 'Assets/Gegner/Figur1.1.png')
-        this.load.spritesheet('enemy1.2Attack', 'Assets/Gegner/attacke1.2.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy1Attack', 'Assets/Gegner/attacke1.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy3Attack', 'Assets/Gegner/attacke3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy1.2Schaden', 'Assets/Gegner/schaden1.2.png', { frameWidth: 346, frameHeight: 293 });
+        //Gegner
+
+        //broken
+        this.load.spritesheet('enemy1Attack', 'Assets/Gegner/attacke1.png', { frameWidth: 1380, frameHeight: 966 });
+
+        //geht
+        this.load.spritesheet('enemy2Attack', 'Assets/Gegner/Gegner2_a.png', { frameWidth: 76, frameHeight: 85 });
+
+        //broken
+        this.load.spritesheet('enemy3Attack', 'Assets/Gegner/attacke3.png', { frameWidth: 1380, frameHeight: 965 });
+        
+        //unused so far
         this.load.spritesheet('enemy1Schaden', 'Assets/Gegner/schaden1.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('enemy1.2Schaden', 'Assets/Gegner/schaden1.2.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('enemy3Schaden', 'Assets/Gegner/schaden3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy1.2Tod', 'Assets/Gegner/tod1.2.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('enemy1Tod', 'Assets/Gegner/tod1.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('enemy1.2Tod', 'Assets/Gegner/tod1.2.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('enemy3Tod', 'Assets/Gegner/tod3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy2Attack', 'Assets/Gegner/Gegner2_a.png', { frameWidth: 346, frameHeight: 293 });
         
     }
 
@@ -80,6 +87,7 @@ export default class Game extends Phaser.Scene {
     level1 = {
         player: [5, 4],
         enemys: [[3, 3], [5, 5]],
+        enemyTypes: [1,1],
         map: 'map1',
         mapTileSize: [530, 305],
         mapPositionOffset: [-2, -4],
@@ -89,6 +97,7 @@ export default class Game extends Phaser.Scene {
     level2 = {
         player: [5, 4],
         enemys: [[1, 1], [8, 8], [1, 9]],
+        enemyTypes: [1, 2, 2],
         map: 'map2',
         mapTileSize: [63, 36],
         mapPositionOffset: [-65, -18],
@@ -98,6 +107,7 @@ export default class Game extends Phaser.Scene {
     level3 = {
         player: [5, 4],
         enemys: [[1, 1], [8, 8], [2, 9]],
+        enemyTypes: [1, 2, 3],
         map: 'map3',
         mapTileSize: [63, 36],
         mapPositionOffset: [-33, -19],
@@ -191,60 +201,21 @@ export default class Game extends Phaser.Scene {
         //Player wird erstellt
         this.player = new player(this, levelConfig.player[0], levelConfig.player[1]);
 
-        if (levelConfig === this.level1) {
-            for (var i = 0; i < levelConfig.enemys.length; i++) {
-                let e;
-                let v = Math.floor(Math.random() * 3);
-                switch (v) {
-                    case 0:
-                        e = new Enemy1(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
-                        break;
-                    case 1:
-                        e = new Enemy1(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
-                        break;
-                    case 2:
-                        e = new Enemy1(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
-                        break;
-
-                }
-                this.enemys.push(e);
+        for (var i = 0; i < levelConfig.enemys.length; i++) {
+            let e;
+            let type = levelConfig.enemyTypes[i]
+            switch (type) {
+                case 1:
+                    e = new Enemy1(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
+                    break;
+                case 2:
+                    e = new Enemy2(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
+                    break;
+                case 3:
+                    e = new Enemy3(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
+                    break;
             }
-
-        } else if(levelConfig === this.level2){
-            for (var i = 0; i < levelConfig.enemys.length; i++) {
-                let e;
-                let v = Math.floor(Math.random() * 3);
-                switch (v) {
-                    case 0:
-                        e = new Enemy1(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
-                        break;
-                    case 1:
-                        e = new Enemy2(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
-                        break;
-                    case 2:
-                        e = new Enemy2(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
-                        break;
-                }
-                this.enemys.push(e);
-            }
-        } else if (levelConfig === this.level3){
-            for (var i = 0; i < levelConfig.enemys.length; i++) {
-                let e;
-                let v = Math.floor(Math.random() * 3);
-                switch (v) {
-                    case 0:
-                        e = new Enemy1(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
-                        break;
-                    case 1:
-                        e = new Enemy2(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
-                        break;
-                    case 2:
-                        e = new Enemy3(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
-                        break;
-                }
-                this.enemys.push(e);
-            }
-           
+            this.enemys.push(e);
         }
 
         console.log(this.enemys);
@@ -343,7 +314,7 @@ export default class Game extends Phaser.Scene {
 
     update(time, delta) {
 
-        if(this.enemys.length == 0)
+        if(this.enemys.length == 0 || true)//TODO debug
             this.levelFinished()
 
         //texture wird geupdated
