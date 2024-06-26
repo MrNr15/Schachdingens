@@ -210,7 +210,7 @@ export default class Game extends Phaser.Scene {
                         e = new Enemy2(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
                         break;
                     case 2:
-                        e = new Enemy3(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
+                        e = new Enemy2(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
                         break;
                 }
                 this.enemys.push(e);
