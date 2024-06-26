@@ -2,54 +2,19 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
     scene;
     spriteOffset = [41, 18 - 15];
-    movementPatterns = {
+    movement = [
+        [1,0,0,0,0],
+        [0,1,0,0,0],
+        [0,0,1,0,0],
+        [0,0,0,1,0],
+        [0,0,0,0,1],
+    ]
 
-        enemy1: [
-            [0,0,0,0,0],
-            [0,1,1,1,0],
-            [0,1,1,1,0],
-            [0,1,1,1,0],
-            [0,0,0,0,0],
-        ],
-    
-        enemy2: [
-            [0,0,0,0,0],
-            [0,1,1,1,0],
-            [0,1,0,0,0],
-            [0,1,0,0,0],
-            [0,0,0,0,0],
-        ],
-    
-        enemy3: [
-            [0,0,0,0,0],
-            [0,1,0,0,0],
-            [0,0,1,0,0],
-            [0,0,0,1,0],
-            [0,0,0,0,0],
-        ],
-    
-        
-        }
-    
-        attackCount = {
-            enemy1: 1,
-            enemy2: 2,
-            enemy3: 3
-        };
-    
-    
-        moveTime ={
-            enemy1: 250, //milliseconds to finish move animation
-            enemy2: 250, //milliseconds to finish move animation
-            enemy3: 250 //milliseconds to finish move animation
-        };
-    
-        liveCount = {
-            enemy1: 1,
-            enemy2: 3,
-            enemy3: 2
-    
-        };
+    attacks = 2;
+
+    moveTime=250; //milliseconds to finish move animation
+
+    lives = 1;
 
     gridPos;
 
@@ -59,17 +24,17 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
         //Animation
         const anim = this.scene.anims.create({
-            key: 'attack',
-            frames: this.scene.anims.generateFrameNumbers('enemy1.2Attack', {start: 0, end: 4}),
+            key: 'attack3',
+            frames: this.scene.anims.generateFrameNumbers('enemy3Attack', {start: 0, end: 4}),
             frameRate: 20,
             repeat: 1
         });
         const anim2 = this.scene.anims.create({
-            key: 'idle',
-            frames: [{ key: 'enemy1.2Attack', frame: 0 }],
+            key: 'idle3',
+            frames: [{ key: 'enemy3Attack', frame: 0 }],
             frameRate: 10,
         })
-        this.setTexture('enemy1.2Attack')
+        this.setTexture('enemy3Attack')
 
         this.gridPos = [pos_x, pos_y]
         this.scene.add.existing(this)
