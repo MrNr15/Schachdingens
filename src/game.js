@@ -410,10 +410,10 @@ export default class Game extends Phaser.Scene {
 
     //Immer wenn sich die ausgewählte Karte ändert
     updateMovement() {
-        this.buttonSound()
         this.resetMovePossiblilitys()
         if (this.currentCard == null) return;
         this.currentCard.showMoves(this.canGoLayer, this.player)
+        this.buttonSound()
     }
 
     //wird von den karten selbst aufgerufen
