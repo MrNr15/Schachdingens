@@ -142,6 +142,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     angriff(){
+        this.kauen()
         var playerPos = this.scene.player.getWorldPos()
         this.alignSprite(playerPos.x, playerPos.y)
         this.scene.player.damage(1);
@@ -153,6 +154,14 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         var moving = this.scene.sound.add('move')
         moving.setVolume(0.4)
         moving.play()
+    }
+
+    //sound beim kauen
+    kauen(){
+        var kauen = this.scene.sound.add('kauen')
+        kauen.setRate(3)
+        kauen.setVolume(0.4)
+        kauen.play()
     }
 
     setPosition(x, y, interpolate){

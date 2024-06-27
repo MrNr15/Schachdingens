@@ -300,15 +300,23 @@ export default class Game extends Phaser.Scene {
     //Sound vom Kartenziehen
     cardSound() {
         var drawCards = this.sound.add('drawCard')
-        drawCards.setVolume(0.25)
+        drawCards.setVolume(0.2)
         drawCards.play()
     }
 
     //Sound bei Klicken des Buttons
     buttonSound(){
         var button = this.sound.add('buttonSound')
+        button.setRate(1.4)
         button.setVolume(0.4)
         button.play()
+    }
+
+    //sound beim kauen
+    kauen(){
+        var kauen = this.sound.add('kauen')
+        kauen.setVolume(0.4)
+        kauen.play()
     }
 
     //lässt alle gegner bewegen und füllt die moves wieder auf
@@ -402,6 +410,7 @@ export default class Game extends Phaser.Scene {
 
     //Immer wenn sich die ausgewählte Karte ändert
     updateMovement() {
+        this.buttonSound()
         this.resetMovePossiblilitys()
         if (this.currentCard == null) return;
         this.currentCard.showMoves(this.canGoLayer, this.player)
