@@ -117,7 +117,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     attackSound(){
         var attack = this.scene.sound.add('attackSound')
-        attack.setVolume(0.3)
+        attack.setRate(2)
+        attack.setVolume(0.4)
         attack.play()
     }
 }
