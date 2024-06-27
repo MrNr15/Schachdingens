@@ -63,6 +63,7 @@ export default class Game extends Phaser.Scene {
         this.load.audio('move', 'Assets/Sounds/Bewegung.mp3')
         this.load.audio('buttonSound', 'Assets/Sounds/Button.mp3')
         this.load.audio('attackSound', 'Assets/Sounds/Attacke.mp3')
+        this.load.audio('kauen', 'Assets/Sounds/kauen.mp3')
 
         //Gegner
 
