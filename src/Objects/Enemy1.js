@@ -14,7 +14,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
     moveTime=250; //milliseconds to finish move animation
 
-    lives = 1;
+    lives = 2;
 
 
     gridPos;
@@ -35,6 +35,16 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
             frames: [{ key: 'enemy1Attack', frame: 0 }],
             frameRate: 10,
         })
+        const anim3 = this.scene.anims.create({
+            key: 'schaden1',
+            frames: this.scene.anims.generateFrameNumbers('enemy1Schaden', {start: 0, end: 3}),
+            frameRate: 5,
+        })
+        const anim4 = this.scene.anims.create({
+            key: 'death1',
+            frames: this.scene.anims.generateFrameNumbers('enemy1Tod', {start: 0, end: 3}),
+            frameRate: 20,
+        })
         this.setTexture('enemy1Attack')
 
         this.gridPos = [pos_x, pos_y]
@@ -44,6 +54,14 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         
         this.scaleX = 1/720 * 64
         this.scaleY = 1/720 * 64
+
+        this.on('animationcomplete', () => {
+            if(this.lives <= 0){
+                this.death()
+            }else{
+                this.play('idle')
+            }
+        });
 
     }
 
@@ -132,13 +150,10 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     //flipped den sprite damit der gegner in die richtung der position guckt
     alignSprite(x, y){
         //flip sprite to point towards movment
-
-        //!TODO aktuell deaktiviert weil die spirtes nicht zentriert sind
-        return
         if(this.scene.worldPosToScreenPos(x, y).x < this.x-this.spriteOffset[0])
-            this.flipX = true
-        if(this.scene.worldPosToScreenPos(x, y).x > this.x-this.spriteOffset[0])
             this.flipX = false
+        if(this.scene.worldPosToScreenPos(x, y).x > this.x-this.spriteOffset[0])
+            this.flipX = true
     }
 
     angriff(){
@@ -189,14 +204,21 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     damage(amount){
+        
         this.lives -= amount
         if(this.lives <= 0){
-            this.scene.gameField[this.gridPos[1]][this.gridPos[0]] = null
+            this.play('death1')
+        }else{
+            this.play('schaden1')
+        }
+    }
+
+    death(){
+        this.scene.gameField[this.gridPos[1]][this.gridPos[0]] = null
             const index = this.scene.enemys.indexOf(this);
             if (index > -1) { // only splice array when item is found
                 this.scene.enemys.splice(index, 1); // 2nd parameter means remove one item only
             }
             this.destroy()
-        }
     }
 }

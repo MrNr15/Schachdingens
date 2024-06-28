@@ -14,7 +14,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
     moveTime=250; //milliseconds to finish move animation
 
-    lives = 1;
+    lives = 2;
 
     gridPos;
 
@@ -34,6 +34,16 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
             frames: [{ key: 'enemy2Attack', frame: 0 }],
             frameRate: 10,
         })
+        const anim3 = this.scene.anims.create({
+            key: 'schaden2',
+            frames: this.scene.anims.generateFrameNumbers('enemy2Schaden', {start: 0, end: 3}),
+            frameRate: 5,
+        })
+        const anim4 = this.scene.anims.create({
+            key: 'death2',
+            frames: this.scene.anims.generateFrameNumbers('enemy2Tod', {start: 0, end: 3}),
+            frameRate: 20,
+        })
         this.setTexture('enemy2Attack')
 
         this.gridPos = [pos_x, pos_y]
@@ -43,6 +53,14 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         
         this.scaleX = 1/82 * 64
         this.scaleY = 1/82 * 64
+
+        this.on('animationcomplete', () => {
+            if(this.lives <= 0){
+                this.death()
+            }else{
+                this.play('idle2')
+            }
+        });
 
     }
 
@@ -131,9 +149,6 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     //flipped den sprite damit der gegner in die richtung der position guckt
     alignSprite(x, y){
         //flip sprite to point towards movment
-
-        //!TODO aktuell deaktiviert weil die spirtes nicht zentriert sind
-        return
         if(this.scene.worldPosToScreenPos(x, y).x < this.x-this.spriteOffset[0])
             this.flipX = true
         if(this.scene.worldPosToScreenPos(x, y).x > this.x-this.spriteOffset[0])
@@ -188,14 +203,21 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     damage(amount){
+        
         this.lives -= amount
         if(this.lives <= 0){
-            this.scene.gameField[this.gridPos[1]][this.gridPos[0]] = null
+            this.play('death2')
+        }else{
+            this.play('schaden2')
+        }
+    }
+
+    death(){
+        this.scene.gameField[this.gridPos[1]][this.gridPos[0]] = null
             const index = this.scene.enemys.indexOf(this);
             if (index > -1) { // only splice array when item is found
                 this.scene.enemys.splice(index, 1); // 2nd parameter means remove one item only
             }
             this.destroy()
-        }
     }
 }

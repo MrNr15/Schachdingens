@@ -66,23 +66,19 @@ export default class Game extends Phaser.Scene {
         this.load.audio('kauen', 'Assets/Sounds/kauen.mp3')
 
         //Gegner
-
-        //broken
         this.load.spritesheet('enemy1Attack', 'Assets/Gegner/attacke1.png', { frameWidth: 1380, frameHeight: 966 });
-
-        //geht
-        this.load.spritesheet('enemy2Attack', 'Assets/Gegner/Gegner2_a.png', { frameWidth: 76, frameHeight: 85 });
-
-        //broken
+        this.load.spritesheet('enemy2Attack', 'Assets/Gegner/attacke2.png', { frameWidth: 76, frameHeight: 85 });
         this.load.spritesheet('enemy3Attack', 'Assets/Gegner/attacke3.png', { frameWidth: 1380, frameHeight: 965 });
         
-        //unused so far
-        this.load.spritesheet('enemy1Schaden', 'Assets/Gegner/schaden1.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy1.2Schaden', 'Assets/Gegner/schaden1.2.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy3Schaden', 'Assets/Gegner/schaden3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy1Tod', 'Assets/Gegner/tod1.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy1.2Tod', 'Assets/Gegner/tod1.2.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy3Tod', 'Assets/Gegner/tod3.png', { frameWidth: 346, frameHeight: 293 });
+        //schaden
+        this.load.spritesheet('enemy1Schaden', 'Assets/Gegner/schaden1.png', { frameWidth: 1380, frameHeight: 966 });
+        this.load.spritesheet('enemy2Schaden', 'Assets/Gegner/schaden2.png', {frameWidth: 355, frameHeight: 359});
+        this.load.spritesheet('enemy3Schaden', 'Assets/Gegner/schaden3.png', { frameWidth: 1380, frameHeight: 965 });
+
+        //death
+        this.load.spritesheet('enemy1Tod', 'Assets/Gegner/tod1.png', { frameWidth: 1380, frameHeight: 965 });
+        this.load.spritesheet('enemy2Tod', 'Assets/Gegner/tod2.png', { frameWidth: 355, frameHeight: 359 });
+        this.load.spritesheet('enemy3Tod', 'Assets/Gegner/tod3.png', { frameWidth: 1380, frameHeight: 965 });
         
     }
 
