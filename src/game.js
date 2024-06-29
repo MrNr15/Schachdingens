@@ -170,6 +170,7 @@ export default class Game extends Phaser.Scene {
         var levelConfig;
         if (this.level == 1) {
             levelConfig = this.level1
+            this.registry.set('level1Config', levelConfig); // Speichern der Level-Konfiguration
 
             //Backgroundmusik wird aufgerufen
             //bleibt beim neu laden bestehen also muss die nur beim ersten level gestartet werden
@@ -206,7 +207,7 @@ export default class Game extends Phaser.Scene {
 
         //TileMap wird aus Datei erstellt
         const map = this.make.tilemap({ key: levelConfig.tileMap })
-
+        
         //ein eigener Layer für die MovementPrewiev
         const tileSet2 = map.addTilesetImage('CanGo', 'canGoImage')
         this.canGoLayer = map.createLayer('CanGo', tileSet2, 0, 0)
