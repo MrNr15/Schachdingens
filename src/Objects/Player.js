@@ -72,7 +72,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         //wenn man auf das spielfeld klickt wird die karte abgewählt
         if(this.scene.canGoLayer.getTileAt(pos.x, pos.y) != null){
-            this.scene.unselectCard()
+            let objectAtPos = this.scene.gameField[pos.y][pos.x]
+            if(objectAtPos == null)
+                this.scene.unselectCard()
+            else if(objectAtPos != this)
+                objectAtPos.showMovement()
+                
         }
     }
 

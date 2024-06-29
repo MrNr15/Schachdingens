@@ -5,7 +5,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     movement = [
         [0,0,0,0,0],
         [0,1,1,1,0],
-        [0,1,1,1,0],
+        [0,1,0,1,0],
         [0,1,1,1,0],
         [0,0,0,0,0],
     ]
@@ -15,7 +15,6 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     moveTime=250; //milliseconds to finish move animation
 
     lives = 2;
-
 
     gridPos;
 
@@ -62,7 +61,21 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
                 this.play('idle')
             }
         });
+    }
 
+    showMovement(){
+        this.scene.resetMovePossiblilitys()
+        for(var x = 0; x < 5; x++){
+            for(var y = 0; y < 5; y++){
+                if(this.movement[y][x] == 0) continue;
+                var checkingPos = [this.gridPos[0] + x-2, this.gridPos[1] + y-2]
+
+                if(this.scene.canGoLayer.getTileAt(checkingPos[0], checkingPos[1]) == null) continue;
+
+                this.scene.canGoLayer.getTileAt(checkingPos[0], checkingPos[1]).visible = true
+                this.scene.canGoLayer.putTileAt(1,checkingPos[0], checkingPos[1])
+            }
+        }
     }
 
     update(time, delta){

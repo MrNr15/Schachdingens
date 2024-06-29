@@ -335,8 +335,8 @@ export default class Game extends Phaser.Scene {
         //texture wird geupdated
         this.endTurn.setTexture('EndTurn'+this.moves);
         if(this.player != undefined){
-            this.lives = Math.max(this.lives, 0)
-            this.lives.setTexture("Leben"+this.player.lives)
+
+            this.lives.setTexture("Leben"+Math.max(this.player.lives, 0))
         }
 
         //karten werden geupdated
@@ -359,8 +359,10 @@ export default class Game extends Phaser.Scene {
     resetMovePossiblilitys() {
         for (var x = 0; x < this.MAP_WIDTH; x++) {
             for (var y = 0; y < this.MAP_WIDTH; y++) {
-                if (this.canGoLayer.getTileAt(x, y) != null)
+                if (this.canGoLayer.getTileAt(x, y) != null){
                     this.canGoLayer.getTileAt(x, y).visible = false
+                }
+
             }
         }
     }
