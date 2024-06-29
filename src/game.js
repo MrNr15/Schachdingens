@@ -1,6 +1,5 @@
 import player from './Objects/Player.js'
 import card from './Objects/Card.js'
-import enemy from './Objects/Enemy.js'
 import cloud from './Objects/Could.js'
 import cloud2 from './Objects/Cloud2.js'
 import cloud3 from './Objects/Cloud3.js'
@@ -15,7 +14,7 @@ export default class Game extends Phaser.Scene {
         this.load.image('map1', 'Assets/World/Level1.png')
         this.load.image('map2', 'Assets/World/Level2.png')
         this.load.image('map3', 'Assets/World/Level3.png')
-        this.load.image('canGoImage', 'Assets/World/CanGo2.png')
+        this.load.image('canGoImage', 'Assets/World/CanGo.png')
         this.load.image('cloud', 'Assets/World/cloud1.png')
         this.load.image('cloud2', 'Assets/World/cloud2.png')
         this.load.image('cloud3', 'Assets/World/cloud3.png')
