@@ -136,6 +136,7 @@ export default class Game extends Phaser.Scene {
     MAP_HEIGTH = 13
     WIDTH = 1056
     HEIGHT = 596
+   
 
     clouds = []
 
@@ -143,8 +144,26 @@ export default class Game extends Phaser.Scene {
     //null für keine figur
     gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
 
+    constructor() {
+        super({ key: 'Game' });
+      }
+
     //Konstruktor
     create() {
+        // ------------------- Tutorial----------------------- // 
+        const infoText = this.add.text(100, 100, 'Drücke T, um das Tutorial zu starten\nDrücke X, um den Text zu entfernen', { fontSize: '16px', fill: '#fff' });
+
+        this.input.keyboard.on('keydown-T', () => {
+          infoText.destroy(); // Entfernt die Textbox
+          this.scene.start('TutorialScene'); // Startet die Tutorial-Szene
+        });
+    
+        this.input.keyboard.on('keydown-X', () => {
+          infoText.destroy(); // Entfernt die Textbox ohne das Tutorial zu starten
+        });
+      
+        
+    
         // Grundlegende Spielgröße und Zentrierung
         this.scale.resize(window.innerWidth, window.innerHeight);
         // ------------------- Level Konfigurieren------------------------ // 
@@ -192,6 +211,9 @@ export default class Game extends Phaser.Scene {
         const tileSet2 = map.addTilesetImage('CanGo', 'canGoImage')
         this.canGoLayer = map.createLayer('CanGo', tileSet2, 0, 0)
         this.canGoLayer.setDepth(1000000)//über den spielern
+        
+        // Speichern der Kartendaten
+        this.registry.set('mapData', { tileMap: this.level1.tileMap });
 
         //die sind standartmäßig alle sichtbar also erstmal alle unsichtbar machen
         this.resetMovePossiblilitys()

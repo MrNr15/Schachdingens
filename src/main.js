@@ -1,10 +1,11 @@
 import Game from './game.js'
+import TutorialScene from './TutorialScene.js'
 
 const config = {
     type: Phaser.AUTO,
     width: window.innerWidth,
     height: window.innerHeight,
-    scene: Game,
+    scene: [Game,TutorialScene],
     backgroundColor: '#8FD3FF',
     physics: {
         default: 'arcade',
@@ -16,6 +17,7 @@ const config = {
         mode: Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH
     }
+
 };
 
 const game = new Phaser.Game(config);
