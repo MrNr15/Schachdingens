@@ -6,31 +6,45 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     lives = 3;
 
-
-    //hierdran wird festgestellt ob der player nach einem treffer unsichtbar oder sichtbar sein soll
-    blinkingTime;
-    blinkingEnabled = false;
-
     constructor(_scene, pos_x, pos_y){
         super(_scene)
         this.scene = _scene
+
+        const anim4 = this.scene.anims.create({
+            key: 'playerDamage',
+            frames: this.scene.anims.generateFrameNumbers('playerSchaden', {start: 0, end: 3}),
+            frameRate: 8,
+        })
+        const anim2 = this.scene.anims.create({
+            key: 'idlePlayer',
+            frames: [{ key: 'player', frame: 0}],
+            frameRate: 10,
+        })
+        const anim1 = this.scene.anims.create({
+            key: 'deathPlayer',
+            frames: this.scene.anims.generateFrameNumbers('playerTod', {start: 0, end: 3}),
+            frameRate: 20,
+        })
         this.setTexture('player')
+
         this.scene.add.existing(this)
         this.setPosition(pos_x, pos_y, false)
         this.scene.gameField[pos_y][pos_x] = this;
         this.scene.input.on('pointerdown', () => this.click());
         this.scaleX = 1/680*64
         this.scaleY = 1/680*64
+
+        this.on('animationcomplete', () => {
+            if(this.lives <= 0){
+                this.death()
+            }else{
+                this.play('idlePlayer')
+            }
+        });
     }
 
     update(time, delta){
         this.setDepth(this.y)
-        if(this.blinkingEnabled){
-            var time = Date.now() - this.blinkingTime;
-            this.visible = parseInt(time / 75) % 2 // change every 75 milliseconds
-        }else{
-            this.visible = true
-        }
     }
 
     getWorldPos(){
@@ -104,15 +118,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     damage(amount){
         this.lives -= amount;
-        if (this.lives <= 0){
-            this.destroy();
-        }
-
-        this.blinkingEnabled = true
-        this.blinkingTime = Date.now()
-        setTimeout(() => {
-            this.blinkingEnabled = false
-        }, 400)
+        if (this.lives <= 0)
+            this.play("deathPlayer")
+        else
+            this.play("playerDamage")
     }
 
     attackSound(){
@@ -120,5 +129,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
         attack.setRate(2)
         attack.setVolume(0.4)
         attack.play()
+    }
+
+    death(){
+        this.visible = false
+        this.scene.gameLost()
     }
 }

@@ -51,8 +51,8 @@ export default class Game extends Phaser.Scene {
         this.load.spritesheet('playerAttack2', 'Assets/Player/playerAttack2.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('playerAttack3', 'Assets/Player/playerAttack3.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('playerAttack4', 'Assets/Player/playerAttack4.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerSchaden', 'Assets/Player/playerDamage.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerTod', 'Assets/Player/PlayerTod.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerSchaden', 'Assets/Player/playerDamage.png', { frameWidth: 1921, frameHeight: 1081 });
+        this.load.spritesheet('playerTod', 'Assets/Player/PlayerTod.png', { frameWidth: 1921, frameHeight: 1081 });
 
         this.load.tilemapTiledJSON('tileMap1', 'TileMapExports/map.json')
         this.load.tilemapTiledJSON('tileMap2', 'TileMapExports/map2.json')
@@ -336,6 +336,7 @@ export default class Game extends Phaser.Scene {
         //texture wird geupdated
         this.endTurn.setTexture('EndTurn'+this.moves);
         if(this.player != undefined){
+            this.lives = Math.max(this.lives, 0)
             this.lives.setTexture("Leben"+this.player.lives)
         }
 
@@ -418,5 +419,26 @@ export default class Game extends Phaser.Scene {
             this.currentCard = newCard;
             this.updateMovement();
         }
+    }
+    gameLost(){
+        this.endTurn.visible = false
+        for(let i = 0; i < this.cards.length; i++){
+            this.cards[i].delete()
+        }
+        this.cards = []
+
+        const gameOver = this.add.text(this.WIDTH/2, this.HEIGHT/2, 'Game over', { fill: '#000' });
+        const playAgain = this.add.text(this.WIDTH/2, this.HEIGHT/2+100, 'Play again', { fill: '#000' });
+        playAgain.setInteractive();
+        playAgain.on('pointerdown', () => {
+            this.buttonSound()
+            this.enemys = []
+            this.cards = []
+            this.clouds = []
+            this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
+            this.currentCard = null;
+            this.moves = 4
+            this.scene.restart()
+        });
     }
 }
