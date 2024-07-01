@@ -5,7 +5,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     movement = [
         [1,0,0,0,0],
         [0,1,0,0,0],
-        [0,0,1,0,0],
+        [0,0,0,0,0],
         [0,0,0,1,0],
         [0,0,0,0,1],
     ]
@@ -14,7 +14,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
     moveTime=250; //milliseconds to finish move animation
 
-    lives = 1;
+    lives = 2;
 
     gridPos;
 
@@ -34,6 +34,16 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
             frames: [{ key: 'enemy3Attack', frame: 0 }],
             frameRate: 10,
         })
+        const anim3 = this.scene.anims.create({
+            key: 'schaden3',
+            frames: this.scene.anims.generateFrameNumbers('enemy3Schaden', {start: 0, end: 3}),
+            frameRate: 5,
+        })
+        const anim4 = this.scene.anims.create({
+            key: 'death3',
+            frames: this.scene.anims.generateFrameNumbers('enemy3Tod', {start: 0, end: 3}),
+            frameRate: 20,
+        })
         this.setTexture('enemy3Attack')
 
         this.gridPos = [pos_x, pos_y]
@@ -44,6 +54,29 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.scaleX = 1/720 * 64
         this.scaleY = 1/720 * 64
 
+        this.on('animationcomplete', () => {
+            if(this.lives <= 0){
+                this.death()
+            }else{
+                this.play('idle3')
+            }
+        });
+
+    }
+
+    showMovement(){
+        this.scene.resetMovePossiblilitys()
+        for(var x = 0; x < 5; x++){
+            for(var y = 0; y < 5; y++){
+                if(this.movement[y][x] == 0) continue;
+                var checkingPos = [this.gridPos[0] + x-2, this.gridPos[1] + y-2]
+
+                if(this.scene.canGoLayer.getTileAt(checkingPos[0], checkingPos[1]) == null) continue;
+
+                this.scene.canGoLayer.getTileAt(checkingPos[0], checkingPos[1]).visible = true
+                this.scene.canGoLayer.putTileAt(1,checkingPos[0], checkingPos[1])
+            }
+        }
     }
 
     update(time, delta){
@@ -131,9 +164,6 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     //flipped den sprite damit der gegner in die richtung der position guckt
     alignSprite(x, y){
         //flip sprite to point towards movment
-
-        //!TODO aktuell deaktiviert weil die spirtes nicht zentriert sind
-        return
         if(this.scene.worldPosToScreenPos(x, y).x < this.x-this.spriteOffset[0])
             this.flipX = true
         if(this.scene.worldPosToScreenPos(x, y).x > this.x-this.spriteOffset[0])
@@ -141,6 +171,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     angriff(){
+        this.kauen()
         var playerPos = this.scene.player.getWorldPos()
         this.alignSprite(playerPos.x, playerPos.y)
         this.scene.player.damage(1);
@@ -152,6 +183,14 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         var moving = this.scene.sound.add('move')
         moving.setVolume(0.4)
         moving.play()
+    }
+
+     //sound beim kauen
+     kauen(){
+        var kauen = this.scene.sound.add('kauen')
+        kauen.setRate(3)
+        kauen.setVolume(0.4)
+        kauen.play()
     }
 
     setPosition(x, y, interpolate){
@@ -179,14 +218,21 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     damage(amount){
+        
         this.lives -= amount
         if(this.lives <= 0){
-            this.scene.gameField[this.gridPos[1]][this.gridPos[0]] = null
+            this.play('death3')
+        }else{
+            this.play('schaden3')
+        }
+    }
+
+    death(){
+        this.scene.gameField[this.gridPos[1]][this.gridPos[0]] = null
             const index = this.scene.enemys.indexOf(this);
             if (index > -1) { // only splice array when item is found
                 this.scene.enemys.splice(index, 1); // 2nd parameter means remove one item only
             }
             this.destroy()
-        }
     }
 }

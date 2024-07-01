@@ -107,6 +107,11 @@ export default class Card extends Phaser.GameObjects.Sprite {
                 if(isOccupied == false && this.type == 1) continue;
 
                 canGolayer.getTileAt(checkingPos[0], checkingPos[1]).visible = true
+                if(this.type == 1){
+                    canGolayer.putTileAt(3, checkingPos[0], checkingPos[1])
+                }else{
+                    canGolayer.putTileAt(1, checkingPos[0], checkingPos[1])
+                }
             }
         }
     }

@@ -90,6 +90,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     //index ist der index vom enemy in scene.enemys
     move(index, attacks){
         if(this.canAttack()){
+            this.kauen()
             this.angriff()
         }else{
             this.bewegung()

@@ -144,7 +144,9 @@ export default class Game extends Phaser.Scene {
     //null für keine figur
     gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
 
-    
+    constructor() {
+        super({ key: 'Game' });
+      }
 
     //Konstruktor
     create() {

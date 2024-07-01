@@ -36,13 +36,13 @@
         {
          "columns":1,
          "firstgid":1,
-         "image":"..\/Assets\/World\/CanGo2.png",
-         "imageheight":37,
+         "image":"..\/Assets\/World\/CanGo.png",
+         "imageheight":111,
          "imagewidth":64,
          "margin":0,
          "name":"CanGo",
          "spacing":0,
-         "tilecount":1,
+         "tilecount":3,
          "tileheight":37,
          "tilewidth":64
         }],

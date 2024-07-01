@@ -6,31 +6,67 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     lives = 3;
 
-
-    //hierdran wird festgestellt ob der player nach einem treffer unsichtbar oder sichtbar sein soll
-    blinkingTime;
-    blinkingEnabled = false;
-
     constructor(_scene, pos_x, pos_y){
         super(_scene)
         this.scene = _scene
+
+        //Animation
+
+        const anim4 = this.scene.anims.create({
+            key: 'playerDamage',
+            frames: this.scene.anims.generateFrameNumbers('playerSchaden', {start: 0, end: 3}),
+            frameRate: 8,
+        })
+        const anim2 = this.scene.anims.create({
+            key: 'idlePlayer',
+            frames: [{ key: 'player', frame: 0}],
+            frameRate: 10,
+        })
+        const anim1 = this.scene.anims.create({
+            key: 'deathPlayer',
+            frames: this.scene.anims.generateFrameNumbers('playerTod', {start: 0, end: 3}),
+            frameRate: 20,
+        })
+        const anim5 = this.scene.anims.create({
+            key: 'playerAttack1',
+            frames: this.scene.anims.generateFrameNumbers('playerAttack1', {start: 0, end: 3}),
+            frameRate: 5,
+        });
+        const anim6 = this.scene.anims.create({
+            key: 'playerAttack2',
+            frames: this.scene.anims.generateFrameNumbers('playerAttack2', {start: 0, end: 3}),
+            frameRate: 5,
+        });
+        const anim7 = this.scene.anims.create({
+            key: 'playerAttack3',
+            frames: this.scene.anims.generateFrameNumbers('playerAttack3', {start: 0, end: 3}),
+            frameRate: 5,
+        });
+        const anim8 = this.scene.anims.create({
+            key: 'playerAttack4',
+            frames: this.scene.anims.generateFrameNumbers('playerAttack4', {start: 0, end: 3}),
+            frameRate: 5,
+        });
         this.setTexture('player')
+
         this.scene.add.existing(this)
         this.setPosition(pos_x, pos_y, false)
         this.scene.gameField[pos_y][pos_x] = this;
         this.scene.input.on('pointerdown', () => this.click());
         this.scaleX = 1/680*64
         this.scaleY = 1/680*64
+
+        this.on('animationcomplete', () => {
+            if(this.lives <= 0){
+                this.death()
+            }else{
+                this.play('idlePlayer')
+            }
+        });
     }
 
     update(time, delta){
         this.setDepth(this.y)
-        if(this.blinkingEnabled){
-            var time = Date.now() - this.blinkingTime;
-            this.visible = parseInt(time / 75) % 2 // change every 75 milliseconds
-        }else{
-            this.visible = true
-        }
     }
 
     getWorldPos(){
@@ -47,8 +83,19 @@ export default class Player extends Phaser.GameObjects.Sprite {
         if(this.scene.canIMoveThere(pos)){
             if(this.scene.currentCard.type == 0) //bewegungskarte ausgewählt
                 this.move(pos)
-            if(this.scene.currentCard.type == 1) //angriffskarte ausgewählt
+            if(this.scene.currentCard.type == 1){ //angriffskarte ausgewählt
+                this.attackSound()
                 this.scene.gameField[pos.y][pos.x].damage(1)
+                if(false){
+                    this.play('playerAttack1')
+                }else if(false){
+                    this.play('playerAttack2')
+                }else if(false){
+                    this.play('playerAttack3')
+                }else if(true){
+                    this.play('playerAttack4')
+                }
+            }
             
             this.scene.playerMoved()
             return
@@ -56,7 +103,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         //wenn man auf das spielfeld klickt wird die karte abgewählt
         if(this.scene.canGoLayer.getTileAt(pos.x, pos.y) != null){
-            this.scene.unselectCard()
+            let objectAtPos = this.scene.gameField[pos.y][pos.x]
+            if(objectAtPos == null)
+                this.scene.unselectCard()
+            else if(objectAtPos != this)
+                objectAtPos.showMovement()
+                
         }
     }
 
@@ -102,14 +154,21 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     damage(amount){
         this.lives -= amount;
-        if (this.lives <= 0){
-            this.destroy();
-        }
+        if (this.lives <= 0)
+            this.play("deathPlayer")
+        else
+            this.play("playerDamage")
+    }
 
-        this.blinkingEnabled = true
-        this.blinkingTime = Date.now()
-        setTimeout(() => {
-            this.blinkingEnabled = false
-        }, 400)
+    attackSound(){
+        var attack = this.scene.sound.add('attackSound')
+        attack.setRate(2)
+        attack.setVolume(0.4)
+        attack.play()
+    }
+
+    death(){
+        this.visible = false
+        this.scene.gameLost()
     }
 }
