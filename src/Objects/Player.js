@@ -30,22 +30,22 @@ export default class Player extends Phaser.GameObjects.Sprite {
         const anim5 = this.scene.anims.create({
             key: 'playerAttack1',
             frames: this.scene.anims.generateFrameNumbers('playerAttack1', {start: 0, end: 3}),
-            frameRate: 5,
+            frameRate: 15,
         });
         const anim6 = this.scene.anims.create({
             key: 'playerAttack2',
             frames: this.scene.anims.generateFrameNumbers('playerAttack2', {start: 0, end: 3}),
-            frameRate: 5,
+            frameRate: 15,
         });
         const anim7 = this.scene.anims.create({
             key: 'playerAttack3',
             frames: this.scene.anims.generateFrameNumbers('playerAttack3', {start: 0, end: 3}),
-            frameRate: 5,
+            frameRate: 15,
         });
         const anim8 = this.scene.anims.create({
             key: 'playerAttack4',
             frames: this.scene.anims.generateFrameNumbers('playerAttack4', {start: 0, end: 3}),
-            frameRate: 5,
+            frameRate: 15,
         });
         this.setTexture('player')
 
@@ -88,11 +88,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
                 this.scene.gameField[pos.y][pos.x].damage(1)
                 if(false){
                     this.play('playerAttack1')
-                }else if(false){
+                }else if(true){
                     this.play('playerAttack2')
                 }else if(false){
                     this.play('playerAttack3')
-                }else if(true){
+                }else if(false){
                     this.play('playerAttack4')
                 }
             }
