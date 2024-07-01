@@ -84,6 +84,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
             this.movementSprite.setPos(this.x - 23, this.y +43); // Anpassung der Y-Position für movementSprite
         }
     }
+    
 
     //Macht auf dem Layer alle Tiles sichtbar, welche die karte erlaubt
     //Man kann sich nur dahin bewegen wenn die preview auch sichtbar ist
