@@ -334,6 +334,7 @@ export default class Game extends Phaser.Scene {
 
     drawCards(amount) {
         if (amount <= 0) return
+        
 
         this.cardSound()
         setTimeout(() => {
@@ -368,6 +369,7 @@ export default class Game extends Phaser.Scene {
             this.enemys[0].move(0, this.enemys[0].attacks);
         this.unselectCard()
         this.moves = this.MAX_MOVES
+        if(this.player.lives <= 0) return;
         this.drawCards(2)
     }
 
