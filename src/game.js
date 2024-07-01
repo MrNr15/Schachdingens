@@ -381,7 +381,8 @@ export default class Game extends Phaser.Scene {
         //texture wird geupdated
         this.endTurn.setTexture('EndTurn'+this.moves);
         if(this.player != undefined){
-            this.lives.setTexture("Leben"+this.player.lives)
+            let playerLives = Math.max(this.player.lives, 0)
+            this.lives.setTexture("Leben"+playerLives)
         }
 
         //karten werden geupdated
@@ -463,5 +464,24 @@ export default class Game extends Phaser.Scene {
             this.updateMovement();
         }
     }
-    
+    gameLost(){
+        this.endTurn.visible = false
+        for(let i = 0; i < this.cards.length; i++){
+            this.cards[i].delete()
+        }
+        this.cards = []
+
+        const gameOver = this.add.text(this.WIDTH/2, this.HEIGHT/2, 'Game over', { fill: '#000' });
+        const playAgain = this.add.text(this.WIDTH/2, this.HEIGHT/2+100, 'Play again', { fill: '#000' });
+        playAgain.setInteractive();
+        playAgain.on('pointerdown', () => {
+            this.enemys = []
+            this.cards = []
+            this.clouds = []
+            this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
+            this.currentCard = null;
+            this.moves = 4
+            this.scene.restart()
+        });
+    }
 }

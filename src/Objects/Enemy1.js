@@ -174,7 +174,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         var playerPos = this.scene.player.getWorldPos()
         this.alignSprite(playerPos.x, playerPos.y)
         this.scene.player.damage(1);
-        this.play('attack')
+        this.play('attack1')
     }
 
     //Sound beim Bewegen einer Figur
