@@ -86,13 +86,17 @@ export default class Player extends Phaser.GameObjects.Sprite {
             if(this.scene.currentCard.type == 1){ //angriffskarte ausgewählt
                 this.attackSound()
                 this.scene.gameField[pos.y][pos.x].damage(1)
-                if(false){
+                // sollen iwann die Koordinaten vom Gegner sein der geschlagen wurde
+                const x1 = 0;
+                const y1 = 0;
+                // werden mit den Koordinaten vom Player verglichen um richtige Animation rauszufiltern
+                if(this.x > x1){
                     this.play('playerAttack1')
-                }else if(true){
+                }else if(this.x < x1){
                     this.play('playerAttack2')
-                }else if(false){
+                }else if(this.y < y1){
                     this.play('playerAttack3')
-                }else if(false){
+                }else if(this.y > y1){
                     this.play('playerAttack4')
                 }
             }
