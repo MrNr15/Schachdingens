@@ -60,6 +60,9 @@ export default class TutorialScene extends Phaser.Scene {
         this.load.audio('backgroundmusic', 'Assets/Sounds/background.mp3')
         this.load.audio('drawCard', 'Assets/Sounds/drawCard.mp3')
         this.load.audio('move', 'Assets/Sounds/Bewegung.mp3')
+        this.load.audio('buttonSound', 'Assets/Sounds/Button.mp3')
+        this.load.audio('attackSound', 'Assets/Sounds/Attacke.mp3')
+        this.load.audio('kauen', 'Assets/Sounds/kauen.mp3')
 
         this.load.image('player', 'Assets/Player/Spieler.png')
         this.load.spritesheet('playerAttack1', 'Assets/Player/playerAttack1.png', { frameWidth: 1920, frameHeight: 1080 });
