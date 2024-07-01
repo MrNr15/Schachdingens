@@ -1,6 +1,5 @@
 import player from './Objects/Player.js'
 import card from './Objects/Card.js'
-import enemy from './Objects/Enemy.js'
 import cloud from './Objects/Could.js'
 import cloud2 from './Objects/Cloud2.js'
 import cloud3 from './Objects/Cloud3.js'
@@ -8,7 +7,10 @@ import Enemy1 from './Objects/Enemy1.js'
 import Enemy2 from './Objects/Enemy2.js'
 import Enemy3 from './Objects/Enemy3.js'
 
-export default class Game extends Phaser.Scene {
+export default class TutorialScene extends Phaser.Scene {
+  constructor() {
+    super({ key: 'TutorialScene' });
+  }
 
     //Hier werden Dateien geladen
     preload() {
@@ -98,26 +100,7 @@ export default class Game extends Phaser.Scene {
         tileMap: 'tileMap1'
     }
 
-    level2 = {
-        player: [5, 4],
-        enemys: [[1, 1], [8, 8], [1, 9]],
-        enemyTypes: [1, 2, 2],
-        map: 'map2',
-        mapTileSize: [63, 36],
-        mapPositionOffset: [-65, -18],
-        tileMap: 'tileMap2'
-    }
-
-    level3 = {
-        player: [5, 4],
-        enemys: [[1, 1], [8, 8], [2, 9]],
-        enemyTypes: [1, 2, 3],
-        map: 'map3',
-        mapTileSize: [63, 36],
-        mapPositionOffset: [-33, -19],
-        tileMap: 'tileMap3'
-    }
-
+  
     level = 1//aktuelles level
 
     //globale variablen
@@ -142,26 +125,11 @@ export default class Game extends Phaser.Scene {
     //null für keine figur
     gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
 
-    constructor() {
-        super({ key: 'Game' });
-      }
+  
 
     //Konstruktor
     create() {
-        // ------------------- Tutorial----------------------- // 
-        const infoText = this.add.text(100, 100, 'Drücke T, um das Tutorial zu starten\nDrücke X, um den Text zu entfernen', { fontSize: '16px', fill: '#fff' });
-
-        this.input.keyboard.on('keydown-T', () => {
-          infoText.destroy(); // Entfernt die Textbox
-          this.scene.start('TutorialScene'); // Startet die Tutorial-Szene
-        });
-    
-        this.input.keyboard.on('keydown-X', () => {
-          infoText.destroy(); // Entfernt die Textbox ohne das Tutorial zu starten
-        });
-      
-        
-    
+       
         // Grundlegende Spielgröße und Zentrierung
         this.scale.resize(window.innerWidth, window.innerHeight);
         // ------------------- Level Konfigurieren------------------------ // 
@@ -174,13 +142,7 @@ export default class Game extends Phaser.Scene {
             //bleibt beim neu laden bestehen also muss die nur beim ersten level gestartet werden
             this.backgroundmusic()
         }
-        if (this.level == 2)
-            levelConfig = this.level2
-        this.backgroundmusic()
-
-        if (this.level == 3)
-            levelConfig = this.level3
-        this.backgroundmusic()
+       
 
 
         // ------------------- background clouds ------------------------ // 
@@ -332,17 +294,13 @@ export default class Game extends Phaser.Scene {
         this.currentCard = null
     }
 
-    drawCards(amount) {
-        if (amount <= 0) return
+    drawCards() {
 
         this.cardSound()
         setTimeout(() => {
-            this.cards.push(new card(this, this.cards, parseInt(Math.random() * 4) + 1));
+          new card(this, this.cards, parseInt(5));
         }, 500); //ruft die Methode die eine neue Karte erzeugt später auf damit der Sound besser passt
 
-        setTimeout(() => {
-            this.drawCards(amount - 1)
-        }, 100);
         
     }
 

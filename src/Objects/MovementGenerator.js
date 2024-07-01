@@ -89,8 +89,22 @@ export default class MovementGenerator {
             var index = parseInt(Math.random() * this.cost4.length)
             return this.cost4[index]
         }
+        if(cost == 5){
+            var tmove = 
+            [
+                [0,0,1,0,0],
+                [0,0,0,0,0],
+                [1,0,0,0,1],
+                [0,0,0,0,0],
+                [0,0,1,0,0]
+            ]
+        return tmove;
+        }
         //Fallback
         var index = parseInt(Math.random() * this.cost1.length)
             return this.cost1[index]
     }
+
+    
+
 }
