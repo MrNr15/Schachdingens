@@ -72,7 +72,7 @@ export default class Game extends Phaser.Scene {
 
         //Gegner
         this.load.spritesheet('enemy1Attack', 'Assets/Gegner/attacke1.png', { frameWidth: 1380, frameHeight: 966 });
-        this.load.spritesheet('enemy2Attack', 'Assets/Gegner/attacke2.png', { frameWidth: 76, frameHeight: 85 });
+        this.load.spritesheet('enemy2Attack', 'Assets/Gegner/attacke2.png', { frameWidth: 355, frameHeight: 471 });
         this.load.spritesheet('enemy3Attack', 'Assets/Gegner/attacke3.png', { frameWidth: 1380, frameHeight: 965 });
         
         //schaden
@@ -164,22 +164,24 @@ export default class Game extends Phaser.Scene {
     
         // Grundlegende Spielgröße und Zentrierung
         this.scale.resize(window.innerWidth, window.innerHeight);
+        this.WIDTH = this.sys.game.scale.gameSize.width
+        this.HEIGHT = this.sys.game.scale.gameSize.height
         // ------------------- Level Konfigurieren------------------------ // 
-        var levelConfig;
+        this.levelConfig;
         if (this.level == 1) {
-            levelConfig = this.level1
-            this.registry.set('level1Config', levelConfig); // Speichern der Level-Konfiguration
+            this.levelConfig = this.level1
+            this.registry.set('level1Config', this.levelConfig); // Speichern der Level-Konfiguration
 
             //Backgroundmusik wird aufgerufen
             //bleibt beim neu laden bestehen also muss die nur beim ersten level gestartet werden
             this.backgroundmusic()
         }
         if (this.level == 2)
-            levelConfig = this.level2
+            this.levelConfig = this.level2
         this.backgroundmusic()
 
         if (this.level == 3)
-            levelConfig = this.level3
+            this.levelConfig = this.level3
         this.backgroundmusic()
 
 
@@ -194,17 +196,17 @@ export default class Game extends Phaser.Scene {
 
         // ------------------- Map zeug ------------------------ // 
         //var level = this.add.image(0, 0, levelConfig.map)
-        var level = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, levelConfig.map);
-        level.setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+        this.levelMap = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, this.levelConfig.map);
+        this.levelMap.setDisplaySize(this.cameras.main.width, this.cameras.main.height);
 
-        level.scaleX = 1 / levelConfig.mapTileSize[0] * 64
-        level.x = this.WIDTH / 2 + levelConfig.mapPositionOffset[0];
-        level.scaleY = 1 / levelConfig.mapTileSize[0] * 64
-        level.y = this.HEIGHT / 2 + levelConfig.mapPositionOffset[1];
+        this.levelMap.scaleX = 1 / this.levelConfig.mapTileSize[0] * 64
+        this.levelMap.x = this.WIDTH / 2 + this.levelConfig.mapPositionOffset[0];
+        this.levelMap.scaleY = 1 / this.levelConfig.mapTileSize[0] * 64
+        this.levelMap.y = this.HEIGHT / 2 + this.levelConfig.mapPositionOffset[1];
 
 
         //TileMap wird aus Datei erstellt
-        const map = this.make.tilemap({ key: levelConfig.tileMap })
+        const map = this.make.tilemap({ key: this.levelConfig.tileMap })
         
         //ein eigener Layer für die MovementPrewiev
         const tileSet2 = map.addTilesetImage('CanGo', 'canGoImage')
@@ -240,21 +242,21 @@ export default class Game extends Phaser.Scene {
         
          // ------------------- Figuren ------------------------ // 
         //Player wird erstellt
-        this.player = new player(this, levelConfig.player[0], levelConfig.player[1]);
+        this.player = new player(this, this.levelConfig.player[0], this.levelConfig.player[1]);
 
         // Gegner werden random im Level erstellt
-        for (var i = 0; i < levelConfig.enemys.length; i++) {
+        for (var i = 0; i < this.levelConfig.enemys.length; i++) {
             let e;
-            let type = levelConfig.enemyTypes[i]
+            let type = this.levelConfig.enemyTypes[i]
             switch (type) {
                 case 1:
-                    e = new Enemy1(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
+                    e = new Enemy1(this, this.levelConfig.enemys[i][0], this.levelConfig.enemys[i][1]);
                     break;
                 case 2:
-                    e = new Enemy2(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
+                    e = new Enemy2(this, this.levelConfig.enemys[i][0], this.levelConfig.enemys[i][1]);
                     break;
                 case 3:
-                    e = new Enemy3(this, levelConfig.enemys[i][0], levelConfig.enemys[i][1]);
+                    e = new Enemy3(this, this.levelConfig.enemys[i][0], this.levelConfig.enemys[i][1]);
                     break;
             }
             this.enemys.push(e);
@@ -272,6 +274,9 @@ export default class Game extends Phaser.Scene {
     }
 
     handleResize(gameSize) {
+
+        this.WIDTH = gameSize._width
+        this.HEIGHT = gameSize._height
        
         // Update die Kamera und den Viewport
         this.cameras.main.setViewport(0, 0, gameSize._width, gameSize._height);
@@ -388,6 +393,8 @@ export default class Game extends Phaser.Scene {
     update(time, delta) {
         // Reagiere auf Fenstergrößenänderungen
        // this.scale.on('resize', this.handleResize, this);
+
+        console.log(-this.TILE_WIDTH / 2 + this.WIDTH / 2, this.HEIGHT / 2 - this.MAP_HEIGTH * this.TILE_HEIGHT / 2 - this.TILE_HEIGHT)
 
         if(this.enemys.length == 0 || true)//TODO debug
             this.levelFinished()
