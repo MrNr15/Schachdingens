@@ -58,7 +58,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
             if(this.lives <= 0){
                 this.death()
             }else{
-                this.play('idle')
+                this.play('idle1')
             }
         });
     }
