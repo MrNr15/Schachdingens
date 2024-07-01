@@ -11,11 +11,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.scene = _scene
 
         //Animation
-        const anim = this.scene.anims.create({
-            key: 'playerAttack1',
-            frames: this.scene.anims.generateFrameNumbers('playerAttack1', {start: 0, end: 3}),
-            frameRate: 5,
-        });
 
         const anim4 = this.scene.anims.create({
             key: 'playerDamage',
@@ -32,6 +27,26 @@ export default class Player extends Phaser.GameObjects.Sprite {
             frames: this.scene.anims.generateFrameNumbers('playerTod', {start: 0, end: 3}),
             frameRate: 20,
         })
+        const anim5 = this.scene.anims.create({
+            key: 'playerAttack1',
+            frames: this.scene.anims.generateFrameNumbers('playerAttack1', {start: 0, end: 3}),
+            frameRate: 5,
+        });
+        const anim6 = this.scene.anims.create({
+            key: 'playerAttack2',
+            frames: this.scene.anims.generateFrameNumbers('playerAttack2', {start: 0, end: 3}),
+            frameRate: 5,
+        });
+        const anim7 = this.scene.anims.create({
+            key: 'playerAttack3',
+            frames: this.scene.anims.generateFrameNumbers('playerAttack3', {start: 0, end: 3}),
+            frameRate: 5,
+        });
+        const anim8 = this.scene.anims.create({
+            key: 'playerAttack4',
+            frames: this.scene.anims.generateFrameNumbers('playerAttack4', {start: 0, end: 3}),
+            frameRate: 5,
+        });
         this.setTexture('player')
 
         this.scene.add.existing(this)
@@ -71,7 +86,15 @@ export default class Player extends Phaser.GameObjects.Sprite {
             if(this.scene.currentCard.type == 1){ //angriffskarte ausgewählt
                 this.attackSound()
                 this.scene.gameField[pos.y][pos.x].damage(1)
-                this.play('playerAttack1')
+                if(false){
+                    this.play('playerAttack1')
+                }else if(false){
+                    this.play('playerAttack2')
+                }else if(false){
+                    this.play('playerAttack3')
+                }else if(true){
+                    this.play('playerAttack4')
+                }
             }
             
             this.scene.playerMoved()
