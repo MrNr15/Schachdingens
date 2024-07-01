@@ -86,9 +86,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
             if(this.scene.currentCard.type == 1){ //angriffskarte ausgewählt
                 this.attackSound()
                 this.scene.gameField[pos.y][pos.x].damage(1)
-                if(true){
+                if(false){
                     this.play('playerAttack1')
-                }else if(false){
+                }else if(true){
                     this.play('playerAttack2')
                 }else if(false){
                     this.play('playerAttack3')

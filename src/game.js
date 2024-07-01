@@ -230,7 +230,10 @@ export default class Game extends Phaser.Scene {
         this.endTurn = this.add.image(this.cameras.main.width - 100, this.cameras.main.height - 50, 'EndTurn4');
         this.endTurn.setInteractive();
         this.endTurn.setScale(0.5); // Optional: Skalierung anpassen
-        this.endTurn.on('pointerdown', () => this.endTurnPressed());
+        this.endTurn.on('pointerdown', () => {
+            this.endTurnPressed()
+            this.buttonSound()
+        });
 
         this.lives = this.add.image(150, 50, 'Leben3');
         this.lives.setScale(0.5); // Optional: Skalierung anpassen
@@ -315,6 +318,7 @@ export default class Game extends Phaser.Scene {
         const nextLevel = this.add.image(this.cameras.main.width - 150, 50, 'NextLevel');
         nextLevel.setInteractive();
         nextLevel.on('pointerdown', () => {
+            this.buttonSound()
             this.level += 1;
             this.enemys = []
             this.cards = []
@@ -359,6 +363,14 @@ export default class Game extends Phaser.Scene {
         var drawCards = this.sound.add('drawCard')
         drawCards.setVolume(0.25)
         drawCards.play()
+    }
+
+     //Sound bei Klicken des Buttons
+     buttonSound(){
+        var button = this.sound.add('buttonSound')
+        button.setRate(1.4)
+        button.setVolume(0.4)
+        button.play()
     }
 
     //lässt alle gegner bewegen und füllt die moves wieder auf
@@ -457,6 +469,7 @@ export default class Game extends Phaser.Scene {
         this.resetMovePossiblilitys()
         if (this.currentCard == null) return;
         this.currentCard.showMoves(this.canGoLayer, this.player)
+        this.buttonSound()
     }
 
     //wird von den karten selbst aufgerufen
