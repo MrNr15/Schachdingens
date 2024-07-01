@@ -46,7 +46,7 @@ export default class Game extends Phaser.Scene {
 
 
         this.load.image('player', 'Assets/Player/Spieler.png')
-        this.load.spritesheet('playerAttack1', 'Assets/Player/playerAttack1.png', { frameWidth: 346, frameHeight: 293 });
+        this.load.spritesheet('playerAttack1', 'Assets/Player/playerAttack1.png', { frameWidth: 1920, frameHeight: 1080 });
         this.load.spritesheet('playerAttack2', 'Assets/Player/playerAttack2.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('playerAttack3', 'Assets/Player/playerAttack3.png', { frameWidth: 346, frameHeight: 293 });
         this.load.spritesheet('playerAttack4', 'Assets/Player/playerAttack4.png', { frameWidth: 346, frameHeight: 293 });
