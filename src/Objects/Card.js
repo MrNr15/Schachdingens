@@ -28,6 +28,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
         this.cost = cost
         this.movement = moveGenerator.getMovement(cost)
 
+
         
         this.type = parseInt(Math.random()*2)
         this.scene = _scene
@@ -43,6 +44,8 @@ export default class Card extends Phaser.GameObjects.Sprite {
                 this.setTexture('moveCard3')
             if(cost == 4)
                 this.setTexture('card')
+            if(cost == 5)
+                this.setTexture('moveCard1')
         }
         if(this.type==1){
             if(cost == 0)
@@ -69,11 +72,16 @@ export default class Card extends Phaser.GameObjects.Sprite {
         this.movementSprite = new cardMovement(this.scene, this.movement)
     }
 
-    update(time, delta){
-        //karten werden gleichmäßig abhängig von der Position in der Liste vertelit
-        if (this.cards.indexOf(this) != -1){
-            this.x = this.scene.WIDTH * ((this.cards.indexOf(this)+1) / (this.cards.length+1))
-            this.movementSprite.setPos(this.x - 23, this.y + 40)
+
+    
+    update(time, delta) {
+        // Karten werden gleichmäßig abhängig von der Position in der Liste verteilt
+        if (this.cards.indexOf(this) != -1) {
+            const cardSpacing = 150;
+            const startX = this.scene.cameras.main.width / 2 - (this.cards.length - 1) * cardSpacing / 2;
+            this.x = startX + this.cards.indexOf(this) * cardSpacing;
+            this.y = this.scene.cameras.main.height - 100; // Position am unteren Rand
+            this.movementSprite.setPos(this.x - 23, this.y +43); // Anpassung der Y-Position für movementSprite
         }
     }
 
@@ -111,4 +119,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
         this.movementSprite.delete()
         this.destroy()
     }
+
+    
+    
 }

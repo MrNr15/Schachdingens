@@ -1,17 +1,27 @@
 import Game from './game.js'
+import TutorialScene from './TutorialScene.js'
 
 const config = {
     type: Phaser.AUTO,
-    width: 1056,
-    height: 594,
-    scene: Game,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    scene: [Game,TutorialScene],
     backgroundColor: '#8FD3FF',
     physics: {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 }
         }
+    },
+    scale: {
+        mode: Phaser.Scale.RESIZE,
+        autoCenter: Phaser.Scale.CENTER_BOTH
     }
+
 };
 
 const game = new Phaser.Game(config);
+
+window.addEventListener('resize', () => {
+    game.scale.resize(window.innerWidth, window.innerHeight);
+});
