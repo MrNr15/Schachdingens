@@ -144,9 +144,7 @@ export default class Game extends Phaser.Scene {
     //null für keine figur
     gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
 
-    constructor() {
-        super({ key: 'Game' });
-      }
+    
 
     //Konstruktor
     create() {
@@ -267,15 +265,16 @@ export default class Game extends Phaser.Scene {
         this.drawCards(4)
 
          // Reagiere auf Fenstergrößenänderungen
-         this.scale.on('resize', this.handleResize, this);
+         //this.scale.on('resize', this.handleResize, this);
     }
 
     handleResize(gameSize) {
+       
         // Update die Kamera und den Viewport
-        this.cameras.main.setViewport(0, 0, gameSize.width, gameSize.height);
+        this.cameras.main.setViewport(0, 0, gameSize._width, gameSize._height);
 
         // Re-positioniere den Banner und skalieren
-        this.banner.setPosition(gameSize.width / 2, 42);
+        this.banner.setPosition(gameSize._width / 2, 42);
         this.banner.setScale(0.5); // Skalierung anpassen
 
         // Re-positioniere die Lebensanzeige und skalieren
@@ -283,12 +282,12 @@ export default class Game extends Phaser.Scene {
         this.lives.setScale(0.5); // Skalierung anpassen
 
         // Re-positioniere den End Turn Button unten rechts und skalieren
-        this.endTurn.setPosition(gameSize.width - 100, gameSize.height - 50);
+        this.endTurn.setPosition(gameSize._width - 100, gameSize._height - 50);
         this.endTurn.setScale(0.5); // Skalierung anpassen
 
         // Re-positioniere den Next Level Button oben rechts (falls vorhanden) und skalieren
         if (this.nextLevel) {
-            this.nextLevel.setPosition(gameSize.width - 100, 50);
+            this.nextLevel.setPosition(gameSize._width - 100, 50);
             this.nextLevel.setScale(0.5); // Skalierung anpassen
         }
         // Optional: Re-positioniere andere Elemente wie Karten
@@ -302,8 +301,8 @@ export default class Game extends Phaser.Scene {
         const cardSpacing = 150;
 
         // Berechnung des Startpunkts
-        const startX = this.cameras.main.width / 2 - (this.cards.length - 1) * cardSpacing / 2;
-        const yPosition = this.cameras.main.height - 100;
+        const startX = this.cameras.main._width / 2 - (this.cards.length - 1) * cardSpacing / 2;
+        const yPosition = this.cameras.main._height - 100;
 
         // Platzierung der Karten
         for (let i = 0; i < this.cards.length; i++) {
@@ -373,6 +372,8 @@ export default class Game extends Phaser.Scene {
     }
 
     update(time, delta) {
+        // Reagiere auf Fenstergrößenänderungen
+       // this.scale.on('resize', this.handleResize, this);
 
         if(this.enemys.length == 0 || true)//TODO debug
             this.levelFinished()

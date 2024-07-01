@@ -28,6 +28,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
         this.cost = cost
         this.movement = moveGenerator.getMovement(cost)
 
+
         
         this.type = parseInt(Math.random()*2)
         this.scene = _scene
@@ -43,6 +44,8 @@ export default class Card extends Phaser.GameObjects.Sprite {
                 this.setTexture('moveCard3')
             if(cost == 4)
                 this.setTexture('card')
+            if(cost == 5)
+                this.setTexture('moveCard1')
         }
         if(this.type==1){
             if(cost == 0)
@@ -111,4 +114,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
         this.movementSprite.delete()
         this.destroy()
     }
+
+    
+    
 }
