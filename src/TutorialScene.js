@@ -1,6 +1,5 @@
 import player from './Objects/Player.js'
 import card from './Objects/Card.js'
-import enemy from './Objects/Enemy.js'
 import cloud from './Objects/Could.js'
 import cloud2 from './Objects/Cloud2.js'
 import cloud3 from './Objects/Cloud3.js'
@@ -17,7 +16,9 @@ export default class TutorialScene extends Phaser.Scene {
     preload() {
         // Map zeug
         this.load.image('map1', 'Assets/World/Level1.png')
-        this.load.image('canGoImage', 'Assets/World/CanGo2.png')
+        this.load.image('map2', 'Assets/World/Level2.png')
+        this.load.image('map3', 'Assets/World/Level3.png')
+        this.load.image('canGoImage', 'Assets/World/CanGo.png')
         this.load.image('cloud', 'Assets/World/cloud1.png')
         this.load.image('cloud2', 'Assets/World/cloud2.png')
         this.load.image('cloud3', 'Assets/World/cloud3.png')
@@ -50,15 +51,6 @@ export default class TutorialScene extends Phaser.Scene {
         this.load.image('moveCard2', 'Assets/Karten/moveCard2.png')
         this.load.image('moveCard3', 'Assets/Karten/moveCard3.png')
 
-        //Animationen PLAYER
-        this.load.image('player', 'Assets/Player/Spieler.png')
-        this.load.spritesheet('playerAttack1', 'Assets/Player/playerAttack1.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack2', 'Assets/Player/playerAttack2.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack3', 'Assets/Player/playerAttack3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerAttack4', 'Assets/Player/playerAttack4.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerSchaden', 'Assets/Player/playerDamage.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('playerTod', 'Assets/Player/PlayerTod.png', { frameWidth: 346, frameHeight: 293 });
-        
         //Map tiles
         this.load.tilemapTiledJSON('tileMap1', 'TileMapExports/map.json')
         this.load.tilemapTiledJSON('tileMap2', 'TileMapExports/map2.json')
@@ -69,25 +61,29 @@ export default class TutorialScene extends Phaser.Scene {
         this.load.audio('drawCard', 'Assets/Sounds/drawCard.mp3')
         this.load.audio('move', 'Assets/Sounds/Bewegung.mp3')
 
+        this.load.image('player', 'Assets/Player/Spieler.png')
+        this.load.spritesheet('playerAttack1', 'Assets/Player/playerAttack1.png', { frameWidth: 1920, frameHeight: 1080 });
+        this.load.spritesheet('playerAttack2', 'Assets/Player/playerAttack2.png', { frameWidth: 1921, frameHeight: 1081 });
+        this.load.spritesheet('playerAttack3', 'Assets/Player/playerAttack3.png', { frameWidth: 1921, frameHeight: 1081 });
+        this.load.spritesheet('playerAttack4', 'Assets/Player/playerAttack4.png', { frameWidth: 1921, frameHeight: 1081 });
+        this.load.spritesheet('playerSchaden', 'Assets/Player/playerDamage.png', { frameWidth: 1921, frameHeight: 1081 });
+        this.load.spritesheet('playerTod', 'Assets/Player/PlayerTod.png', { frameWidth: 1921, frameHeight: 1081 });
+
         //Gegner
-
-        //broken
         this.load.spritesheet('enemy1Attack', 'Assets/Gegner/attacke1.png', { frameWidth: 1380, frameHeight: 966 });
-
-        //geht
-        this.load.spritesheet('enemy2Attack', 'Assets/Gegner/Gegner2_a.png', { frameWidth: 76, frameHeight: 85 });
-
-        //broken
+        this.load.spritesheet('enemy2Attack', 'Assets/Gegner/attacke2.png', { frameWidth: 76, frameHeight: 85 });
         this.load.spritesheet('enemy3Attack', 'Assets/Gegner/attacke3.png', { frameWidth: 1380, frameHeight: 965 });
         
-        //unused so far
-        this.load.spritesheet('enemy1Schaden', 'Assets/Gegner/schaden1.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy1.2Schaden', 'Assets/Gegner/schaden1.2.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy3Schaden', 'Assets/Gegner/schaden3.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy1Tod', 'Assets/Gegner/tod1.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy1.2Tod', 'Assets/Gegner/tod1.2.png', { frameWidth: 346, frameHeight: 293 });
-        this.load.spritesheet('enemy3Tod', 'Assets/Gegner/tod3.png', { frameWidth: 346, frameHeight: 293 });
-        
+        //schaden
+        this.load.spritesheet('enemy1Schaden', 'Assets/Gegner/schaden1.png', { frameWidth: 1380, frameHeight: 966 });
+        this.load.spritesheet('enemy2Schaden', 'Assets/Gegner/schaden2.png', {frameWidth: 355, frameHeight: 359});
+        this.load.spritesheet('enemy3Schaden', 'Assets/Gegner/schaden3.png', { frameWidth: 1380, frameHeight: 965 });
+
+        //death
+        this.load.spritesheet('enemy1Tod', 'Assets/Gegner/tod1.png', { frameWidth: 1380, frameHeight: 965 });
+        this.load.spritesheet('enemy2Tod', 'Assets/Gegner/tod2.png', { frameWidth: 355, frameHeight: 359 });
+        this.load.spritesheet('enemy3Tod', 'Assets/Gegner/tod3.png', { frameWidth: 1380, frameHeight: 965 });
+
     }
 
     //speichert alle positionen für ein bestimmtes level
