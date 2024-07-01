@@ -51,8 +51,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.setPosition(pos_x, pos_y, false)
         this.scene.gameField[pos_y][pos_x] = this;
         
-        this.scaleX = 1/82 * 64
-        this.scaleY = 1/82 * 64
+        this.scaleX = 1/455 * 64
+        this.scaleY = 1/455 * 64
 
         this.on('animationcomplete', () => {
             if(this.lives <= 0){
