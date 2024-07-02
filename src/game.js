@@ -26,7 +26,7 @@ export default class Game extends Phaser.Scene {
         this.load.image('cloud3', 'Assets/World/cloud3.png')
 
         // Buttons
-        this.load.image('levelBanner', 'Assets/Buttons/Level2.png')
+        this.load.image('levelBanner', 'Assets/Buttons/Level1.png')
         this.load.image('Leben0', 'Assets/Buttons/Leben0.png')
         this.load.image('Leben1', 'Assets/Buttons/Leben1.png')
         this.load.image('Leben2', 'Assets/Buttons/Leben2.png')
@@ -146,7 +146,7 @@ export default class Game extends Phaser.Scene {
 
     // Konstruktor
     create() {
-        this.setupTutorial();
+        
         this.setupGameSize();
         this.configureLevel();
         this.setupBackgroundClouds();
@@ -158,7 +158,7 @@ export default class Game extends Phaser.Scene {
     }
 
     setupTutorial() {
-        const infoText = this.add.text(100, 100, 'Drücke T, um das Tutorial zu starten\nDrücke X, um den Text zu entfernen', { fontSize: '16px', fill: '#fff' });
+        const infoText = this.add.text(550, 100, 'Drücke T, um das Tutorial zu starten\nDrücke X, um den Text zu entfernen', { fontSize: '16px', fill: '#fff' });
 
         this.input.keyboard.on('keydown-T', () => {
             infoText.destroy(); // Entfernt die Textbox
@@ -180,6 +180,7 @@ export default class Game extends Phaser.Scene {
         this.levelConfig;
         if (this.level == 1) {
             this.levelConfig = this.level1;
+            this.setupTutorial();
             this.registry.set('level1Config', this.levelConfig); // Speichern der Level-Konfiguration
 
             this.backgroundmusic(); // Backgroundmusik wird aufgerufen
@@ -229,16 +230,16 @@ export default class Game extends Phaser.Scene {
         this.banner = this.add.image(this.cameras.main.width / 2, 42, 'levelBanner');
         this.banner.setScale(0.5); // Optional: Skalierung anpassen
 
-        this.endTurn = this.add.image(this.cameras.main.width - 100, this.cameras.main.height - 50, 'EndTurn4');
+        this.endTurn = this.add.image(this.cameras.main.width - 250, this.cameras.main.height - 250, 'EndTurn4');
         this.endTurn.setInteractive();
-        this.endTurn.setScale(0.5); // Optional: Skalierung anpassen
+        this.endTurn.setScale(0.6); // Optional: Skalierung anpassen
         this.endTurn.on('pointerdown', () => {
             this.endTurnPressed();
             this.buttonSound();
         });
 
-        this.lives = this.add.image(150, 50, 'Leben3');
-        this.lives.setScale(0.5); // Optional: Skalierung anpassen
+        this.lives = this.add.image(300, 50, 'Leben3');
+        this.lives.setScale(0.6); // Optional: Skalierung anpassen
     }
 
     setupFigures() {
