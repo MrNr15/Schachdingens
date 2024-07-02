@@ -58,6 +58,8 @@ export default class Card extends Phaser.GameObjects.Sprite {
                 this.setTexture('attackCard3')
             if(cost == 4)
                 this.setTexture('attackCard')
+            if(cost == 5)
+                this.setTexture('attackCard1')
         }
         this.scaleX = 1 / 390 * 150
         this.scaleY = 1 / 390 * 150

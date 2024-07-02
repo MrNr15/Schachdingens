@@ -156,7 +156,7 @@ export default class Game extends Phaser.Scene {
     }
 
     setupTutorial() {
-         this.welcomeText = this.createTextWithBackground(540, 80, 'Willkommen in Cube World!\n\nDrücke Enter, um fortzufahren.', { fontSize: '16px', fill: '#000000' });
+         this.welcomeText = this.createTextWithBackground(this.WIDTH-500, this.HEIGHT-510, 'Willkommen in Cube World!\n\nDrücke Enter, um fortzufahren.', { fontSize: '16px', fill: '#000000' });
 
         this.input.keyboard.on('keydown-T', () => {
            this.welcomeText.destroy(); // Entfernt die Textbox
@@ -211,66 +211,66 @@ export default class Game extends Phaser.Scene {
                 this.removeTextWithBackground(this.welcomeText); // Entfernt den Begrüßungstext
                   
                   this.userTaskText = "Cube World wurde von Bösen Mimics überfallen!\n\nDu musst Cube World retten und die Mimics töten!";
-                  this.userTaskText = this.createTextWithBackground(500, 80, this.userTaskText, { fontSize: '16px', fill: '#000000' });
+                  this.userTaskText = this.createTextWithBackground(this.WIDTH-900, this.HEIGHT-610, this.userTaskText, { fontSize: '16px', fill: '#000000' });
                   break;
               case 2:
                 this.removeTextWithBackground(this.userTaskText);
                   this.explainLive = "Hier kannst du sehen wie viel Leben du hast.\n Wenn du Null Leben hast ist GAME OVER! ";
-                  this.explainLive = this.createTextWithBackground(120, 80, this.explainLive, { fontSize: '16px', fill: '#000000' });
+                  this.explainLive = this.createTextWithBackground(this.WIDTH-1300, this.HEIGHT-610, this.explainLive, { fontSize: '16px', fill: '#000000' });
                   break;
               case 3:
                 this.removeTextWithBackground(this.explainLive);
                   this.explainCost = "Um dich bewegen oder anzugreifen brauchst du Energie.\n Dein Energie Stand kannst du hier sehen."
-                  this.explainCost = this.createTextWithBackground(870, 350, this.explainCost, { fontSize: '16px', fill: '#000000' });
+                  this.explainCost = this.createTextWithBackground(this.WIDTH-550, this.HEIGHT-350, this.explainCost, { fontSize: '16px', fill: '#000000' });
                   break;
               case 4:
                 this.removeTextWithBackground(this.explainCost);
                     this.explainCard = "Dies ist eine BewegungsKarte. Mit dieser kannst du dich Bewegen."
-                    this.explainCard = this.createTextWithBackground(420, 480, this.explainCard, { fontSize: '16px', fill: '#000000' });
+                    this.explainCard = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainCard, { fontSize: '16px', fill: '#000000' });
                     this.drawCards(5);
                     // die karte updatet glaube ich noch nicht in der update funktion weil sie nicht im array ist. 
                     break;
               case 5:
                     this.removeTextWithBackground(this.explainCard);
                     this.explainCostCard = "Oben rechts siehst du wie viel Energie die Karte Kostet, hier 1 Energie."
-                    this.explainCostCard = this.createTextWithBackground(400, 480, this.explainCostCard, { fontSize: '16px', fill: '#000000' });
+                    this.explainCostCard = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainCostCard, { fontSize: '16px', fill: '#000000' });
                     
                     break;
               case 6:
                     this.removeTextWithBackground(this.explainCostCard);
                     this.explainMove = "Unten sieht du in welche richtungen du dich bewegen kannst."
-                    this.explainMove = this.createTextWithBackground(400, 480, this.explainMove, { fontSize: '16px', fill: '#000000' });
+                    this.explainMove = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainMove, { fontSize: '16px', fill: '#000000' });
                       
                     break;
               case 7:
                     this.removeTextWithBackground(this.explainMove);
                     this.explainMove2 = "Klicke auf die Karte um die deine möglichen Bewegungen anzeigen zulassen."
-                    this.explainMove2 = this.createTextWithBackground(400, 480, this.explainMove2, { fontSize: '16px', fill: '#000000' });
+                    this.explainMove2 = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainMove2, { fontSize: '16px', fill: '#000000' });
                     break;
               case 8:
                     this.removeTextWithBackground(this.explainMove2);
                     this.explainMove3 = "Drücke auf den weißen punkt um dich zu bewegen."
-                    this.explainMove3 = this.createTextWithBackground(200, 300, this.explainMove3, { fontSize: '16px', fill: '#000000' });
+                    this.explainMove3 = this.createTextWithBackground(this.WIDTH-1200, this.HEIGHT-400, this.explainMove3, { fontSize: '16px', fill: '#000000' });
                     break;
               case 9:
                     this.removeTextWithBackground(this.explainMove3);
                     this.explainAttack = "Dies ist eine Attacken Karte. \nKlicke auf die Karte um deine mögliche Attacke anzuzeigen."
-                    this.explainAttack = this.createTextWithBackground(400, 450, this.explainAttack, { fontSize: '16px', fill: '#000000' });
+                    this.explainAttack = this.createTextWithBackground(this.WIDTH-1050, this.HEIGHT-240, this.explainAttack, { fontSize: '16px', fill: '#000000' });
                     break;
               case 10:
                     this.removeTextWithBackground(this.explainAttack);
-                    this.explainAttack2 = "Drücke auf den weißen punkt um zu anzugreifen."
-                    this.explainAttack2 = this.createTextWithBackground(200, 300, this.explainAttack2, { fontSize: '16px', fill: '#000000' });
+                    this.explainAttack2 = "Drücke auf den roten punkt um zu anzugreifen."
+                    this.explainAttack2 = this.createTextWithBackground(this.WIDTH-1200, this.HEIGHT-400, this.explainAttack2, { fontSize: '16px', fill: '#000000' });
                     break;
               case 11:
                     this.removeTextWithBackground(this.explainAttack2);
                     this.explainEndTurn = "Drücke den Endturn Button um dein Zug zubeenden."
-                    this.explainEndTurn = this.createTextWithBackground(890, 500, this.explainEndTurn, { fontSize: '16px', fill: '#000000' });
+                    this.explainEndTurn = this.createTextWithBackground(this.WIDTH-500, this.HEIGHT-190, this.explainEndTurn, { fontSize: '16px', fill: '#000000' });
                     break;
               case 12:
                     this.removeTextWithBackground(this.explainEndTurn);
                     this.end = "Sehr gut! Die Grundlagen sind dir nun bekannt. Jetzt aber schnell Cube WOrld braucht dich!\nDrücke Enter um das Spiel zu starten."
-                    this.end = this.createTextWithBackground(300, 300, this.end, { fontSize: '16px', fill: '#000000' });
+                    this.end = this.createTextWithBackground(this.WIDTH-1100, this.HEIGHT-350, this.end, { fontSize: '16px', fill: '#000000' });
                     
                     break;
               case 13:
@@ -346,14 +346,14 @@ export default class Game extends Phaser.Scene {
 
         this.endTurn = this.add.image(this.cameras.main.width - 250, this.cameras.main.height - 250, 'EndTurn4');
         this.endTurn.setInteractive();
-        this.endTurn.setScale(0.5); // Optional: Skalierung anpassen
+        this.endTurn.setScale(0.6); // Optional: Skalierung anpassen
         this.endTurn.on('pointerdown', () => {
             this.endTurnPressed();
             this.buttonSound();
         });
 
         this.lives = this.add.image(300, 50, 'Leben3');
-        this.lives.setScale(0.5); // Optional: Skalierung anpassen
+        this.lives.setScale(0.6); // Optional: Skalierung anpassen
     }
 
     setupFigures() {
