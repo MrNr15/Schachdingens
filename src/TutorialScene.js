@@ -43,6 +43,7 @@ export default class Game extends Phaser.Scene {
      explainEndTurn;
      explainMove3;
 
+     tutorialCard; // Instanzvariable für die Karte im Tutorial
  
     
     // Hier werden Dateien geladen
@@ -227,7 +228,8 @@ export default class Game extends Phaser.Scene {
                 this.removeTextWithBackground(this.explainCost);
                     this.explainCard = "Dies ist eine BewegungsKarte. Mit dieser kannst du dich Bewegen."
                     this.explainCard = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainCard, { fontSize: '16px', fill: '#000000' });
-                    this.drawCards(5);
+                    //this.drawCards(1);
+                    this.drawTutorialCard(5);
                     // die karte updatet glaube ich noch nicht in der update funktion weil sie nicht im array ist. 
                     break;
               case 5:
@@ -439,14 +441,14 @@ export default class Game extends Phaser.Scene {
         this.currentCard = null;
     }
 
-    drawCards(amount) {
-      this.cardSound()
-      setTimeout(() => {
-        let newCard = new card(this, this.cards, parseInt(5));
-        newCard.setPosition(this.WIDTH / 2, this.HEIGHT - 100); // Position in der Mitte unten
-      }, 500); //ruft die Methode die eine neue Karte erzeugt später auf damit der Sound besser passt
+  
 
-    }
+    drawTutorialCard(cost) {
+      setTimeout(() => {
+      this.tutorialCard = new card(this, this.cards, cost);
+      this.tutorialCard.setPosition(this.WIDTH / 2, this.HEIGHT - 100); // Position in der Mitte unten
+    }, 500); //ruft die Methode die eine neue Karte erzeugt später auf damit der Sound besser passt
+  }
 
     backgroundmusic() {
         var music = this.sound.add('backgroundmusic');

@@ -13,6 +13,23 @@ export default class Game extends Phaser.Scene {
     constructor() {
         super({ key: 'Game' });
     }
+    // globale Variablen
+    canGoLayer;
+    cards = [];
+    currentCard = null;
+    moves = 4;
+    MAX_MOVES = 4;
+    player;
+    enemys = [];
+    TILE_WIDTH = 64;
+    TILE_HEIGHT = 37;
+    MAP_WIDTH = 13;
+    MAP_HEIGTH = 13;
+    WIDTH = 1056;
+    HEIGHT = 596;
+
+    clouds = []
+
 
     // Hier werden Dateien geladen
     preload() {
@@ -123,23 +140,7 @@ export default class Game extends Phaser.Scene {
 
     level = 1 // aktuelles Level
 
-    // globale Variablen
-    canGoLayer;
-    cards = [];
-    currentCard = null;
-    moves = 4;
-    MAX_MOVES = 4;
-    player;
-    enemys = [];
-    TILE_WIDTH = 64;
-    TILE_HEIGHT = 37;
-    MAP_WIDTH = 13;
-    MAP_HEIGTH = 13;
-    WIDTH = 1056;
-    HEIGHT = 596;
-
-    clouds = []
-
+    
     // zeigt welche Figur sich dort befindet
     // null für keine Figur
     gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
