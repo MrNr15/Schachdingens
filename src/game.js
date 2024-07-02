@@ -148,12 +148,23 @@ export default class Game extends Phaser.Scene {
     // Konstruktor
     create() {
         
+        //resete alles falls man vom Tutorial wiederkommt
+        this.enemys = []
+        this.clouds = []
+        this.cards = []
+        this.currentCard = null;
+        this.moves = 4;
+        this.enemys = [];
+        this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
+        this.level = 1 // aktuelles Level
+
         this.setupGameSize();
         this.configureLevel();
         this.setupBackgroundClouds();
         this.setupMap();
         this.setupButtons();
         this.setupFigures();
+        
         this.drawCards(4);
         //this.setupResizeHandler();
     }
@@ -331,7 +342,8 @@ export default class Game extends Phaser.Scene {
 
         this.cardSound();
         setTimeout(() => {
-            this.cards.push(new card(this, this.cards, parseInt(Math.random() * 4) + 1));
+            var type = parseInt(Math.random()*2)
+            this.cards.push(new card(this, this.cards, parseInt(Math.random() * 4) + 1, type));
         }, 500);
 
         setTimeout(() => {
@@ -367,8 +379,7 @@ export default class Game extends Phaser.Scene {
     }
 
     update(time, delta) {
-        console.log(-this.TILE_WIDTH / 2 + this.WIDTH / 2, this.HEIGHT / 2 - this.MAP_HEIGTH * this.TILE_HEIGHT / 2 - this.TILE_HEIGHT)
-
+        
         if (this.enemys.length == 0 || true) this.levelFinished();
 
         this.endTurn.setTexture('EndTurn' + this.moves);
@@ -455,13 +466,17 @@ export default class Game extends Phaser.Scene {
         const playAgain = this.add.text(this.WIDTH / 2, this.HEIGHT / 2 + 100, 'Play again', { fill: '#000' });
         playAgain.setInteractive();
         playAgain.on('pointerdown', () => {
-            this.enemys = [];
-            this.cards = [];
-            this.clouds = [];
-            this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null));
-            this.currentCard = null;
-            this.moves = 4;
+            this.resetPrep()
             this.scene.restart();
         });
+    }
+
+    resetPrep(){
+        this.enemys = [];
+        this.cards = [];
+        this.clouds = [];
+        this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null));
+        this.currentCard = null;
+        this.moves = 4;
     }
 }

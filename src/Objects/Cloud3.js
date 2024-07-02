@@ -17,6 +17,10 @@ export default class Cloud3 extends Phaser.GameObjects.Sprite {
     }
 
     update(time, delta){
+        if(this.scene == undefined){
+            this.destroy()
+            return
+        }
         this.x += this.speed * delta/1000
 
         if(this.x > this.scene.WIDTH+200)

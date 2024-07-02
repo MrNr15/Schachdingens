@@ -277,6 +277,7 @@ export default class Game extends Phaser.Scene {
                     break;
               case 13:
                       this.removeTextWithBackground(this.end);
+
                       this.scene.start('Game');
                       
                       break;
@@ -445,8 +446,8 @@ export default class Game extends Phaser.Scene {
 
     drawTutorialCard(cost) {
       setTimeout(() => {
-      this.tutorialCard = new card(this, this.cards, cost);
-      this.tutorialCard.setPosition(this.WIDTH / 2, this.HEIGHT - 100); // Position in der Mitte unten
+        this.tutorialCard = new card(this, this.cards, cost, 0);
+        this.cards.push(this.tutorialCard)
     }, 500); //ruft die Methode die eine neue Karte erzeugt später auf damit der Sound besser passt
   }
 
@@ -478,7 +479,6 @@ export default class Game extends Phaser.Scene {
     }
 
     update(time, delta) {
-        //console.log(-this.TILE_WIDTH / 2 + this.WIDTH / 2, this.HEIGHT / 2 - this.MAP_HEIGTH * this.TILE_HEIGHT / 2 - this.TILE_HEIGHT)
 
         if (this.enemys.length == 0 || true) this.levelFinished();
 

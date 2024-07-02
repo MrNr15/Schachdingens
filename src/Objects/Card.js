@@ -21,16 +21,15 @@ export default class Card extends Phaser.GameObjects.Sprite {
 
     movementSprite;
 
-    constructor(_scene, cards, cost){
+    constructor(_scene, cards, cost, type){
         super(_scene)
 
         var moveGenerator = new movementGenerator()
-        this.cost = cost
         this.movement = moveGenerator.getMovement(cost)
-
+        
 
         
-        this.type = parseInt(Math.random()*2)
+        this.type = type
         this.scene = _scene
         this.cards = cards;
         if (this.type==0){
@@ -61,6 +60,9 @@ export default class Card extends Phaser.GameObjects.Sprite {
             if(cost == 5)
                 this.setTexture('attackCard1')
         }
+        if(cost == 5)
+            cost = 1
+        this.cost = cost
         this.scaleX = 1 / 390 * 150
         this.scaleY = 1 / 390 * 150
         this.y = this.scene.HEIGHT - this.spriteOffset[1]//Unterer Bildschirmrand
@@ -69,6 +71,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
         this.setInteractive()
         this.on('pointerdown', function (pointer) {
             this.scene.setCurrentCard(this)
+            console.log()
         });
             
         this.movementSprite = new cardMovement(this.scene, this.movement)
@@ -79,6 +82,10 @@ export default class Card extends Phaser.GameObjects.Sprite {
     update(time, delta) {
         // Karten werden gleichmäßig abhängig von der Position in der Liste verteilt
         if (this.cards.indexOf(this) != -1) {
+            if(this.scene == undefined){
+                this.delete()
+                return
+            }
             const cardSpacing = 150;
             const startX = this.scene.cameras.main.width / 2 - (this.cards.length - 1) * cardSpacing / 2;
             this.x = startX + this.cards.indexOf(this) * cardSpacing;
@@ -91,6 +98,7 @@ export default class Card extends Phaser.GameObjects.Sprite {
     //Macht auf dem Layer alle Tiles sichtbar, welche die karte erlaubt
     //Man kann sich nur dahin bewegen wenn die preview auch sichtbar ist
     showMoves(canGolayer, player){
+        console.log(2)
         var playerPos = player.getWorldPos()
         for(var x = 0; x < 5; x++){
             for(var y = 0; y < 5; y++){
