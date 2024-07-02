@@ -69,6 +69,12 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
             }
         });
 
+        this.healthbar = this.scene.add.sprite(this.x, this.y+32, 'healthBar', 2)
+        this.healthbar.setDepth(1000000)
+        this.healthbar.scaleY = 0.5
+        this.healthbar.scaleX = 0.8
+        this.healthbar.visible = false
+
     }
 
     showMovement(){
@@ -93,6 +99,13 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
     update(time, delta){
         this.setDepth(this.y)
+        if(this.lives == 2)
+            this.healthbar.visible = false
+        else
+            this.healthbar.visible = true
+        this.healthbar.setFrame(this.lives)
+        this.healthbar.x = this.x
+        this.healthbar.y = this.y + 32
     }
 
     //wird nach einem spielerzug gerufen

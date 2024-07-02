@@ -85,6 +85,7 @@ export default class Game extends Phaser.Scene {
         this.load.spritesheet('enemy2Tod', 'Assets/Gegner/tod2.png', { frameWidth: 355, frameHeight: 359 });
         this.load.spritesheet('enemy3Tod', 'Assets/Gegner/tod3.png', { frameWidth: 1380, frameHeight: 965 });
 
+        this.load.spritesheet('healthBar', 'Assets/Gegner/HealthBar.png', {frameWidth: 64, frameHeight: 16});
     }
 
     //speichert alle positionen für ein bestimmtes level
@@ -134,7 +135,7 @@ export default class Game extends Phaser.Scene {
     MAP_HEIGTH = 13
     WIDTH = 1056
     HEIGHT = 596
-   
+    music;
 
     clouds = []
 
@@ -167,6 +168,7 @@ export default class Game extends Phaser.Scene {
         this.WIDTH = this.sys.game.scale.gameSize.width
         this.HEIGHT = this.sys.game.scale.gameSize.height
         // ------------------- Level Konfigurieren------------------------ // 
+        this.backgroundmusic()
         this.levelConfig;
         if (this.level == 1) {
             this.levelConfig = this.level1
@@ -174,15 +176,12 @@ export default class Game extends Phaser.Scene {
 
             //Backgroundmusik wird aufgerufen
             //bleibt beim neu laden bestehen also muss die nur beim ersten level gestartet werden
-            this.backgroundmusic()
         }
         if (this.level == 2)
             this.levelConfig = this.level2
-        this.backgroundmusic()
 
         if (this.level == 3)
             this.levelConfig = this.level3
-        this.backgroundmusic()
 
 
         // ------------------- background clouds ------------------------ // 
@@ -327,6 +326,7 @@ export default class Game extends Phaser.Scene {
             this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
             this.currentCard = null;
             this.moves = 4
+            this.music.stop()
             this.scene.restart()
         });
        
@@ -354,9 +354,9 @@ export default class Game extends Phaser.Scene {
 
     //lässt in Dauerschleife Backgroundmusik laufen
     backgroundmusic() {
-        var music = this.sound.add('backgroundmusic')
-        music.setVolume(0.15)
-        music.play({ loop: true })
+        this.music = this.sound.add('backgroundmusic')
+        this.music.setVolume(0.15)
+        this.music.play({ loop: true })
     }
 
     //Sound vom Kartenziehen
@@ -497,6 +497,7 @@ export default class Game extends Phaser.Scene {
             this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
             this.currentCard = null;
             this.moves = 4
+            this.music.stop()
             this.scene.restart()
         });
     }
