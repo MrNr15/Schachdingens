@@ -99,6 +99,16 @@ export default class MovementGenerator {
                 [0,0,1,0,0]
             ]
         return tmove;
+        }if(cost == 6){
+            var amove = 
+            [
+                [0,0,1,0,0],
+                [0,1,1,1,0],
+                [1,1,0,1,1],
+                [0,1,1,1,0],
+                [0,0,1,0,0]
+            ]
+        return amove;
         }
         //Fallback
         var index = parseInt(Math.random() * this.cost1.length)

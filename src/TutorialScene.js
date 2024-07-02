@@ -29,6 +29,7 @@ export default class Game extends Phaser.Scene {
      MAP_HEIGTH = 13;
      WIDTH = 1056;
      HEIGHT = 596;
+     type;
     
      clouds = []
  
@@ -229,7 +230,7 @@ export default class Game extends Phaser.Scene {
                     this.explainCard = "Dies ist eine BewegungsKarte. Mit dieser kannst du dich Bewegen."
                     this.explainCard = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainCard, { fontSize: '16px', fill: '#000000' });
                     //this.drawCards(1);
-                    this.drawTutorialCard(5);
+                    this.drawTutorialCard(5,0);
                     // die karte updatet glaube ich noch nicht in der update funktion weil sie nicht im array ist. 
                     break;
               case 5:
@@ -257,6 +258,7 @@ export default class Game extends Phaser.Scene {
               case 9:
                     this.removeTextWithBackground(this.explainMove3);
                     this.explainAttack = "Dies ist eine Attacken Karte. \nKlicke auf die Karte um deine mögliche Attacke anzuzeigen."
+                    this.drawTutorialCard(6,1);
                     this.explainAttack = this.createTextWithBackground(this.WIDTH-1050, this.HEIGHT-240, this.explainAttack, { fontSize: '16px', fill: '#000000' });
                     break;
               case 10:
@@ -444,9 +446,9 @@ export default class Game extends Phaser.Scene {
 
   
 
-    drawTutorialCard(cost) {
+    drawTutorialCard(cost,type) {
       setTimeout(() => {
-        this.tutorialCard = new card(this, this.cards, cost, 0);
+        this.tutorialCard = new card(this, this.cards, cost, type, 0);
         this.cards.push(this.tutorialCard)
     }, 500); //ruft die Methode die eine neue Karte erzeugt später auf damit der Sound besser passt
   }

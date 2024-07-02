@@ -52,7 +52,7 @@ export default class Game extends Phaser.Scene {
         this.load.image('EndTurn1', 'Assets/Buttons/EndTurn1.png')
         this.load.image('EndTurn2', 'Assets/Buttons/EndTurn2.png')
         this.load.image('EndTurn3', 'Assets/Buttons/EndTurn3.png')
-        this.load.image('EndTurn4', 'Assets/Buttons/EndTurn0.png')
+        this.load.image('EndTurn4', 'Assets/Buttons/EndTurn4.png')
         this.load.image('NextLevel', 'Assets/Buttons/NextLevel.png')
 
         // Spielkarten
@@ -64,11 +64,14 @@ export default class Game extends Phaser.Scene {
         this.load.image('attackCard1', 'Assets/Karten/DamageCard1.png')
         this.load.image('attackCard2', 'Assets/Karten/DamageCard2.png')
         this.load.image('attackCard3', 'Assets/Karten/DamageCard3.png')
+        this.load.image('attackCard4', 'Assets/Karten/DamageCard4.png')
+
 
         this.load.image('moveCard0', 'Assets/Karten/moveCard0.png')
         this.load.image('moveCard1', 'Assets/Karten/moveCard1.png')
         this.load.image('moveCard2', 'Assets/Karten/moveCard2.png')
         this.load.image('moveCard3', 'Assets/Karten/moveCard3.png')
+        this.load.image('moveCard4', 'Assets/Karten/moveCard4.png')
 
         // Map tiles
         this.load.tilemapTiledJSON('tileMap1', 'TileMapExports/map.json')
