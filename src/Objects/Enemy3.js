@@ -9,6 +9,13 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         [0,0,0,1,0],
         [0,0,0,0,1],
     ]
+    attack = [
+        [0,0,0,0,0],
+        [0,1,1,1,0],
+        [0,1,0,1,0],
+        [0,1,1,1,0],
+        [0,0,0,0,0],
+    ]
 
     attacks = 2;
 
@@ -68,13 +75,18 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.scene.resetMovePossiblilitys()
         for(var x = 0; x < 5; x++){
             for(var y = 0; y < 5; y++){
-                if(this.movement[y][x] == 0) continue;
+                if(this.movement[y][x] == 0 && this.attack[y][x] == 0) continue;
                 var checkingPos = [this.gridPos[0] + x-2, this.gridPos[1] + y-2]
 
                 if(this.scene.canGoLayer.getTileAt(checkingPos[0], checkingPos[1]) == null) continue;
 
                 this.scene.canGoLayer.getTileAt(checkingPos[0], checkingPos[1]).visible = true
-                this.scene.canGoLayer.putTileAt(1,checkingPos[0], checkingPos[1])
+                if(this.movement[y][x])
+                    this.scene.canGoLayer.putTileAt(1,checkingPos[0], checkingPos[1])
+                if(this.attack[y][x])
+                    this.scene.canGoLayer.putTileAt(3,checkingPos[0], checkingPos[1])
+                if(this.movement[y][x] && this.attack[y][x])
+                    this.scene.canGoLayer.putTileAt(2,checkingPos[0], checkingPos[1])
             }
         }
     }
@@ -117,7 +129,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
         for(var x = 0; x < 5; x++){
             for(var y = 0; y < 5; y++){
-                if(this.movement[y][x] == 0) continue;
+                if(this.attack[y][x] == 0) continue;
                 var checkingPos = [this.gridPos[0] + x-2, this.gridPos[1] + y-2]
 
                 if(checkingPos[0] == playerPos.x && checkingPos[1] == playerPos.y) return true;
