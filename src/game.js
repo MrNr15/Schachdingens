@@ -259,10 +259,6 @@ export default class Game extends Phaser.Scene {
             this.enemys.push(e);
         }
 
-        console.log(this.enemys);
-    
-
-
         //karten werden erstllt
         this.drawCards(4)
 
@@ -381,8 +377,6 @@ export default class Game extends Phaser.Scene {
     update(time, delta) {
         // Reagiere auf Fenstergrößenänderungen
        // this.scale.on('resize', this.handleResize, this);
-
-        console.log(-this.TILE_WIDTH / 2 + this.WIDTH / 2, this.HEIGHT / 2 - this.MAP_HEIGTH * this.TILE_HEIGHT / 2 - this.TILE_HEIGHT)
 
         if(this.enemys.length == 0 || true)//TODO debug
             this.levelFinished()
