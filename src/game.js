@@ -55,6 +55,10 @@ export default class Game extends Phaser.Scene {
         this.load.image('EndTurn4', 'Assets/Buttons/EndTurn4.png')
         this.load.image('NextLevel', 'Assets/Buttons/NextLevel.png')
 
+        this.load.image('GameOver', 'Assets/Buttons/GameOver.png')
+        this.load.image('PlayAgain', 'Assets/Buttons/PlayAgain.png')
+
+
         // Spielkarten
         this.load.image('card', 'Assets/Karten/card.png')
         this.load.image('attackCard', 'Assets/Karten/attackCard.png')
@@ -259,6 +263,7 @@ export default class Game extends Phaser.Scene {
 
     setupFigures() {
         this.player = new player(this, this.levelConfig.player[0], this.levelConfig.player[1]);
+        this.player.setDepth(0); // Beispiel-Depth für den Spieler
 
         for (var i = 0; i < this.levelConfig.enemys.length; i++) {
             let e;
@@ -274,7 +279,9 @@ export default class Game extends Phaser.Scene {
                     e = new Enemy3(this, this.levelConfig.enemys[i][0], this.levelConfig.enemys[i][1]);
                     break;
             }
+            e.setDepth(0); // Beispiel-Depth für Gegner
             this.enemys.push(e);
+            
         }
 
         console.log(this.enemys);
@@ -465,8 +472,13 @@ export default class Game extends Phaser.Scene {
         }
         this.cards = [];
 
-        const gameOver = this.add.text(this.WIDTH / 2, this.HEIGHT / 2, 'Game over', { fill: '#000' });
-        const playAgain = this.add.text(this.WIDTH / 2, this.HEIGHT / 2 + 100, 'Play again', { fill: '#000' });
+        // const gameOver = this.add.text(this.WIDTH / 2, this.HEIGHT / 2, 'Game over', { fill: '#000' });
+        // const playAgain = this.add.text(this.WIDTH / 2, this.HEIGHT / 2 + 100, 'Play again', { fill: '#000' });
+        const gameOver  = this.add.image(this.cameras.main.width - 690, this.cameras.main.height - 550, 'GameOver');
+        gameOver.setDepth(10);
+        const playAgain  = this.add.image(this.cameras.main.width - 690, this.cameras.main.height - 350, 'PlayAgain');
+        playAgain.setDepth(10);
+
         playAgain.setInteractive();
         playAgain.on('pointerdown', () => {
             this.resetPrep()
