@@ -190,7 +190,8 @@ export default class Game extends Phaser.Scene {
       background.fillRect(textBounds.x - padding, textBounds.y - padding, textBounds.width + 2 * padding, textBounds.height + 2 * padding);
 
       // Bringe den Text nach vorne
-      textObject.setDepth(1);
+      textObject.setDepth(100000001);
+      background.setDepth(100000000)
 
       // Hintergrundgrafik in die Textobjekteigenschaften einfügen
       textObject.background = background;

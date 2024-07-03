@@ -258,6 +258,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
             if (index > -1) { // only splice array when item is found
                 this.scene.enemys.splice(index, 1); // 2nd parameter means remove one item only
             }
+            this.healthbar.destroy()
             this.destroy()
     }
 }
