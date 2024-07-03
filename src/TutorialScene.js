@@ -32,6 +32,7 @@ export default class Game extends Phaser.Scene {
      type;
     
      clouds = []
+     music;
  
      welcomeText;
      userTaskText;
@@ -279,7 +280,7 @@ export default class Game extends Phaser.Scene {
                     break;
               case 13:
                       this.removeTextWithBackground(this.end);
-
+                        this.music.stop()
                       this.scene.start('Game');
                       
                       break;
@@ -447,16 +448,17 @@ export default class Game extends Phaser.Scene {
   
 
     drawTutorialCard(cost,type) {
-      setTimeout(() => {
-        this.tutorialCard = new card(this, this.cards, cost, type, 0);
-        this.cards.push(this.tutorialCard)
-    }, 500); //ruft die Methode die eine neue Karte erzeugt später auf damit der Sound besser passt
-  }
+        this.cardSound();
+        setTimeout(() => {
+            this.tutorialCard = new card(this, this.cards, cost, type, 0);
+            this.cards.push(this.tutorialCard)
+        }, 500); //ruft die Methode die eine neue Karte erzeugt später auf damit der Sound besser passt
+    }
 
     backgroundmusic() {
-        var music = this.sound.add('backgroundmusic');
-        music.setVolume(0.15);
-        music.play({ loop: true });
+        this.music = this.sound.add('backgroundmusic');
+        this.music.setVolume(0.15);
+        this.music.play({ loop: true });
     }
 
     cardSound() {

@@ -166,7 +166,6 @@ export default class Game extends Phaser.Scene {
         this.moves = 4;
         this.enemys = [];
         this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
-        this.level = 1 // aktuelles Level
 
         this.setupGameSize();
         this.configureLevel();
@@ -286,9 +285,6 @@ export default class Game extends Phaser.Scene {
             this.enemys.push(e);
             
         }
-
-        //karten werden erstllt
-        this.drawCards(4)
 
          // Reagiere auf Fenstergrößenänderungen
          //this.scale.on('resize', this.handleResize, this);
