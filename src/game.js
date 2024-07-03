@@ -119,6 +119,7 @@ export default class Game extends Phaser.Scene {
 
         this.load.spritesheet('healthBar', 'Assets/Gegner/HealthBar.png', {frameWidth: 64, frameHeight: 16});
         this.load.image('item', 'Assets/item/health.png')
+        this.load.image('itemShadow', 'Assets/item/Shadow.png')
     }
 
     // speichert alle Positionen für ein bestimmtes Level
@@ -130,7 +131,7 @@ export default class Game extends Phaser.Scene {
         mapTileSize: [530, 305],
         mapPositionOffset: [-2, -4],
         tileMap: 'tileMap1',
-        items: [[3,11]]
+        items: []
     }
 
     level2 = {
@@ -145,14 +146,14 @@ export default class Game extends Phaser.Scene {
     }
 
     level3 = {
-        player: [5, 4],
+        player: [5, 6],
         enemys: [[1, 1], [8, 8], [2, 9]],
         enemyTypes: [1, 2, 3],
         map: 'map3',
         mapTileSize: [63, 36],
         mapPositionOffset: [-33, -19],
         tileMap: 'tileMap3',
-        items: [[4,6]]
+        items: [[7,6]]
     }
 
     level = 1 // aktuelles Level
@@ -263,6 +264,7 @@ export default class Game extends Phaser.Scene {
     setupButtons() {
         this.banner = this.add.image(this.cameras.main.width / 2, 42, 'levelBanner'+this.level);
         this.banner.setScale(0.5); // Optional: Skalierung anpassen
+        this.banner.setDepth(10000);
 
         this.endTurn = this.add.image(this.cameras.main.width - 250, this.cameras.main.height - 250, 'EndTurn4');
         this.endTurn.setInteractive();
@@ -402,7 +404,8 @@ export default class Game extends Phaser.Scene {
     update(time, delta) {
         
         if (this.enemys.length == 0){
-            this.nextLevel.visible = true
+            if(this.level != 3)
+                this.nextLevel.visible = true
         }else{
             this.nextLevel.visible = false
         } 
