@@ -121,6 +121,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
         var worldPos = this.getWorldPos()
         this.scene.gameField[worldPos.y][worldPos.x] = null //alte position auf karte wird gelöscht
         this.setPosition(pos.x, pos.y, true)
+        let newLocation = this.scene.gameField[pos.y][pos.x]
+        if(newLocation != null){
+            newLocation.destroy()
+            this.lives = Math.min(this.lives+1, 3)
+        }
         this.scene.gameField[pos.y][pos.x] = this; // neue position wird auf karte eingetragen
     }
 
