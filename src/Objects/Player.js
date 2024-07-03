@@ -87,17 +87,22 @@ export default class Player extends Phaser.GameObjects.Sprite {
                 this.attackSound()
                 this.scene.gameField[pos.y][pos.x].damage(1)
                 // sollen iwann die Koordinaten vom Gegner sein der geschlagen wurde
-                const x1 = 0;
-                const y1 = 0;
+                const worldPos = this.getWorldPos();
                 // werden mit den Koordinaten vom Player verglichen um richtige Animation rauszufiltern
-                if(this.x > x1){
-                    this.play('playerAttack1')
-                }else if(this.x < x1){
-                    this.play('playerAttack2')
-                }else if(this.y < y1){
-                    this.play('playerAttack3')
-                }else if(this.y > y1){
-                    this.play('playerAttack4')
+                var deltaX = pos.x - worldPos.x;
+                var deltaY = pos.y - worldPos.y;
+                if(Math.abs(deltaX) < Math.abs(deltaY)){
+                    if(deltaY < 0){
+                        this.play('playerAttack3')
+                    }else{
+                        this.play('playerAttack1')
+                    }
+                }else{
+                    if(deltaX < 0){
+                        this.play('playerAttack4')
+                    }else{
+                        this.play('playerAttack2')
+                    }
                 }
             }
             

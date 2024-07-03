@@ -8,7 +8,6 @@ export default class Item extends Phaser.GameObjects.Sprite {
         super(_scene)
         this.scene = _scene
 
-        //Animation
         this.setTexture('item')
         this.gridPos = [pos_x, pos_y]
         this.scene.add.existing(this)

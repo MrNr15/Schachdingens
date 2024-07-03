@@ -389,7 +389,6 @@ export default class Game extends Phaser.Scene {
             this.enemys.push(e);
         }
 
-        console.log(this.enemys);
     }
 
     setupResizeHandler() {
@@ -432,7 +431,8 @@ export default class Game extends Phaser.Scene {
     }
 
     levelFinished() {
-        const nextLevel = this.add.image(this.cameras.main.width - 150, 50, 'NextLevel');
+        return
+        /*const nextLevel = this.add.image(this.cameras.main.width - 150, 50, 'NextLevel');
         nextLevel.setInteractive();
         nextLevel.on('pointerdown', () => {
             this.buttonSound();
@@ -444,7 +444,7 @@ export default class Game extends Phaser.Scene {
             this.currentCard = null;
             this.moves = 4;
             this.scene.restart();
-        });
+        });*/
     }
 
     unselectCard() {

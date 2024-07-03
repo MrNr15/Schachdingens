@@ -29,6 +29,7 @@ export default class Game extends Phaser.Scene {
     WIDTH = 1056;
     HEIGHT = 596;
 
+    nextLevel;
     clouds = []
 
 
@@ -44,7 +45,9 @@ export default class Game extends Phaser.Scene {
         this.load.image('cloud3', 'Assets/World/cloud3.png')
 
         // Buttons
-        this.load.image('levelBanner', 'Assets/Buttons/Level1.png')
+        this.load.image('levelBanner1', 'Assets/Buttons/Level1.png')
+        this.load.image('levelBanner2', 'Assets/Buttons/Level2.png')
+        this.load.image('levelBanner3', 'Assets/Buttons/Level3.png')
         this.load.image('Leben0', 'Assets/Buttons/Leben0.png')
         this.load.image('Leben1', 'Assets/Buttons/Leben1.png')
         this.load.image('Leben2', 'Assets/Buttons/Leben2.png')
@@ -127,7 +130,7 @@ export default class Game extends Phaser.Scene {
         mapTileSize: [530, 305],
         mapPositionOffset: [-2, -4],
         tileMap: 'tileMap1',
-        items: [[4,6]]
+        items: [[3,11]]
     }
 
     level2 = {
@@ -178,6 +181,7 @@ export default class Game extends Phaser.Scene {
         this.setupMap();
         this.setupButtons();
         this.setupFigures();
+        this.levelFinished();
 
         for(let i = 0; i < this.levelConfig.items.length; i++){
             new Item(this, this.levelConfig.items[i][0], this.levelConfig.items[i][1]);
@@ -189,7 +193,7 @@ export default class Game extends Phaser.Scene {
 
     setupTutorial() {
         const infoText = this.add.text(550, 100, 'Drücke T, um das Tutorial zu starten\nDrücke X, um den Text zu entfernen', { fontSize: '16px', fill: '#fff' });
-
+        infoText.setDepth(100000000)
         this.input.keyboard.on('keydown-T', () => {
             infoText.destroy(); // Entfernt die Textbox
             this.scene.start('TutorialScene'); // Startet die Tutorial-Szene
@@ -257,7 +261,7 @@ export default class Game extends Phaser.Scene {
     }
 
     setupButtons() {
-        this.banner = this.add.image(this.cameras.main.width / 2, 42, 'levelBanner');
+        this.banner = this.add.image(this.cameras.main.width / 2, 42, 'levelBanner'+this.level);
         this.banner.setScale(0.5); // Optional: Skalierung anpassen
 
         this.endTurn = this.add.image(this.cameras.main.width - 250, this.cameras.main.height - 250, 'EndTurn4');
@@ -332,10 +336,10 @@ export default class Game extends Phaser.Scene {
     }
 
     levelFinished() {
-        const nextLevel = this.add.image(this.cameras.main.width - 150, 50, 'NextLevel');
-        nextLevel.setScale(0.6);
-        nextLevel.setInteractive();
-        nextLevel.on('pointerdown', () => {
+        this.nextLevel = this.add.image(this.cameras.main.width - 150, 50, 'NextLevel');
+        this.nextLevel.setScale(0.6);
+        this.nextLevel.setInteractive();
+        this.nextLevel.on('pointerdown', () => {
             this.buttonSound();
             this.level += 1;
             this.enemys = [];
@@ -397,7 +401,11 @@ export default class Game extends Phaser.Scene {
 
     update(time, delta) {
         
-        if (this.enemys.length == 0 || true) this.levelFinished();
+        if (this.enemys.length == 0){
+            this.nextLevel.visible = true
+        }else{
+            this.nextLevel.visible = false
+        } 
 
         this.endTurn.setTexture('EndTurn' + this.moves);
         if (this.player != undefined) {
