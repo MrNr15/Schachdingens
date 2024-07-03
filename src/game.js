@@ -324,6 +324,7 @@ export default class Game extends Phaser.Scene {
 
     levelFinished() {
         const nextLevel = this.add.image(this.cameras.main.width - 150, 50, 'NextLevel');
+        nextLevel.setScale(0.6);
         nextLevel.setInteractive();
         nextLevel.on('pointerdown', () => {
             this.buttonSound();
