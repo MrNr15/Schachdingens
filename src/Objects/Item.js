@@ -1,7 +1,7 @@
 export default class Item extends Phaser.GameObjects.Sprite {
 
     scene;
-    spriteOffset = [41, 18 - 15];
+    spriteOffset = [31, 0];
     gridPos;
 
     constructor(_scene, pos_x, pos_y){
@@ -9,11 +9,13 @@ export default class Item extends Phaser.GameObjects.Sprite {
         this.scene = _scene
 
         //Animation
-        this.setTexture('TODO')
+        this.setTexture('item')
         this.gridPos = [pos_x, pos_y]
         this.scene.add.existing(this)
         this.setPosition(pos_x, pos_y)
         this.scene.gameField[pos_y][pos_x] = this;
+        this.scaleX = 0.4
+        this.scaleY = 0.4
     }
 
     update(time, delta){

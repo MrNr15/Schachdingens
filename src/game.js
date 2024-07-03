@@ -7,6 +7,7 @@ import cloud3 from './Objects/Cloud3.js'
 import Enemy1 from './Objects/Enemy1.js'
 import Enemy2 from './Objects/Enemy2.js'
 import Enemy3 from './Objects/Enemy3.js'
+import Item from './Objects/Item.js'
 
 export default class Game extends Phaser.Scene {
 
@@ -114,6 +115,7 @@ export default class Game extends Phaser.Scene {
         this.load.spritesheet('enemy3Tod', 'Assets/Gegner/tod3.png', { frameWidth: 1380, frameHeight: 965 });
 
         this.load.spritesheet('healthBar', 'Assets/Gegner/HealthBar.png', {frameWidth: 64, frameHeight: 16});
+        this.load.image('item', 'Assets/item/health.png')
     }
 
     // speichert alle Positionen für ein bestimmtes Level
@@ -124,7 +126,8 @@ export default class Game extends Phaser.Scene {
         map: 'map1',
         mapTileSize: [530, 305],
         mapPositionOffset: [-2, -4],
-        tileMap: 'tileMap1'
+        tileMap: 'tileMap1',
+        items: [[4,6]]
     }
 
     level2 = {
@@ -134,7 +137,8 @@ export default class Game extends Phaser.Scene {
         map: 'map2',
         mapTileSize: [63, 36],
         mapPositionOffset: [-65, -18],
-        tileMap: 'tileMap2'
+        tileMap: 'tileMap2',
+        items: [[4,6]]
     }
 
     level3 = {
@@ -144,7 +148,8 @@ export default class Game extends Phaser.Scene {
         map: 'map3',
         mapTileSize: [63, 36],
         mapPositionOffset: [-33, -19],
-        tileMap: 'tileMap3'
+        tileMap: 'tileMap3',
+        items: [[4,6]]
     }
 
     level = 1 // aktuelles Level
@@ -173,6 +178,10 @@ export default class Game extends Phaser.Scene {
         this.setupMap();
         this.setupButtons();
         this.setupFigures();
+
+        for(let i = 0; i < this.levelConfig.items.length; i++){
+            new Item(this, this.levelConfig.items[i][0], this.levelConfig.items[i][1]);
+        }
         
         this.drawCards(4);
         //this.setupResizeHandler();

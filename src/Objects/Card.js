@@ -104,7 +104,6 @@ export default class Card extends Phaser.GameObjects.Sprite {
     //Macht auf dem Layer alle Tiles sichtbar, welche die karte erlaubt
     //Man kann sich nur dahin bewegen wenn die preview auch sichtbar ist
     showMoves(canGolayer, player){
-        console.log(2)
         var playerPos = player.getWorldPos()
         for(var x = 0; x < 5; x++){
             for(var y = 0; y < 5; y++){
@@ -114,7 +113,12 @@ export default class Card extends Phaser.GameObjects.Sprite {
                 //If there is no Tile we cant move there
                 if(canGolayer.getTileAt(checkingPos[0], checkingPos[1]) == null) continue;
 
-                var isOccupied = this.scene.gameField[checkingPos[1]][[checkingPos[0]]] != null
+                var objectAtLocation = this.scene.gameField[checkingPos[1]][[checkingPos[0]]]
+                var isOccupied = objectAtLocation != null
+
+                if(objectAtLocation != null && objectAtLocation.texture.key == 'item')
+                    isOccupied = !isOccupied;
+
                 
                 //if there is already someone we cant go there
                 if(isOccupied && this.type == 0) continue;
