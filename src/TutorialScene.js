@@ -223,12 +223,12 @@ export default class Game extends Phaser.Scene {
                   break;
               case 3:
                 this.removeTextWithBackground(this.explainLive);
-                  this.explainCost = "Um dich zu bewegen oder anzugreifen brauchst du Energie.\n Deinen Energiestand kannst du unten rechts sehen."
+                  this.explainCost = "Um dich zu bewegen oder anzugreifen, brauchst du Energie.\n Deinen Energiestand kannst du unten rechts sehen."
                   this.explainCost = this.createTextWithBackground(this.WIDTH-550, this.HEIGHT-350, this.explainCost, { fontSize: '16px', fill: '#000000' });
                   break;
               case 4:
                 this.removeTextWithBackground(this.explainCost);
-                    this.explainCard = "Dies ist eine Bewegungskarte. Mit dieser kannst du dich Bewegen."
+                    this.explainCard = "Dies ist eine Bewegungskarte, mit dieser kannst du dich bewegen."
                     this.explainCard = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainCard, { fontSize: '16px', fill: '#000000' });
                     //this.drawCards(1);
                     this.drawTutorialCard(5,0);
