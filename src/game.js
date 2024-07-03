@@ -274,8 +274,6 @@ export default class Game extends Phaser.Scene {
 
     setupFigures() {
         this.player = new player(this, this.levelConfig.player[0], this.levelConfig.player[1]);
-        this.player.setDepth(0); // Beispiel-Depth für den Spieler
-
         for (var i = 0; i < this.levelConfig.enemys.length; i++) {
             let e;
             let type = this.levelConfig.enemyTypes[i];
@@ -290,7 +288,6 @@ export default class Game extends Phaser.Scene {
                     e = new Enemy3(this, this.levelConfig.enemys[i][0], this.levelConfig.enemys[i][1]);
                     break;
             }
-            e.setDepth(0); // Beispiel-Depth für Gegner
             this.enemys.push(e);
             
         }
@@ -336,6 +333,7 @@ export default class Game extends Phaser.Scene {
 
     levelFinished() {
         const nextLevel = this.add.image(this.cameras.main.width - 150, 50, 'NextLevel');
+        nextLevel.setScale(0.6);
         nextLevel.setInteractive();
         nextLevel.on('pointerdown', () => {
             this.buttonSound();
@@ -484,9 +482,9 @@ export default class Game extends Phaser.Scene {
         // const gameOver = this.add.text(this.WIDTH / 2, this.HEIGHT / 2, 'Game over', { fill: '#000' });
         // const playAgain = this.add.text(this.WIDTH / 2, this.HEIGHT / 2 + 100, 'Play again', { fill: '#000' });
         const gameOver  = this.add.image(this.cameras.main.width - 690, this.cameras.main.height - 550, 'GameOver');
-        gameOver.setDepth(10);
+        gameOver.setDepth(this.y+1);
         const playAgain  = this.add.image(this.cameras.main.width - 690, this.cameras.main.height - 350, 'PlayAgain');
-        playAgain.setDepth(10);
+        playAgain.setDepth(this.y+1);
 
         playAgain.setInteractive();
         playAgain.on('pointerdown', () => {
