@@ -218,17 +218,17 @@ export default class Game extends Phaser.Scene {
                   break;
               case 2:
                 this.removeTextWithBackground(this.userTaskText);
-                  this.explainLive = "Hier kannst du sehen wie viel Leben du hast.\n Wenn du Null Leben hast ist GAME OVER! ";
+                  this.explainLive = "Hier kannst du sehen wie viele Leben du hast.\n Wenn du Null Leben hast, ist GAME OVER! ";
                   this.explainLive = this.createTextWithBackground(this.WIDTH-1300, this.HEIGHT-610, this.explainLive, { fontSize: '16px', fill: '#000000' });
                   break;
               case 3:
                 this.removeTextWithBackground(this.explainLive);
-                  this.explainCost = "Um dich bewegen oder anzugreifen brauchst du Energie.\n Dein Energie Stand kannst du hier sehen."
+                  this.explainCost = "Um dich zu bewegen oder anzugreifen brauchst du Energie.\n Deinen Energiestand kannst du unten rechts sehen."
                   this.explainCost = this.createTextWithBackground(this.WIDTH-550, this.HEIGHT-350, this.explainCost, { fontSize: '16px', fill: '#000000' });
                   break;
               case 4:
                 this.removeTextWithBackground(this.explainCost);
-                    this.explainCard = "Dies ist eine BewegungsKarte. Mit dieser kannst du dich Bewegen."
+                    this.explainCard = "Dies ist eine Bewegungskarte. Mit dieser kannst du dich Bewegen."
                     this.explainCard = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainCard, { fontSize: '16px', fill: '#000000' });
                     //this.drawCards(1);
                     this.drawTutorialCard(5,0);
@@ -236,45 +236,45 @@ export default class Game extends Phaser.Scene {
                     break;
               case 5:
                     this.removeTextWithBackground(this.explainCard);
-                    this.explainCostCard = "Oben rechts siehst du wie viel Energie die Karte Kostet, hier 1 Energie."
+                    this.explainCostCard = "Oben links siehst du wie viel Energie die Karte Kostet, hier 1 Energie."
                     this.explainCostCard = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainCostCard, { fontSize: '16px', fill: '#000000' });
                     
                     break;
               case 6:
                     this.removeTextWithBackground(this.explainCostCard);
-                    this.explainMove = "Unten sieht du in welche richtungen du dich bewegen kannst."
+                    this.explainMove = "Unten sieht du auf welche Felder du dich bewegen kannst."
                     this.explainMove = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainMove, { fontSize: '16px', fill: '#000000' });
                       
                     break;
               case 7:
                     this.removeTextWithBackground(this.explainMove);
-                    this.explainMove2 = "Klicke auf die Karte um die deine möglichen Bewegungen anzeigen zulassen."
+                    this.explainMove2 = "Klicke auf die Karte, um dir deine möglichen Bewegungen anzeigen zu lassen."
                     this.explainMove2 = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainMove2, { fontSize: '16px', fill: '#000000' });
                     break;
               case 8:
                     this.removeTextWithBackground(this.explainMove2);
-                    this.explainMove3 = "Drücke auf den weißen punkt um dich zu bewegen."
+                    this.explainMove3 = "Drücke auf den weißen Punkt, um dich zu bewegen."
                     this.explainMove3 = this.createTextWithBackground(this.WIDTH-1200, this.HEIGHT-400, this.explainMove3, { fontSize: '16px', fill: '#000000' });
                     break;
               case 9:
                     this.removeTextWithBackground(this.explainMove3);
-                    this.explainAttack = "Dies ist eine Attacken Karte. \nKlicke auf die Karte um deine mögliche Attacke anzuzeigen."
+                    this.explainAttack = "Dies ist eine Attacken-Karte. \nKlicke auf die Karte, um eine mögliche Attacke anzuzeigen."
                     this.drawTutorialCard(6,1);
                     this.explainAttack = this.createTextWithBackground(this.WIDTH-1050, this.HEIGHT-240, this.explainAttack, { fontSize: '16px', fill: '#000000' });
                     break;
               case 10:
                     this.removeTextWithBackground(this.explainAttack);
-                    this.explainAttack2 = "Drücke auf den roten punkt um zu anzugreifen."
+                    this.explainAttack2 = "Drücke auf den roten Punkt, um anzugreifen."
                     this.explainAttack2 = this.createTextWithBackground(this.WIDTH-1200, this.HEIGHT-400, this.explainAttack2, { fontSize: '16px', fill: '#000000' });
                     break;
               case 11:
                     this.removeTextWithBackground(this.explainAttack2);
-                    this.explainEndTurn = "Drücke den Endturn Button um dein Zug zubeenden."
+                    this.explainEndTurn = "Drücke den End-Turn Button, um deinen Zug zu beenden."
                     this.explainEndTurn = this.createTextWithBackground(this.WIDTH-500, this.HEIGHT-190, this.explainEndTurn, { fontSize: '16px', fill: '#000000' });
                     break;
               case 12:
                     this.removeTextWithBackground(this.explainEndTurn);
-                    this.end = "Sehr gut! Die Grundlagen sind dir nun bekannt. Jetzt aber schnell Cube WOrld braucht dich!\nDrücke Enter um das Spiel zu starten."
+                    this.end = "Sehr gut! Die Grundlagen sind dir nun bekannt. Jetzt aber schnell, Cube World braucht dich!\nDrücke Enter, um das Spiel zu starten."
                     this.end = this.createTextWithBackground(this.WIDTH-1100, this.HEIGHT-350, this.end, { fontSize: '16px', fill: '#000000' });
                     
                     break;
