@@ -250,7 +250,7 @@ export default class Game extends Phaser.Scene {
                     break;
                 case 7:
                     this.removeTextWithBackground(this.explainMove);
-                    this.explainE = "Wenn du auf die Gegner klickst kannst du deren Bewegung Attack range sehen."
+                    this.explainE = "Wenn du auf die Gegner klickst kannst du deren Bewegungs/Attack range sehen."
                     this.explainE = this.createTextWithBackground(350, 150, this.explainE, { fontSize: '16px', fill: '#000000' });
                     break;
               case 8:
