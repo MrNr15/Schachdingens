@@ -3,11 +3,11 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     scene;
     spriteOffset = [32, 3];
     movement = [
-        [1,0,0,0,0],
-        [0,1,0,0,0],
         [0,0,0,0,0],
-        [0,0,0,1,0],
-        [0,0,0,0,1],
+        [0,1,1,1,0],
+        [0,1,0,1,0],
+        [0,1,1,1,0],
+        [0,0,0,0,0],
     ]
     attack = [
         [0,0,0,0,0],
