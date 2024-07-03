@@ -120,8 +120,8 @@ export default class Game extends Phaser.Scene {
 
     // speichert alle Positionen für ein bestimmtes Level
     level1 = {
-        player: [5, 4],
-        enemys: [[3, 3], [5, 5]],
+        player: [6, 6],
+        enemys: [[2, 11], [11, 2]],
         enemyTypes: [1, 1],
         map: 'map1',
         mapTileSize: [530, 305],
