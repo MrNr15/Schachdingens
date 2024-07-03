@@ -44,6 +44,7 @@ export default class Game extends Phaser.Scene {
      explainMove2;
      explainEndTurn;
      explainMove3;
+     explainE;
 
      tutorialCard; // Instanzvariable für die Karte im Tutorial
  
@@ -144,11 +145,11 @@ export default class Game extends Phaser.Scene {
 
     // Konstruktor
     create() {
-
+        
+        this.setupGameSize();
         this.setupTutorial();
         this.leaveTutorial();
         this.tutorialWalkThrough();
-        this.setupGameSize();
         this.configureLevel();
         this.setupBackgroundClouds();
         this.setupMap();
@@ -159,7 +160,7 @@ export default class Game extends Phaser.Scene {
     }
 
     setupTutorial() {
-         this.welcomeText = this.createTextWithBackground(this.WIDTH-500, this.HEIGHT-510, 'Willkommen in Cube World!\n\nDrücke Enter, um fortzufahren.', { fontSize: '16px', fill: '#000000' });
+         this.welcomeText = this.createTextWithBackground(550, 90, 'Willkommen in Cube World!\n\nDrücke Enter, um fortzufahren.', { fontSize: '16px', fill: '#000000' });
 
         this.input.keyboard.on('keydown-T', () => {
            this.welcomeText.destroy(); // Entfernt die Textbox
@@ -214,17 +215,17 @@ export default class Game extends Phaser.Scene {
                 this.removeTextWithBackground(this.welcomeText); // Entfernt den Begrüßungstext
                   
                   this.userTaskText = "Cube World wurde von Bösen Mimics überfallen!\n\nDu musst Cube World retten und die Mimics töten!";
-                  this.userTaskText = this.createTextWithBackground(this.WIDTH-900, this.HEIGHT-610, this.userTaskText, { fontSize: '16px', fill: '#000000' });
+                  this.userTaskText = this.createTextWithBackground(500, 90, this.userTaskText, { fontSize: '16px', fill: '#000000' });
                   break;
               case 2:
                 this.removeTextWithBackground(this.userTaskText);
                   this.explainLive = "Hier kannst du sehen wie viele Leben du hast.\n Wenn du Null Leben hast, ist GAME OVER! ";
-                  this.explainLive = this.createTextWithBackground(this.WIDTH-1300, this.HEIGHT-610, this.explainLive, { fontSize: '16px', fill: '#000000' });
+                  this.explainLive = this.createTextWithBackground(100, 90, this.explainLive, { fontSize: '16px', fill: '#000000' });
                   break;
               case 3:
                 this.removeTextWithBackground(this.explainLive);
-                  this.explainCost = "Um dich zu bewegen oder anzugreifen, brauchst du Energie.\n Deinen Energiestand kannst du unten rechts sehen."
-                  this.explainCost = this.createTextWithBackground(this.WIDTH-550, this.HEIGHT-350, this.explainCost, { fontSize: '16px', fill: '#000000' });
+                  this.explainCost = "Um dich zu bewegen oder anzugreifen, brauchst du Energie.\n Deinen Energiestand kannst du über End Turn sehen."
+                  this.explainCost = this.createTextWithBackground(this.WIDTH-600, this.HEIGHT-350, this.explainCost, { fontSize: '16px', fill: '#000000' });
                   break;
               case 4:
                 this.removeTextWithBackground(this.explainCost);
@@ -237,7 +238,7 @@ export default class Game extends Phaser.Scene {
               case 5:
                     this.removeTextWithBackground(this.explainCard);
                     this.explainCostCard = "Oben links siehst du wie viel Energie die Karte Kostet, hier 1 Energie."
-                    this.explainCostCard = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainCostCard, { fontSize: '16px', fill: '#000000' });
+                    this.explainCostCard = this.createTextWithBackground(this.WIDTH-1010, this.HEIGHT-220, this.explainCostCard, { fontSize: '16px', fill: '#000000' });
                     
                     break;
               case 6:
@@ -246,39 +247,44 @@ export default class Game extends Phaser.Scene {
                     this.explainMove = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainMove, { fontSize: '16px', fill: '#000000' });
                       
                     break;
-              case 7:
+                case 7:
                     this.removeTextWithBackground(this.explainMove);
-                    this.explainMove2 = "Klicke auf die Karte, um dir deine möglichen Bewegungen anzeigen zu lassen."
-                    this.explainMove2 = this.createTextWithBackground(this.WIDTH-950, this.HEIGHT-220, this.explainMove2, { fontSize: '16px', fill: '#000000' });
+                    this.explainE = "Wenn du auf die Gegner klickst kannst du deren Bewegung Attack range sehen."
+                    this.explainE = this.createTextWithBackground(350, 150, this.explainE, { fontSize: '16px', fill: '#000000' });
                     break;
               case 8:
-                    this.removeTextWithBackground(this.explainMove2);
-                    this.explainMove3 = "Drücke auf den weißen Punkt, um dich zu bewegen."
-                    this.explainMove3 = this.createTextWithBackground(this.WIDTH-1200, this.HEIGHT-400, this.explainMove3, { fontSize: '16px', fill: '#000000' });
+                    this.removeTextWithBackground(this.explainE);
+                    this.explainMove2 = "Klicke auf die Karte, um dir deine möglichen Bewegungen anzeigen zu lassen."
+                    this.explainMove2 = this.createTextWithBackground(this.WIDTH-1050, this.HEIGHT-220, this.explainMove2, { fontSize: '16px', fill: '#000000' });
                     break;
               case 9:
+                    this.removeTextWithBackground(this.explainMove2);
+                    this.explainMove3 = "Drücke auf den weißen Punkt, um dich zu bewegen."
+                    this.explainMove3 = this.createTextWithBackground(160,310, this.explainMove3, { fontSize: '16px', fill: '#000000' });
+                    break;
+              case 10:
                     this.removeTextWithBackground(this.explainMove3);
                     this.explainAttack = "Dies ist eine Attacken-Karte. \nKlicke auf die Karte, um eine mögliche Attacke anzuzeigen."
                     this.drawTutorialCard(6,1);
                     this.explainAttack = this.createTextWithBackground(this.WIDTH-1050, this.HEIGHT-240, this.explainAttack, { fontSize: '16px', fill: '#000000' });
                     break;
-              case 10:
+              case 11:
                     this.removeTextWithBackground(this.explainAttack);
                     this.explainAttack2 = "Drücke auf den roten Punkt, um anzugreifen."
-                    this.explainAttack2 = this.createTextWithBackground(this.WIDTH-1200, this.HEIGHT-400, this.explainAttack2, { fontSize: '16px', fill: '#000000' });
-                    break;
-              case 11:
-                    this.removeTextWithBackground(this.explainAttack2);
-                    this.explainEndTurn = "Drücke den End-Turn Button, um deinen Zug zu beenden."
-                    this.explainEndTurn = this.createTextWithBackground(this.WIDTH-500, this.HEIGHT-190, this.explainEndTurn, { fontSize: '16px', fill: '#000000' });
+                    this.explainAttack2 = this.createTextWithBackground(200, 310, this.explainAttack2, { fontSize: '16px', fill: '#000000' });
                     break;
               case 12:
+                    this.removeTextWithBackground(this.explainAttack2);
+                    this.explainEndTurn = "Drücke den End-Turn Button,\num deinen Zug zu beenden."
+                    this.explainEndTurn = this.createTextWithBackground(this.WIDTH-350, this.HEIGHT-190, this.explainEndTurn, { fontSize: '16px', fill: '#000000' });
+                    break;
+              case 13:
                     this.removeTextWithBackground(this.explainEndTurn);
                     this.end = "Sehr gut! Die Grundlagen sind dir nun bekannt. Jetzt aber schnell, Cube World braucht dich!\nDrücke Enter, um das Spiel zu starten."
                     this.end = this.createTextWithBackground(this.WIDTH-1100, this.HEIGHT-350, this.end, { fontSize: '16px', fill: '#000000' });
                     
                     break;
-              case 13:
+              case 14:
                       this.removeTextWithBackground(this.end);
                         this.music.stop()
                       this.scene.start('Game');
