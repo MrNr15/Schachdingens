@@ -1,20 +1,22 @@
-import player from './Objects/Player.js'
-import card from './Objects/Card.js'
-import enemy from './Objects/Enemy.js'
-import cloud from './Objects/Could.js'
-import cloud2 from './Objects/Cloud2.js'
-import cloud3 from './Objects/Cloud3.js'
-import Enemy1 from './Objects/Enemy1.js'
-import Enemy2 from './Objects/Enemy2.js'
-import Enemy3 from './Objects/Enemy3.js'
-import Item from './Objects/Item.js'
+// Importiere Klassen von externen Modulen
+import player from './Objects/Player.js';
+import card from './Objects/Card.js';
+import enemy from './Objects/Enemy.js';
+import cloud from './Objects/Could.js';
+import cloud2 from './Objects/Cloud2.js';
+import cloud3 from './Objects/Cloud3.js';
+import Enemy1 from './Objects/Enemy1.js';
+import Enemy2 from './Objects/Enemy2.js';
+import Enemy3 from './Objects/Enemy3.js';
+import Item from './Objects/Item.js';
 
+// Definiere die Game-Klasse, die von Phaser.Scene erbt
 export default class Game extends Phaser.Scene {
-
     constructor() {
         super({ key: 'Game' });
     }
-    // globale Variablen
+
+    // Globale Variablen
     canGoLayer;
     cards = [];
     currentCard = null;
@@ -28,73 +30,67 @@ export default class Game extends Phaser.Scene {
     MAP_HEIGTH = 13;
     WIDTH = 1056;
     HEIGHT = 596;
-
     nextLevel;
-    clouds = []
-
+    clouds = [];
 
     // Hier werden Dateien geladen
     preload() {
-        // Map zeug
-        this.load.image('map1', 'Assets/World/Level1.png')
-        this.load.image('map2', 'Assets/World/Level2.png')
-        this.load.image('map3', 'Assets/World/Level3.png')
-        this.load.image('canGoImage', 'Assets/World/CanGo.png')
-        this.load.image('cloud', 'Assets/World/cloud1.png')
-        this.load.image('cloud2', 'Assets/World/cloud2.png')
-        this.load.image('cloud3', 'Assets/World/cloud3.png')
+        // Karten und Umgebungsbilder
+        this.load.image('map1', 'Assets/World/Level1.png');
+        this.load.image('map2', 'Assets/World/Level2.png');
+        this.load.image('map3', 'Assets/World/Level3.png');
+        this.load.image('canGoImage', 'Assets/World/CanGo.png');
+        this.load.image('cloud', 'Assets/World/cloud1.png');
+        this.load.image('cloud2', 'Assets/World/cloud2.png');
+        this.load.image('cloud3', 'Assets/World/cloud3.png');
 
         // Buttons
-        this.load.image('levelBanner1', 'Assets/Buttons/Level1.png')
-        this.load.image('levelBanner2', 'Assets/Buttons/Level2.png')
-        this.load.image('levelBanner3', 'Assets/Buttons/Level3.png')
-        this.load.image('Leben0', 'Assets/Buttons/Leben0.png')
-        this.load.image('Leben1', 'Assets/Buttons/Leben1.png')
-        this.load.image('Leben2', 'Assets/Buttons/Leben2.png')
-        this.load.image('Leben3', 'Assets/Buttons/Leben3.png')
-        this.load.image('EndTurn0', 'Assets/Buttons/EndTurn0.png')
-        this.load.image('EndTurn1', 'Assets/Buttons/EndTurn1.png')
-        this.load.image('EndTurn2', 'Assets/Buttons/EndTurn2.png')
-        this.load.image('EndTurn3', 'Assets/Buttons/EndTurn3.png')
-        this.load.image('EndTurn4', 'Assets/Buttons/EndTurn4.png')
-        this.load.image('NextLevel', 'Assets/Buttons/NextLevel.png')
-
-        this.load.image('GameOver', 'Assets/Buttons/GameOver.png')
-        this.load.image('PlayAgain', 'Assets/Buttons/PlayAgain.png')
-
+        this.load.image('levelBanner1', 'Assets/Buttons/Level1.png');
+        this.load.image('levelBanner2', 'Assets/Buttons/Level2.png');
+        this.load.image('levelBanner3', 'Assets/Buttons/Level3.png');
+        this.load.image('Leben0', 'Assets/Buttons/Leben0.png');
+        this.load.image('Leben1', 'Assets/Buttons/Leben1.png');
+        this.load.image('Leben2', 'Assets/Buttons/Leben2.png');
+        this.load.image('Leben3', 'Assets/Buttons/Leben3.png');
+        this.load.image('EndTurn0', 'Assets/Buttons/EndTurn0.png');
+        this.load.image('EndTurn1', 'Assets/Buttons/EndTurn1.png');
+        this.load.image('EndTurn2', 'Assets/Buttons/EndTurn2.png');
+        this.load.image('EndTurn3', 'Assets/Buttons/EndTurn3.png');
+        this.load.image('EndTurn4', 'Assets/Buttons/EndTurn4.png');
+        this.load.image('NextLevel', 'Assets/Buttons/NextLevel.png');
+        this.load.image('GameOver', 'Assets/Buttons/GameOver.png');
+        this.load.image('PlayAgain', 'Assets/Buttons/PlayAgain.png');
 
         // Spielkarten
-        this.load.image('card', 'Assets/Karten/card.png')
-        this.load.image('attackCard', 'Assets/Karten/attackCard.png')
-        this.load.image('square', 'Assets/Karten/Card_Movement.png')
+        this.load.image('card', 'Assets/Karten/card.png');
+        this.load.image('attackCard', 'Assets/Karten/attackCard.png');
+        this.load.image('square', 'Assets/Karten/Card_Movement.png');
+        this.load.image('attackCard0', 'Assets/Karten/DamageCard0.png');
+        this.load.image('attackCard1', 'Assets/Karten/DamageCard1.png');
+        this.load.image('attackCard2', 'Assets/Karten/DamageCard2.png');
+        this.load.image('attackCard3', 'Assets/Karten/DamageCard3.png');
+        this.load.image('attackCard4', 'Assets/Karten/DamageCard4.png');
+        this.load.image('moveCard0', 'Assets/Karten/moveCard0.png');
+        this.load.image('moveCard1', 'Assets/Karten/moveCard1.png');
+        this.load.image('moveCard2', 'Assets/Karten/moveCard2.png');
+        this.load.image('moveCard3', 'Assets/Karten/moveCard3.png');
+        this.load.image('moveCard4', 'Assets/Karten/moveCard4.png');
 
-        this.load.image('attackCard0', 'Assets/Karten/DamageCard0.png')
-        this.load.image('attackCard1', 'Assets/Karten/DamageCard1.png')
-        this.load.image('attackCard2', 'Assets/Karten/DamageCard2.png')
-        this.load.image('attackCard3', 'Assets/Karten/DamageCard3.png')
-        this.load.image('attackCard4', 'Assets/Karten/DamageCard4.png')
-
-
-        this.load.image('moveCard0', 'Assets/Karten/moveCard0.png')
-        this.load.image('moveCard1', 'Assets/Karten/moveCard1.png')
-        this.load.image('moveCard2', 'Assets/Karten/moveCard2.png')
-        this.load.image('moveCard3', 'Assets/Karten/moveCard3.png')
-        this.load.image('moveCard4', 'Assets/Karten/moveCard4.png')
-
-        // Map tiles
-        this.load.tilemapTiledJSON('tileMap1', 'TileMapExports/map.json')
-        this.load.tilemapTiledJSON('tileMap2', 'TileMapExports/map2.json')
-        this.load.tilemapTiledJSON('tileMap3', 'TileMapExports/map3.json')
+        // Karten-Tiles
+        this.load.tilemapTiledJSON('tileMap1', 'TileMapExports/map.json');
+        this.load.tilemapTiledJSON('tileMap2', 'TileMapExports/map2.json');
+        this.load.tilemapTiledJSON('tileMap3', 'TileMapExports/map3.json');
 
         // Audio
-        this.load.audio('backgroundmusic', 'Assets/Sounds/background.mp3')
-        this.load.audio('drawCard', 'Assets/Sounds/drawCard.mp3')
-        this.load.audio('move', 'Assets/Sounds/Bewegung.mp3')
-        this.load.audio('buttonSound', 'Assets/Sounds/Button.mp3')
-        this.load.audio('attackSound', 'Assets/Sounds/Attacke.mp3')
-        this.load.audio('kauen', 'Assets/Sounds/kauen.mp3')
+        this.load.audio('backgroundmusic', 'Assets/Sounds/background.mp3');
+        this.load.audio('drawCard', 'Assets/Sounds/drawCard.mp3');
+        this.load.audio('move', 'Assets/Sounds/Bewegung.mp3');
+        this.load.audio('buttonSound', 'Assets/Sounds/Button.mp3');
+        this.load.audio('attackSound', 'Assets/Sounds/Attacke.mp3');
+        this.load.audio('kauen', 'Assets/Sounds/kauen.mp3');
 
-        this.load.image('player', 'Assets/Player/Spieler.png')
+        // Spieler
+        this.load.image('player', 'Assets/Player/Spieler.png');
         this.load.spritesheet('playerAttack1', 'Assets/Player/playerAttack1.png', { frameWidth: 1920, frameHeight: 1080 });
         this.load.spritesheet('playerAttack2', 'Assets/Player/playerAttack2.png', { frameWidth: 1921, frameHeight: 1081 });
         this.load.spritesheet('playerAttack3', 'Assets/Player/playerAttack3.png', { frameWidth: 1921, frameHeight: 1081 });
@@ -107,22 +103,23 @@ export default class Game extends Phaser.Scene {
         this.load.spritesheet('enemy2Attack', 'Assets/Gegner/attacke2.png', { frameWidth: 355, frameHeight: 471 });
         this.load.spritesheet('enemy3Attack', 'Assets/Gegner/attacke3.png', { frameWidth: 1380, frameHeight: 965 });
 
-        // schaden
+        // Gegner-Schaden
         this.load.spritesheet('enemy1Schaden', 'Assets/Gegner/schaden1.png', { frameWidth: 1380, frameHeight: 966 });
         this.load.spritesheet('enemy2Schaden', 'Assets/Gegner/schaden2.png', { frameWidth: 355, frameHeight: 359 });
         this.load.spritesheet('enemy3Schaden', 'Assets/Gegner/schaden3.png', { frameWidth: 1380, frameHeight: 965 });
 
-        // death
+        // Gegner-Tod
         this.load.spritesheet('enemy1Tod', 'Assets/Gegner/tod1.png', { frameWidth: 1380, frameHeight: 965 });
         this.load.spritesheet('enemy2Tod', 'Assets/Gegner/tod2.png', { frameWidth: 355, frameHeight: 359 });
         this.load.spritesheet('enemy3Tod', 'Assets/Gegner/tod3.png', { frameWidth: 1380, frameHeight: 965 });
 
-        this.load.spritesheet('healthBar', 'Assets/Gegner/HealthBar.png', {frameWidth: 64, frameHeight: 16});
-        this.load.image('item', 'Assets/item/health.png')
-        this.load.image('itemShadow', 'Assets/item/Shadow.png')
+        // Lebensbalken und Items
+        this.load.spritesheet('healthBar', 'Assets/Gegner/HealthBar.png', { frameWidth: 64, frameHeight: 16 });
+        this.load.image('item', 'Assets/item/health.png');
+        this.load.image('itemShadow', 'Assets/item/Shadow.png');
     }
 
-    // speichert alle Positionen für ein bestimmtes Level
+    // Level-Konfigurationen speichern
     level1 = {
         player: [6, 6],
         enemys: [[2, 11], [11, 2]],
@@ -132,7 +129,7 @@ export default class Game extends Phaser.Scene {
         mapPositionOffset: [-2, -4],
         tileMap: 'tileMap1',
         items: []
-    }
+    };
 
     level2 = {
         player: [5, 4],
@@ -142,8 +139,8 @@ export default class Game extends Phaser.Scene {
         mapTileSize: [63, 36],
         mapPositionOffset: [-65, -18],
         tileMap: 'tileMap2',
-        items: [[4,6]]
-    }
+        items: [[4, 6]]
+    };
 
     level3 = {
         player: [5, 6],
@@ -153,29 +150,28 @@ export default class Game extends Phaser.Scene {
         mapTileSize: [63, 36],
         mapPositionOffset: [-33, -19],
         tileMap: 'tileMap3',
-        items: [[7,6]]
-    }
+        items: [[7, 6]]
+    };
 
-    level = 1 // aktuelles Level
+    level = 1; // aktuelles Level
 
     music;
     
-    // zeigt welche Figur sich dort befindet
-    // null für keine Figur
-    gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
+    // Spielbrett initialisieren
+    gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null));
 
     // Konstruktor
     create() {
-        
-        //resete alles falls man vom Tutorial wiederkommt
-        this.enemys = []
-        this.clouds = []
-        this.cards = []
+        // Setze alle Werte zurück, falls man vom Tutorial wiederkommt
+        this.enemys = [];
+        this.clouds = [];
+        this.cards = [];
         this.currentCard = null;
         this.moves = 4;
         this.enemys = [];
-        this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null))
+        this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null));
 
+        // Setup-Funktionen aufrufen
         this.setupGameSize();
         this.configureLevel();
         this.setupBackgroundClouds();
@@ -184,41 +180,45 @@ export default class Game extends Phaser.Scene {
         this.setupFigures();
         this.levelFinished();
 
-        for(let i = 0; i < this.levelConfig.items.length; i++){
+        // Erstelle Items für das Level
+        for (let i = 0; i < this.levelConfig.items.length; i++) {
             new Item(this, this.levelConfig.items[i][0], this.levelConfig.items[i][1]);
         }
         
-        this.drawCards(4);
-        //this.setupResizeHandler();
+        this.drawCards(4); // Ziehe Karten für den Spieler
     }
 
+    // Setup für das Tutorial
     setupTutorial() {
         const infoText = this.add.text(550, 100, 'Drücke T, um das Tutorial zu starten\nDrücke X, um den Text zu entfernen', { fontSize: '16px', fill: '#fff' });
-        infoText.setDepth(100000000)
+        infoText.setDepth(100000000);
+        
+        // Event-Listener für Tasteneingaben
         this.input.keyboard.on('keydown-T', () => {
-            infoText.destroy(); // Entfernt die Textbox
-            this.scene.start('TutorialScene'); // Startet die Tutorial-Szene
+            infoText.destroy(); // Entferne die Textbox
+            this.scene.start('TutorialScene'); // Starte die Tutorial-Szene
         });
 
         this.input.keyboard.on('keydown-X', () => {
-            infoText.destroy(); // Entfernt die Textbox ohne das Tutorial zu starten
+            infoText.destroy(); // Entferne die Textbox ohne das Tutorial zu starten
         });
     }
 
+    // Setup für die Spielgröße
     setupGameSize() {
         this.scale.resize(window.innerWidth, window.innerHeight);
         this.WIDTH = this.sys.game.scale.gameSize.width;
         this.HEIGHT = this.sys.game.scale.gameSize.height;
     }
 
+    // Konfiguration des aktuellen Levels
     configureLevel() {
         this.levelConfig;
         if (this.level == 1) {
             this.levelConfig = this.level1;
             this.setupTutorial();
             this.registry.set('level1Config', this.levelConfig); // Speichern der Level-Konfiguration
-
-            this.backgroundmusic(); // Backgroundmusik wird aufgerufen
+            this.backgroundmusic(); // Hintergrundmusik wird aufgerufen
         } else if (this.level == 2) {
             this.levelConfig = this.level2;
             this.backgroundmusic();
@@ -228,6 +228,7 @@ export default class Game extends Phaser.Scene {
         }
     }
 
+    // Setup für die Hintergrundwolken
     setupBackgroundClouds() {
         const NUMBER_OF_CLOUDS = 6; // Anzahl der Wolken
         for (let i = 0; i < NUMBER_OF_CLOUDS; i++) {
@@ -238,6 +239,7 @@ export default class Game extends Phaser.Scene {
         }
     }
 
+    // Setup für die Karte
     setupMap() {
         this.levelMap = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, this.levelConfig.map);
         this.levelMap.setDisplaySize(this.cameras.main.width, this.cameras.main.height);
@@ -248,21 +250,20 @@ export default class Game extends Phaser.Scene {
         this.levelMap.y = this.HEIGHT / 2 + this.levelConfig.mapPositionOffset[1];
 
         const map = this.make.tilemap({ key: this.levelConfig.tileMap });
-
         const tileSet2 = map.addTilesetImage('CanGo', 'canGoImage');
         this.canGoLayer = map.createLayer('CanGo', tileSet2, 0, 0);
         this.canGoLayer.setDepth(1000000); // über den Spielern
 
         this.registry.set('mapData', { tileMap: this.level1.tileMap });
-
         this.resetMovePossiblilitys();
 
         this.canGoLayer.x = -this.TILE_WIDTH / 2 + this.WIDTH / 2;
         this.canGoLayer.y = this.HEIGHT / 2 - this.MAP_HEIGTH * this.TILE_HEIGHT / 2 - this.TILE_HEIGHT;
     }
 
+    // Setup für die Buttons
     setupButtons() {
-        this.banner = this.add.image(this.cameras.main.width / 2, 42, 'levelBanner'+this.level);
+        this.banner = this.add.image(this.cameras.main.width / 2, 42, 'levelBanner' + this.level);
         this.banner.setScale(0.5); // Optional: Skalierung anpassen
         this.banner.setDepth(10000);
 
@@ -278,6 +279,7 @@ export default class Game extends Phaser.Scene {
         this.lives.setScale(0.6); // Optional: Skalierung anpassen
     }
 
+    // Setup für Spielfiguren
     setupFigures() {
         this.player = new player(this, this.levelConfig.player[0], this.levelConfig.player[1]);
         for (var i = 0; i < this.levelConfig.enemys.length; i++) {
@@ -295,13 +297,10 @@ export default class Game extends Phaser.Scene {
                     break;
             }
             this.enemys.push(e);
-            
         }
-
-         // Reagiere auf Fenstergrößenänderungen
-         //this.scale.on('resize', this.handleResize, this);
     }
 
+    // Reagiere auf Fenstergrößenänderungen
     handleResize(gameSize) {
         this.WIDTH = gameSize._width;
         this.HEIGHT = gameSize._height;
@@ -325,6 +324,7 @@ export default class Game extends Phaser.Scene {
         this.repositionCards();
     }
 
+    // Karten neu positionieren
     repositionCards() {
         if (!this.cards || this.cards.length === 0) return;
 
@@ -337,6 +337,7 @@ export default class Game extends Phaser.Scene {
         }
     }
 
+    // Setup für den Abschluss des Levels
     levelFinished() {
         this.nextLevel = this.add.image(this.cameras.main.width - 150, 50, 'NextLevel');
         this.nextLevel.setScale(0.6);
@@ -349,23 +350,25 @@ export default class Game extends Phaser.Scene {
             this.clouds = [];
             this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null));
             this.currentCard = null;
-            this.moves = 4
-            this.music.stop()
-            this.scene.restart()
+            this.moves = 4;
+            this.music.stop();
+            this.scene.restart();
         });
     }
 
+    // Auswahl der Karte aufheben
     unselectCard() {
         this.resetMovePossiblilitys();
         this.currentCard = null;
     }
 
+    // Karten ziehen
     drawCards(amount) {
         if (amount <= 0) return;
 
         this.cardSound();
         setTimeout(() => {
-            var type = parseInt(Math.random()*2)
+            var type = parseInt(Math.random() * 2);
             this.cards.push(new card(this, this.cards, parseInt(Math.random() * 4) + 1, type));
         }, 500);
 
@@ -374,18 +377,21 @@ export default class Game extends Phaser.Scene {
         }, 100);
     }
 
+    // Hintergrundmusik abspielen
     backgroundmusic() {
-        this.music = this.sound.add('backgroundmusic')
-        this.music.setVolume(0.15)
-        this.music.play({ loop: true })
+        this.music = this.sound.add('backgroundmusic');
+        this.music.setVolume(0.15);
+        this.music.play({ loop: true });
     }
 
+    // Soundeffekt für das Ziehen einer Karte
     cardSound() {
         var drawCards = this.sound.add('drawCard');
         drawCards.setVolume(0.25);
         drawCards.play();
     }
 
+    // Soundeffekt für Buttons
     buttonSound() {
         var button = this.sound.add('buttonSound');
         button.setRate(1.4);
@@ -393,6 +399,7 @@ export default class Game extends Phaser.Scene {
         button.play();
     }
 
+    // Ende des Zugs
     endTurnPressed() {
         if (this.enemys.length > 0) this.enemys[0].move(0, this.enemys[0].attacks);
         this.unselectCard();
@@ -401,14 +408,13 @@ export default class Game extends Phaser.Scene {
         this.drawCards(2);
     }
 
+    // Update-Methode, die bei jedem Frame aufgerufen wird
     update(time, delta) {
-        
-        if (this.enemys.length == 0){
-            if(this.level != 3)
-                this.nextLevel.visible = true
-        }else{
-            this.nextLevel.visible = false
-        } 
+        if (this.enemys.length == 0) {
+            if (this.level != 3) this.nextLevel.visible = true;
+        } else {
+            this.nextLevel.visible = false;
+        }
 
         this.endTurn.setTexture('EndTurn' + this.moves);
         if (this.player != undefined) {
@@ -431,19 +437,22 @@ export default class Game extends Phaser.Scene {
         }
     }
 
+    // Bewegungsmöglichkeiten zurücksetzen
     resetMovePossiblilitys() {
         for (var x = 0; x < this.MAP_WIDTH; x++) {
             for (var y = 0; y < this.MAP_WIDTH; y++) {
                 if (this.canGoLayer.getTileAt(x, y) != null)
-                    this.canGoLayer.getTileAt(x, y).visible = false
+                    this.canGoLayer.getTileAt(x, y).visible = false;
             }
         }
     }
 
+    // Weltposition zu Bildschirmposition umwandeln
     worldPosToScreenPos(x, y) {
         return this.canGoLayer.tileToWorldXY(x, y);
     }
 
+    // Bildschirmposition zu Weltposition umwandeln
     screenToWorldPos(x, y) {
         const pos = this.canGoLayer.worldToTileXY(x, y);
         pos.x = Math.floor(pos.x);
@@ -451,12 +460,14 @@ export default class Game extends Phaser.Scene {
         return pos;
     }
 
+    // Überprüfen, ob der Spieler sich an eine bestimmte Position bewegen kann
     canIMoveThere(pos) {
         if (this.currentCard == null) return false;
         const tile = this.canGoLayer.getTileAt(pos.x, pos.y);
         return tile != undefined && tile.visible;
     }
 
+    // Spieler hat sich bewegt
     playerMoved() {
         this.moves -= this.currentCard.cost;
 
@@ -469,6 +480,7 @@ export default class Game extends Phaser.Scene {
         this.updateMovement();
     }
 
+    // Bewegung aktualisieren
     updateMovement() {
         this.resetMovePossiblilitys();
         if (this.currentCard == null) return;
@@ -476,6 +488,7 @@ export default class Game extends Phaser.Scene {
         this.buttonSound();
     }
 
+    // Setze die aktuelle Karte
     setCurrentCard(newCard) {
         if (newCard.cost <= this.moves) {
             this.currentCard = newCard;
@@ -483,6 +496,7 @@ export default class Game extends Phaser.Scene {
         }
     }
 
+    // Spiel verloren
     gameLost() {
         this.endTurn.visible = false;
         for (let i = 0; i < this.cards.length; i++) {
@@ -490,27 +504,26 @@ export default class Game extends Phaser.Scene {
         }
         this.cards = [];
 
-        // const gameOver = this.add.text(this.WIDTH / 2, this.HEIGHT / 2, 'Game over', { fill: '#000' });
-        // const playAgain = this.add.text(this.WIDTH / 2, this.HEIGHT / 2 + 100, 'Play again', { fill: '#000' });
-        const gameOver  = this.add.image(this.cameras.main.width - 690, this.cameras.main.height - 550, 'GameOver');
-        gameOver.setDepth(this.y+1);
-        const playAgain  = this.add.image(this.cameras.main.width - 690, this.cameras.main.height - 350, 'PlayAgain');
-        playAgain.setDepth(this.y+1);
+        const gameOver = this.add.image(this.cameras.main.width - 690, this.cameras.main.height - 550, 'GameOver');
+        gameOver.setDepth(this.y + 1);
+        const playAgain = this.add.image(this.cameras.main.width - 690, this.cameras.main.height - 350, 'PlayAgain');
+        playAgain.setDepth(this.y + 1);
 
         playAgain.setInteractive();
         playAgain.on('pointerdown', () => {
-            this.resetPrep()
+            this.resetPrep();
             this.scene.restart();
         });
     }
 
-    resetPrep(){
+    // Vorbereitungen für das Zurücksetzen des Spiels
+    resetPrep() {
         this.enemys = [];
         this.cards = [];
         this.clouds = [];
         this.gameField = [...Array(this.MAP_HEIGTH)].map(e => Array(this.MAP_WIDTH).fill(null));
         this.currentCard = null;
         this.moves = 4;
-        this.music.stop()
+        this.music.stop();
     }
 }
